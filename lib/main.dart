@@ -1,6 +1,8 @@
+import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/theme/theme_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(MyApp());
@@ -22,12 +24,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: AppThemes.lightTheme,
-      darkTheme: AppThemes.darkTheme,
-      themeMode: themeManager.currentThemeMode(),
-      home: MyHomePage(),
+    return RepositoryProvider(
+      create: (context) => AppDataStorage(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: AppThemes.lightTheme,
+        darkTheme: AppThemes.darkTheme,
+        themeMode: themeManager.currentThemeMode(),
+        home: MyHomePage(),
+      ),
     );
   }
 }
