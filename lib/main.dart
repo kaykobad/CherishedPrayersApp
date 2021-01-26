@@ -2,7 +2,7 @@ import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/theme/theme_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
-import 'package:cherished_prayers/ui/splash_screen/splash_screen.dart';
+import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
