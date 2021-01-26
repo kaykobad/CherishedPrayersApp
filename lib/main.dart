@@ -4,9 +4,19 @@ import 'package:cherished_prayers/theme/theme_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await _setThemeMode();
   runApp(MyApp());
+}
+
+Future _setThemeMode() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool _isDarkMode = prefs.getBool('isDarkTheme') ?? false;
+  themeManager.setProperties(_isDarkMode, prefs);
+  await prefs.setBool('isDarkTheme', _isDarkMode);
 }
 
 class MyApp extends StatefulWidget {
