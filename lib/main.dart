@@ -2,6 +2,7 @@ import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/theme/theme_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
+import 'package:cherished_prayers/ui/splash_screen/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -43,35 +44,8 @@ class _MyAppState extends State<MyApp> {
         theme: AppThemes.lightTheme,
         darkTheme: AppThemes.darkTheme,
         themeMode: themeManager.currentThemeMode(),
-        home: MyHomePage(),
+        home: SplashScreen(),
       ),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Theme Test"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-              child: Text('Change Theme'),
-              onPressed: () => themeManager.toggleTheme(),
-            ),
-          ],
-        ),
-      ),// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
