@@ -1,18 +1,32 @@
+import 'package:cherished_prayers/theme/theme_config.dart';
+import 'package:cherished_prayers/theme/themes.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    themeManager.addListener(() {
+      setState(() {});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      themeMode: themeManager.currentThemeMode(),
       home: MyHomePage(),
     );
   }
@@ -36,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             RaisedButton(
               child: Text('Change Theme'),
-              onPressed: () => print("Theme change initiated"),
+              onPressed: () => themeManager.toggleTheme(),
             ),
           ],
         ),
