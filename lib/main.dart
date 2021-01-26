@@ -1,3 +1,4 @@
+import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/theme/theme_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
@@ -27,7 +28,8 @@ class _MyAppState extends State<MyApp> {
     return RepositoryProvider(
       create: (context) => AppDataStorage(),
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: StringConstants.APP_NAME,
+        debugShowCheckedModeBanner: false,
         theme: AppThemes.lightTheme,
         darkTheme: AppThemes.darkTheme,
         themeMode: themeManager.currentThemeMode(),
