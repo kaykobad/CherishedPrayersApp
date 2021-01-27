@@ -28,7 +28,7 @@ class AppThemes {
   );
 
   static final darkTheme = ThemeData(
-    primarySwatch: Colors.black45,
+    primarySwatch: Colors.blueGrey,
     primaryColor: ColorConstants.darkPrimaryColor,
     brightness: Brightness.dark,
     backgroundColor: ColorConstants.darkBackgroundColor,

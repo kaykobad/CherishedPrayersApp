@@ -1,3 +1,4 @@
+import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
@@ -14,8 +15,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 3), () {
-      NavigationHelper.pushReplacement(context, GetStartedScreen());
+    Future.delayed(Duration(seconds: 100), () {
+      // NavigationHelper.pushReplacement(context, GetStartedScreen());
     });
   }
 
@@ -37,7 +38,13 @@ class _SplashScreenState extends State<SplashScreen> {
   _getImage() {
     return Expanded(
       child: Center(
-        child: Text("To be Replaced by images"),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 30.0),
+          child: Image.asset(
+            AssetConstants.APP_LOGO,
+            height: 120,
+          ),
+        ),
       ),
     );
   }
@@ -49,6 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
          text: TextSpan(
            text: StringConstants.CHERISHED,
            style: TextStyle(
+             fontWeight: FontWeight.w500,
              color: ColorConstants.lightPrimaryColor,
              fontSize: 20,
            ),
@@ -56,6 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
              TextSpan(
                text: StringConstants.PRAYERS,
                style: TextStyle(
+                 fontWeight: FontWeight.w500,
                  color: ColorConstants.gray,
                  fontSize: 20,
                ),
