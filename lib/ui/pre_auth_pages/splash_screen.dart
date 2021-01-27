@@ -15,8 +15,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 100), () {
-      // NavigationHelper.pushReplacement(context, GetStartedScreen());
+    Future.delayed(Duration(seconds: 3), () {
+      NavigationHelper.pushReplacement(context, GetStartedScreen());
     });
   }
 
