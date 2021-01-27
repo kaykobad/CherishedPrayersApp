@@ -14,7 +14,10 @@ class AppThemes {
     buttonTheme: ButtonThemeData(
       padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
       buttonColor: ColorConstants.lightPrimaryColor,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0))
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(22.0),
+        side: BorderSide(color: ColorConstants.lightPrimaryColor),
+      )
     ),
     textTheme: TextTheme(
       headline4: TextStyle(fontSize: 42.0, fontWeight: FontWeight.w500),

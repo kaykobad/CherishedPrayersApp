@@ -1,8 +1,11 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+
+import 'authentication_selection_screen.dart';
 
 class GetStartedScreen extends StatelessWidget {
   @override
@@ -16,7 +19,7 @@ class GetStartedScreen extends StatelessWidget {
           children: [
             _getTitle(),
             _getSubTitle(),
-            _getStartedButton(),
+            _getStartedButton(context),
             _getImage(),
           ],
         ),
@@ -26,7 +29,7 @@ class GetStartedScreen extends StatelessWidget {
 
   Widget _getTitle() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 16.0),
+      padding: const EdgeInsets.fromLTRB(24.0, 20.0, 20.0, 16.0),
       child: Text(
         StringConstants.TITLE,
         style: TextStyle(
@@ -51,10 +54,12 @@ class GetStartedScreen extends StatelessWidget {
     );
   }
 
-  Widget _getStartedButton() {
+  Widget _getStartedButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
-      child: RoundedCornerButton(StringConstants.GET_STARTED_BUTTON, (){}),
+      child: RoundedCornerButton(StringConstants.GET_STARTED_BUTTON, (){
+        NavigationHelper.push(context, AuthenticationSelectionScreen());
+      }),
     );
   }
 

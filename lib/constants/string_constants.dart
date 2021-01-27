@@ -14,4 +14,8 @@ class StringConstants {
   static const String SUB_TITLE = "Cherished prayers connects your body with your soul.";
   static const String GET_STARTED_BUTTON = "Get Started";
 
+  // Auth Selection Page
+  static const String FIND_A_WAY = "Find a way to salvation and secure your hereafter.";
+  static const String SIGN_IN = "SIGN IN";
+  static const String SIGN_UP = "SIGN UP";
 }
