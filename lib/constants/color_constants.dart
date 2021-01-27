@@ -9,5 +9,7 @@ class ColorConstants {
   static const Color gray = Color(0xFF8D8D8D);
   static const Color backGroundGray = Color(0xFFF0F0F0);
   static const Color hintGray = Color(0xFF86878B);
+
   static const Color lightPrimaryColor = Color(0xFF7A893B);
+  static const Color darkPrimaryColor = Color(0xFF2D3238);
 }
