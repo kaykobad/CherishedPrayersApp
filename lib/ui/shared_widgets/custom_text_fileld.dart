@@ -5,8 +5,9 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController controller;
   final String hint;
   final bool obscureText;
+  final Widget suffixWidget;
 
-  const CustomTextField(this.controller, this.hint, this.obscureText);
+  const CustomTextField(this.controller, this.hint, this.obscureText, {this.suffixWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +32,7 @@ class CustomTextField extends StatelessWidget {
           fontSize: 16,
           color: ColorConstants.hintGray,
         ),
+        suffixIcon: suffixWidget,
       ),
     );
   }

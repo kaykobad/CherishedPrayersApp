@@ -20,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String _nameErrorText;
   String _emailErrorText;
   String _passwordErrorText;
+  bool _obscureText;
 
   @override
   void initState() {
@@ -30,6 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameErrorText = "";
     _emailErrorText = "";
     _passwordErrorText = "";
+    _obscureText = true;
   }
 
   @override
@@ -106,7 +108,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   Widget _getPasswordField() {
-    return CustomTextField(_passwordController, StringConstants.PASSWORD_HINT, true);
+    return CustomTextField(_passwordController, StringConstants.PASSWORD_HINT, _obscureText, suffixWidget: _getSuffixWidget());
+  }
+
+  Widget _getSuffixWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0, top: 12.0),
+      child: GestureDetector(
+        child: Text(
+          _obscureText ? StringConstants.SHOW : StringConstants.HIDE,
+          style: TextStyle(
+            fontSize: 16,
+            color: ColorConstants.lightPrimaryColor,
+          ),
+        ),
+        onTap: () {
+          setState(() {
+            _obscureText = !_obscureText;
+          });
+        },
+      ),
+    );
   }
 
   Widget _getSignUpButton(BuildContext context) {

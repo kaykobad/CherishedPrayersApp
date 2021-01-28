@@ -35,4 +35,6 @@ class StringConstants {
   static const String HAVE_ACCOUNT = "Already have an account?";
   static const String SIGN_IN_LINK = " Sign In";
   static const String NAME_ERROR = "Enter your full name";
+  static const String SHOW = "Show";
+  static const String HIDE = "Hide";
 }
