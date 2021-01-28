@@ -1,6 +1,8 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/ui/auth_pages/login_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/outlined_button.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
@@ -71,7 +73,7 @@ class AuthenticationSelectionScreen extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: RoundedCornerButton(StringConstants.SIGN_IN, (){
-          // NavigationHelper.push(context, AuthenticationSelectionScreen());
+          NavigationHelper.push(context, LoginScreen());
         }),
       ),
     );
