@@ -48,7 +48,13 @@ class _LoginScreenState extends State<LoginScreen> {
               _getEmailField(),
               SizedBox(height: 15.0),
               _getPasswordField(),
+              SizedBox(height: 5.0),
+              _getForgotPasswordLink(),
+              Spacer(flex: 1),
               _getSignInButton(context),
+              Spacer(flex: 1),
+              _getSignUpLink(),
+              Spacer(flex: 1),
             ],
           ),
         ),
@@ -88,6 +94,23 @@ class _LoginScreenState extends State<LoginScreen> {
     return CustomTextField(_passwordController, StringConstants.PASSWORD_HINT, true);
   }
 
+  Widget _getForgotPasswordLink() {
+    return GestureDetector(
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Text(
+          StringConstants.FORGOT_PASSWORD,
+          style: TextStyle(
+            color: ColorConstants.lightPrimaryColor,
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+      onTap: () => print("Forgot password"),
+    );
+  }
+
   Widget _getSignInButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
@@ -97,6 +120,34 @@ class _LoginScreenState extends State<LoginScreen> {
           // NavigationHelper.push(context, LoginScreen());
         }),
       ),
+    );
+  }
+
+  Widget _getSignUpLink() {
+    return GestureDetector(
+      child: Align(
+        alignment: Alignment.center,
+        child: RichText(
+          text: TextSpan(
+            text: StringConstants.NO_ACCOUNT,
+            style: TextStyle(
+              color: ColorConstants.black,
+              fontSize: 16,
+            ),
+            children: [
+              TextSpan(
+                text: StringConstants.SIGN_UP_LINK,
+                style: TextStyle(
+                  color: ColorConstants.lightPrimaryColor,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      onTap: () => print("No account"),
     );
   }
 }

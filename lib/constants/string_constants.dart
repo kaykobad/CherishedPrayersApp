@@ -25,7 +25,7 @@ class StringConstants {
   static const String PASSWORD_HINT = "Password";
   static const String FORGOT_PASSWORD = "Forgot password?";
   static const String NO_ACCOUNT = "Don't have an account?";
-  static const String SIGN_UP_LINK = "Sign Up";
+  static const String SIGN_UP_LINK = " Sign Up";
   static const String EMAIL_ERROR = "Enter a valid email address";
   static const String PASSWORD_ERROR = "Password length must be 8 or greater";
 }
