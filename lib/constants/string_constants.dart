@@ -28,4 +28,11 @@ class StringConstants {
   static const String SIGN_UP_LINK = " Sign Up";
   static const String EMAIL_ERROR = "Enter a valid email address";
   static const String PASSWORD_ERROR = "Password length must be 8 or greater";
+
+  // Register Page
+  static const String SIGN_UP_TITLE = "Sign up";
+  static const String NAME_HINT = "Full Name";
+  static const String HAVE_ACCOUNT = "Already have an account?";
+  static const String SIGN_IN_LINK = " Sign In";
+  static const String NAME_ERROR = "Enter your full name";
 }

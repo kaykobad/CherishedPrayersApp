@@ -2,28 +2,32 @@ import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
-import 'package:cherished_prayers/ui/auth_pages/registration_screen.dart';
+import 'package:cherished_prayers/ui/auth_pages/login_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
-class LoginScreen extends StatefulWidget {
+class RegisterScreen extends StatefulWidget {
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
+  TextEditingController _nameController;
   TextEditingController _emailController;
   TextEditingController _passwordController;
+  String _nameErrorText;
   String _emailErrorText;
   String _passwordErrorText;
 
   @override
   void initState() {
     super.initState();
+    _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
+    _nameErrorText = "";
     _emailErrorText = "";
     _passwordErrorText = "";
   }
@@ -31,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void dispose() {
     super.dispose();
+    _nameController?.dispose();
     _emailController?.dispose();
     _passwordController?.dispose();
   }
@@ -49,17 +54,17 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 _getLogo(),
                 _getTitle(),
-                SizedBox(height: 30.0),
+                SizedBox(height: 20.0),
+                _getNameField(),
+                SizedBox(height: 15.0),
                 _getEmailField(),
                 SizedBox(height: 15.0),
                 _getPasswordField(),
-                SizedBox(height: 5.0),
-                _getForgotPasswordLink(),
                 SizedBox(height: 30.0),
-                _getSignInButton(context),
+                _getSignUpButton(context),
                 SizedBox(height: 30.0),
-                _getSignUpLink(),
-                SizedBox(height: 30.0),
+                _getSignInLink(),
+                SizedBox(height: 10.0),
               ],
             ),
           ),
@@ -70,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _getLogo() {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 40.0),
+      padding: const EdgeInsets.only(bottom: 30.0),
       child: Center(
         child: Image.asset(
           AssetConstants.APP_LOGO,
@@ -83,13 +88,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Widget _getTitle() {
     return Text(
-      StringConstants.SIGN_IN_TITLE,
+      StringConstants.SIGN_UP_TITLE,
       style: TextStyle(
         color: ColorConstants.black,
         fontSize: 36,
         fontWeight: FontWeight.w500,
       ),
     );
+  }
+
+  Widget _getNameField() {
+    return CustomTextField(_nameController, StringConstants.NAME_HINT, false);
   }
 
   Widget _getEmailField() {
@@ -100,49 +109,32 @@ class _LoginScreenState extends State<LoginScreen> {
     return CustomTextField(_passwordController, StringConstants.PASSWORD_HINT, true);
   }
 
-  Widget _getForgotPasswordLink() {
-    return GestureDetector(
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Text(
-          StringConstants.FORGOT_PASSWORD,
-          style: TextStyle(
-            color: ColorConstants.lightPrimaryColor,
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-      onTap: () => print("Forgot password"),
-    );
-  }
-
-  Widget _getSignInButton(BuildContext context) {
+  Widget _getSignUpButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
       child: SizedBox(
         width: double.infinity,
-        child: RoundedCornerButton(StringConstants.SIGN_IN, (){
+        child: RoundedCornerButton(StringConstants.SIGN_UP, (){
           // NavigationHelper.push(context, LoginScreen());
         }),
       ),
     );
   }
 
-  Widget _getSignUpLink() {
+  Widget _getSignInLink() {
     return GestureDetector(
       child: Align(
         alignment: Alignment.center,
         child: RichText(
           text: TextSpan(
-            text: StringConstants.NO_ACCOUNT,
+            text: StringConstants.HAVE_ACCOUNT,
             style: TextStyle(
               color: ColorConstants.black,
               fontSize: 16,
             ),
             children: [
               TextSpan(
-                text: StringConstants.SIGN_UP_LINK,
+                text: StringConstants.SIGN_IN_LINK,
                 style: TextStyle(
                   color: ColorConstants.lightPrimaryColor,
                   fontSize: 16,
@@ -153,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-      onTap: () => NavigationHelper.push(context, RegisterScreen()),
+      onTap: () => NavigationHelper.push(context, LoginScreen()),
     );
   }
 }
