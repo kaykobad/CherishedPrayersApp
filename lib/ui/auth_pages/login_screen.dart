@@ -37,25 +37,29 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _getLogo(),
-              _getTitle(),
-              SizedBox(height: 30.0),
-              _getEmailField(),
-              SizedBox(height: 15.0),
-              _getPasswordField(),
-              SizedBox(height: 5.0),
-              _getForgotPasswordLink(),
-              Spacer(flex: 1),
-              _getSignInButton(context),
-              Spacer(flex: 1),
-              _getSignUpLink(),
-              Spacer(flex: 1),
-            ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                _getLogo(),
+                _getTitle(),
+                SizedBox(height: 30.0),
+                _getEmailField(),
+                SizedBox(height: 15.0),
+                _getPasswordField(),
+                SizedBox(height: 5.0),
+                _getForgotPasswordLink(),
+                SizedBox(height: 30.0),
+                _getSignInButton(context),
+                SizedBox(height: 30.0),
+                _getSignUpLink(),
+                SizedBox(height: 30.0),
+              ],
+            ),
           ),
         ),
       ),
