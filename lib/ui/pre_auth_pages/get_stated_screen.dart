@@ -68,7 +68,7 @@ class GetStartedScreen extends StatelessWidget {
       child: Center(
         child: Image.asset(
           AssetConstants.GIRL_SITTING,
-          fit: BoxFit.contain,
+          fit: BoxFit.cover,
         ),
       ),
     );
