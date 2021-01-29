@@ -38,11 +38,13 @@ class StringConstants {
   static const String SHOW = "Show";
   static const String HIDE = "Hide";
 
-  // OTP Page
+  // OTP Page and Email Input Page or Forgot Password Page
   static const String EMAIL_VERIFICATION = "Email verification";
-  static const String EMAIL_VERIFICATION_HINT = "Enter the code sent to your email";
+  static const String EMAIL_VERIFICATION_HINT = "Enter the code sent to your email.";
   static const String NOT_SENT_CODE = "Didn't receive code? ";
   static const String RESEND = "Resend code";
   static const String VERIFY = "VERIFY";
   static const String VERIFY_ERROR = "Please enter a valid code";
+  static const String FORGOT_PASSWORD_TITLE = "Forgot password";
+  static const String SEND_OTP = "SEND CODE";
 }

@@ -2,6 +2,7 @@ import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/ui/auth_pages/email_input_screen.dart';
 import 'package:cherished_prayers/ui/auth_pages/registration_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
@@ -113,7 +114,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-      onTap: () => print("Forgot password"),
+      onTap: () {
+        NavigationHelper.push(context, EmailInputScreen());
+      },
     );
   }
 
