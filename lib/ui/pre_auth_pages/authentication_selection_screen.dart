@@ -25,6 +25,7 @@ class AuthenticationSelectionScreen extends StatelessWidget {
             Spacer(),
             _getSignUpButton(context),
             _getSignInButton(context),
+            SizedBox(height: 30.0),
           ],
         ),
       ),
@@ -58,7 +59,7 @@ class AuthenticationSelectionScreen extends StatelessWidget {
 
   Widget _getSignUpButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 14.0),
+      padding: const EdgeInsets.fromLTRB(30.0, 0.0, 30.0, 20.0),
       child: SizedBox(
         width: double.infinity,
         child: OutlinedRoundedButton(StringConstants.SIGN_UP, (){

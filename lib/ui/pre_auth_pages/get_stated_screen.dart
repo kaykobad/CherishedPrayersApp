@@ -14,7 +14,7 @@ class GetStartedScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _getTitle(),
