@@ -2,6 +2,7 @@ import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/ui/profile_tos_pp_feedback/feedback_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/pp_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +61,7 @@ class GetStartedScreen extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 20.0),
       child: RoundedCornerButton(StringConstants.GET_STARTED_BUTTON, (){
         // NavigationHelper.push(context, AuthenticationSelectionScreen());
-        NavigationHelper.push(context, PrivacyPolicyScreen());
+        NavigationHelper.push(context, FeedBackScreen());
       }),
     );
   }
