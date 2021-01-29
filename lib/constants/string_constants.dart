@@ -37,4 +37,12 @@ class StringConstants {
   static const String NAME_ERROR = "Enter your full name";
   static const String SHOW = "Show";
   static const String HIDE = "Hide";
+
+  // OTP Page
+  static const String EMAIL_VERIFICATION = "Email verification";
+  static const String EMAIL_VERIFICATION_HINT = "Enter the code sent to your email";
+  static const String NOT_SENT_CODE = "Didn't receive code? ";
+  static const String RESEND = "Resend code";
+  static const String VERIFY = "VERIFY";
+  static const String VERIFY_ERROR = "Please enter a valid code";
 }
