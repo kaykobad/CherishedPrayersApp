@@ -71,4 +71,31 @@ class StringConstants {
   ];
   static const String TOS_H_3 = "Creating an Cherished Prayers Account";
   static const String TOS_P_4 = "In order to access and use Cherished Prayers, you will need to register and create an account (your \"Account\"). By creating an Account, you represent that you are of legal age to form a binding contract and are not a person barred from receiving services under the laws of the United States or any other applicable jurisdiction. When creating an Account, you may be required to provide certain personal information about yourself and may be asked to establish a username and a password. You agree to provide accurate, current and complete information about your Account. If you create an account on behalf of a company, organization, or other entity, then (a) \"you\" includes you and that entity, and (b) you represent and warrant that you are authorized to grant all permissions and licenses provided in these Terms and bind the entity to these Terms.";
+
+  // Privacy Policy
+  static const String PP_PAGE_HEADER = "Privacy Policy";
+  static const String PP_PAGE_TITLE_1 = "Cherished Prayers Privacy Policy";
+  static const String PP_P_1 = "We want you to understand how and why Cherished Prayers Inc. (“Cherished Prayers,” “we” or “us”) collects, uses, and shares information about you when you use our sites, mobile apps, widgets, and other online products and services (collectively, the \"Services\") or when you otherwise interact with us or receive a communication from us. This Privacy Policy applies to all of our Services including Cherished Prayers Gifts, which maintains a separate privacy notice that incorporates this Privacy Policy by reference";
+  static const String PP_H_2 = "What We Collect (and How it is Used and Shared)";
+  static const String PP_SH_1 = "Account information";
+  static const String PP_P_2 = "If you create account on Cherished Prayers, we may require you to provide a username and password. Your username is public. You may also provide other account information, like an email address, bio, or profile picture. We also store your user account preferences and settings.";
+  static const String PP_SH_2 = "Content you submit";
+  static const String PP_P_3 = "We collect the content you submit to the Services. This includes your posts and comments including saved drafts, your comments to other users (e.g., private messages, chats, and prayers sharing), and your reports and other communications with moderators and with us. Your content may include text, links, images, gifs, and videos.";
+  static const String PP_SH_3 = "Actions you take";
+  static const String PP_P_4 = "We collect information about the actions you take when using the Services. This includes story posting on wall, posting on feed, writing prayers note and sending them to users. It also includes your interactions with other users, such as following, friending, and blocking. We collect your interactions with communities, like your subscriptions or moderator status.";
+  static const String PP_SH_4 = "Other information";
+  static const String PP_P_5 = "You may choose to provide other information directly to us.";
+  static const String PP_H_3 = "Information We Collect Automatically";
+  static const String PP_P_6 = "When you access or use our Services, we may also automatically collect information about you. This includes:";
+  static const String PP_SH_5 = "Log and usage data";
+  static const String PP_P_7 = "We may log information when you access and use the Services. This may include your IP address, user-agent string, browser type, operating system, referral URLs, device information (e.g., device IDs), device settings, pages visited, links clicked, the requested URL, and search terms.";
+  static const String PP_SH_6 = "Information collected from cookies and similar technologies";
+  static const String PP_P_8 = "We may receive information from cookies, which are pieces of data your browser stores and sends back to us when making requests, and similar technologies. We use this information to improve your experience, understand user activity, personalize content and advertisements, and improve the quality of our Services.";
+  static const String PP_SH_7 = "Location information";
+  static const String PP_P_9 = "We may receive and process information about your location. For example, with your consent, we may collect information about the specific location of your mobile device (for example, by using GPS or Bluetooth). We may also receive location information from you when you choose to share such information on our Services.";
+  static const String PP_H_4 = "How We Protect Your Information";
+  static const String PP_P_10 = "We take measures to help protect information about you from loss, theft, misuse and unauthorized access, disclosure, alteration, and destruction. For example, we use HTTPS while information is being transmitted. We also enforce technical and administrative access controls to limit which of our employees have access to nonpublic personal information.";
+  static const String PP_P_11 = "You can help maintain the security of your account by configuring two-factor authentication.";
+  static const String PP_P_12 = "We store the information we collect for as long as it is necessary for the purpose(s) for which we originally collected it. We may retain certain information for legitimate business purposes or as required by law.";
+
 }
