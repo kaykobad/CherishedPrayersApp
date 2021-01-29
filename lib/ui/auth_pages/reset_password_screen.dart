@@ -2,31 +2,34 @@ import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
-import 'package:cherished_prayers/ui/auth_pages/otp_screen.dart';
+import 'package:cherished_prayers/ui/auth_pages/login_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
 
-class EmailInputScreen extends StatefulWidget {
+class ResetPasswordScreen extends StatefulWidget {
   @override
-  _EmailInputScreenState createState() => _EmailInputScreenState();
+  _ResetPasswordScreenState createState() => _ResetPasswordScreenState();
 }
 
-class _EmailInputScreenState extends State<EmailInputScreen> {
-  TextEditingController _emailController;
-  String _emailErrorText;
+class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
+  TextEditingController _passwordController;
+  TextEditingController _passwordController2;
+  String _passwordErrorText;
 
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
-    _emailErrorText = "";
+    _passwordController = TextEditingController();
+    _passwordController2 = TextEditingController();
+    _passwordErrorText = "";
   }
 
   @override
   void dispose() {
     super.dispose();
-    _emailController?.dispose();
+    _passwordController?.dispose();
+    _passwordController2?.dispose();
   }
 
   @override
@@ -44,9 +47,12 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
                 _getLogo(),
                 _getTitle(),
                 SizedBox(height: 30.0),
-                _getEmailField(),
+                _getPasswordField(),
+                SizedBox(height: 15.0),
+                _getPasswordField2(),
                 SizedBox(height: 30.0),
-                _getSendCodeButton(context),
+                _getResetPasswordButton(context),
+                SizedBox(height: 10.0),
               ],
             ),
           ),
@@ -70,7 +76,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
 
   Widget _getTitle() {
     return Text(
-      StringConstants.FORGOT_PASSWORD_TITLE,
+      StringConstants.RESET_PASSWORD,
       style: TextStyle(
         color: ColorConstants.black,
         fontSize: 36,
@@ -79,17 +85,21 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
     );
   }
 
-  Widget _getEmailField() {
-    return CustomTextField(_emailController, StringConstants.EMAIL_HINT, false);
+  Widget _getPasswordField() {
+    return CustomTextField(_passwordController, StringConstants.NEW_PASSWORD_HINT, true);
   }
 
-  Widget _getSendCodeButton(BuildContext context) {
+  Widget _getPasswordField2() {
+    return CustomTextField(_passwordController, StringConstants.NEW_PASSWORD_2_HINT, true);
+  }
+
+  Widget _getResetPasswordButton(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
       child: SizedBox(
         width: double.infinity,
-        child: RoundedCornerButton(StringConstants.SEND_OTP, (){
-          NavigationHelper.push(context, OTPScreen());
+        child: RoundedCornerButton(StringConstants.RESET_PASSWORD_BUTTON, (){
+          NavigationHelper.push(context, LoginScreen());
         }),
       ),
     );

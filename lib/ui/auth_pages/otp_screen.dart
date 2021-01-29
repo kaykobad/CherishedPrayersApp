@@ -1,6 +1,8 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/ui/auth_pages/reset_password_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -129,7 +131,7 @@ class _OTPScreenState extends State<OTPScreen> {
       child: SizedBox(
         width: double.infinity,
         child: RoundedCornerButton(StringConstants.VERIFY, (){
-          // NavigationHelper.push(context, OTPScreen());
+          NavigationHelper.push(context, ResetPasswordScreen());
         }),
       ),
     );
