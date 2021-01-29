@@ -6,7 +6,6 @@ import 'package:cherished_prayers/ui/auth_pages/login_screen.dart';
 import 'package:cherished_prayers/ui/auth_pages/otp_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -47,28 +46,30 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                _getLogo(),
-                _getTitle(),
-                SizedBox(height: 20.0),
-                _getNameField(),
-                SizedBox(height: 15.0),
-                _getEmailField(),
-                SizedBox(height: 15.0),
-                _getPasswordField(),
-                SizedBox(height: 30.0),
-                _getSignUpButton(context),
-                SizedBox(height: 30.0),
-                _getSignInLink(),
-                SizedBox(height: 10.0),
-              ],
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _getLogo(),
+                  _getTitle(),
+                  SizedBox(height: 20.0),
+                  _getNameField(),
+                  SizedBox(height: 15.0),
+                  _getEmailField(),
+                  SizedBox(height: 15.0),
+                  _getPasswordField(),
+                  SizedBox(height: 30.0),
+                  _getSignUpButton(context),
+                  SizedBox(height: 30.0),
+                  _getSignInLink(),
+                  SizedBox(height: 10.0),
+                ],
+              ),
             ),
           ),
         ),

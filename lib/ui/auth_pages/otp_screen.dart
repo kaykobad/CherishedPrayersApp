@@ -33,25 +33,28 @@ class _OTPScreenState extends State<OTPScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                _getLogo(),
-                _getTitle(),
-                SizedBox(height: 20.0),
-                _getVerificationHint(),
-                SizedBox(height: 30.0),
-                _getOTPField(),
-                SizedBox(height: 40.0),
-                _getVerifyButton(context),
-                SizedBox(height: 40.0),
-                _getResendOTPLink(),
-              ],
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  _getLogo(),
+                  _getTitle(),
+                  SizedBox(height: 20.0),
+                  _getVerificationHint(),
+                  SizedBox(height: 30.0),
+                  _getOTPField(),
+                  SizedBox(height: 40.0),
+                  _getVerifyButton(context),
+                  SizedBox(height: 40.0),
+                  _getResendOTPLink(),
+                  SizedBox(height: 10.0),
+                ],
+              ),
             ),
           ),
         ),

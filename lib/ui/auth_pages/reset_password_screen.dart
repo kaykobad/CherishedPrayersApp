@@ -16,6 +16,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   TextEditingController _passwordController;
   TextEditingController _passwordController2;
   String _passwordErrorText;
+  bool _obscureText;
+  bool _obscureText2;
+
 
   @override
   void initState() {
@@ -23,6 +26,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     _passwordController = TextEditingController();
     _passwordController2 = TextEditingController();
     _passwordErrorText = "";
+    _obscureText = true;
+    _obscureText2 = true;
   }
 
   @override
@@ -36,24 +41,26 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                _getLogo(),
-                _getTitle(),
-                SizedBox(height: 30.0),
-                _getPasswordField(),
-                SizedBox(height: 15.0),
-                _getPasswordField2(),
-                SizedBox(height: 30.0),
-                _getResetPasswordButton(context),
-                SizedBox(height: 10.0),
-              ],
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  _getLogo(),
+                  _getTitle(),
+                  SizedBox(height: 30.0),
+                  _getPasswordField(),
+                  SizedBox(height: 15.0),
+                  _getPasswordField2(),
+                  SizedBox(height: 40.0),
+                  _getResetPasswordButton(context),
+                  SizedBox(height: 10.0),
+                ],
+              ),
             ),
           ),
         ),
@@ -86,11 +93,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   Widget _getPasswordField() {
-    return CustomTextField(_passwordController, StringConstants.NEW_PASSWORD_HINT, true);
+    return CustomTextField(_passwordController, StringConstants.NEW_PASSWORD_HINT, _obscureText, suffixWidget: _getSuffixWidget());
   }
 
   Widget _getPasswordField2() {
-    return CustomTextField(_passwordController, StringConstants.NEW_PASSWORD_2_HINT, true);
+    return CustomTextField(_passwordController2, StringConstants.NEW_PASSWORD_2_HINT, _obscureText2, suffixWidget: _getSuffixWidget2());
   }
 
   Widget _getResetPasswordButton(BuildContext context) {
@@ -101,6 +108,46 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         child: RoundedCornerButton(StringConstants.RESET_PASSWORD_BUTTON, (){
           NavigationHelper.push(context, LoginScreen());
         }),
+      ),
+    );
+  }
+
+  Widget _getSuffixWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0, top: 12.0),
+      child: GestureDetector(
+        child: Text(
+          _obscureText ? StringConstants.SHOW : StringConstants.HIDE,
+          style: TextStyle(
+            fontSize: 16,
+            color: ColorConstants.lightPrimaryColor,
+          ),
+        ),
+        onTap: () {
+          setState(() {
+            _obscureText = !_obscureText;
+          });
+        },
+      ),
+    );
+  }
+
+  Widget _getSuffixWidget2() {
+    return Padding(
+      padding: const EdgeInsets.only(right: 12.0, top: 12.0),
+      child: GestureDetector(
+        child: Text(
+          _obscureText2 ? StringConstants.SHOW : StringConstants.HIDE,
+          style: TextStyle(
+            fontSize: 16,
+            color: ColorConstants.lightPrimaryColor,
+          ),
+        ),
+        onTap: () {
+          setState(() {
+            _obscureText2 = !_obscureText2;
+          });
+        },
       ),
     );
   }

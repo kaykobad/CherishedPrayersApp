@@ -33,21 +33,24 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                _getLogo(),
-                _getTitle(),
-                SizedBox(height: 30.0),
-                _getEmailField(),
-                SizedBox(height: 30.0),
-                _getSendCodeButton(context),
-              ],
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  _getLogo(),
+                  _getTitle(),
+                  SizedBox(height: 40.0),
+                  _getEmailField(),
+                  SizedBox(height: 50.0),
+                  _getSendCodeButton(context),
+                  SizedBox(height: 10.0),
+                ],
+              ),
             ),
           ),
         ),
