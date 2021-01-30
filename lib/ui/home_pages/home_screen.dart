@@ -31,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(_titles[_selectedIndex]),
         centerTitle: true,
       ),
+      drawer: _getDrawer(),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -38,7 +39,26 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _getBottomNavigationBar() {
+  Widget _getDrawer() {
+    return Drawer(
+      child: Container(
+        color: ColorConstants.drawerColor,
+        child: Column(
+          children: [
+            DrawerHeader(
+              child: Icon(
+                Icons.account_circle_outlined,
+                color: ColorConstants.lightPrimaryColor,
+                size: 84,
+              )
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _getBottomNavigationBar() {
     return BottomNavigationBar(
       elevation: 12,
       selectedItemColor: ColorConstants.lightPrimaryColor,
