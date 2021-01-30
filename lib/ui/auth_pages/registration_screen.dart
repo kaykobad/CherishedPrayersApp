@@ -5,6 +5,7 @@ import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/ui/auth_pages/login_screen.dart';
 import 'package:cherished_prayers/ui/auth_pages/otp_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
+import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
 
@@ -55,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  _getLogo(),
+                  CustomLogo(AssetConstants.APP_LOGO, 84.0),
                   _getTitle(),
                   SizedBox(height: 20.0),
                   _getNameField(),
@@ -72,19 +73,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _getLogo() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30.0),
-      child: Center(
-        child: Image.asset(
-          AssetConstants.APP_LOGO,
-          width: 84,
-          fit: BoxFit.contain,
         ),
       ),
     );
