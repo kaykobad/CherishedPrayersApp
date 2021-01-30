@@ -3,6 +3,7 @@ import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/get_stated_screen.dart';
+import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -27,23 +28,9 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           children: [
-            _getImage(),
+            Expanded(child: CustomLogo(AssetConstants.APP_LOGO, 120.0)),
             _getText(),
           ],
-        ),
-      ),
-    );
-  }
-
-  _getImage() {
-    return Expanded(
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 30.0),
-          child: Image.asset(
-            AssetConstants.APP_LOGO,
-            height: 120,
-          ),
         ),
       ),
     );
