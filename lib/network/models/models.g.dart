@@ -109,3 +109,40 @@ Map<String, dynamic> _$ConfirmPasswordResetRequestToJson(
       'new_password': instance.newPassword,
       'new_password_2': instance.newPassword2,
     };
+
+UpdateValueRequest _$UpdateValueRequestFromJson(Map<String, dynamic> json) {
+  return UpdateValueRequest(
+    json['value'] as String,
+  );
+}
+
+Map<String, dynamic> _$UpdateValueRequestToJson(UpdateValueRequest instance) =>
+    <String, dynamic>{
+      'value': instance.value,
+    };
+
+UpdateProfilePictureRequest _$UpdateProfilePictureRequestFromJson(
+    Map<String, dynamic> json) {
+  return UpdateProfilePictureRequest(
+    json['avatar'] as String,
+  );
+}
+
+Map<String, dynamic> _$UpdateProfilePictureRequestToJson(
+        UpdateProfilePictureRequest instance) =>
+    <String, dynamic>{
+      'avatar': instance.avatar,
+    };
+
+FeedbackRequest _$FeedbackRequestFromJson(Map<String, dynamic> json) {
+  return FeedbackRequest(
+    json['feedback'] as String,
+    json['rating'] as int,
+  );
+}
+
+Map<String, dynamic> _$FeedbackRequestToJson(FeedbackRequest instance) =>
+    <String, dynamic>{
+      'feedback': instance.feedback,
+      'rating': instance.rating,
+    };
