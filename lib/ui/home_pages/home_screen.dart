@@ -1,4 +1,6 @@
+import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
+import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_page.dart';
 import 'package:cherished_prayers/ui/shared_widgets/drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -14,12 +16,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+  static List<Widget> _widgetOptions = <Widget>[
     Text('Index 0: Feed', style: optionStyle),
     Text('Index 1: Chat', style: optionStyle),
     Text('Index 2: Stories', style: optionStyle),
     Text('Index 3: Friends', style: optionStyle),
-    Text('Index 4: Profile', style: optionStyle),
+    ProfileScreen(),
   ];
   static const List<String> _titles = ['Feed', 'Chat', 'Stories', 'Friends', 'Profile'];
 
@@ -38,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _getAppBar(),
+      appBar: _selectedIndex == 4 ? _getAppbarWithImage() : _getAppBar(),
       drawer: NavigationDrawer(
         name: "Kaykobad Reza",
         religion: "Islam",
@@ -47,6 +49,21 @@ class _HomeScreenState extends State<HomeScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: _getBottomNavigationBar(),
+    );
+  }
+
+  AppBar _getAppbarWithImage() {
+    return AppBar(
+      title: Text(_titles[_selectedIndex], style: TextStyle(color: ColorConstants.white)),
+      centerTitle: true,
+      backgroundColor: Colors.transparent,
+      shadowColor: Colors.transparent,
+      flexibleSpace: Image.asset(
+        AssetConstants.PROFILE_BG,
+        fit: BoxFit.cover,
+      ),
+      elevation: 0,
+      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
     );
   }
 

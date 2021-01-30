@@ -5,6 +5,7 @@ class AssetConstants {
   static const String ARTICLE = "assets/images/article.png";
   static const String PP = "assets/images/pp.png";
   static const String FEEDBACK = "assets/images/feedback.png";
+  static const String PROFILE_BG = "assets/images/profile_bg.png";
 
   // Navigation Drawer
   static const String NAV_NOTIFICATION = "assets/images/notifications.png";
