@@ -4,6 +4,7 @@ import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/ui/auth_pages/email_input_screen.dart';
 import 'package:cherished_prayers/ui/auth_pages/registration_screen.dart';
+import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
@@ -115,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
       child: SizedBox(
         width: double.infinity,
         child: RoundedCornerButton(StringConstants.SIGN_IN, (){
-          // NavigationHelper.push(context, LoginScreen());
+          NavigationHelper.push(context, HomeScreen());
         }),
       ),
     );
