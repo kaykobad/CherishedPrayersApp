@@ -3,12 +3,16 @@ import 'package:cherished_prayers/ui/shared_widgets/drawer.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
+  final int selectedIndex;
+
+  const HomeScreen({Key key, this.selectedIndex=4}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _selectedIndex = 0;
+  int _selectedIndex;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static const List<Widget> _widgetOptions = <Widget>[
     Text('Index 0: Feed', style: optionStyle),
@@ -23,6 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;
   }
 
   @override
@@ -46,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
       centerTitle: true,
       backgroundColor: ColorConstants.white,
       elevation: 0,
-      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor)
+      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
     );
   }
 

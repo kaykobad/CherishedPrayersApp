@@ -1,6 +1,11 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
+import 'package:cherished_prayers/ui/profile_tos_pp_feedback/feedback_screen.dart';
+import 'package:cherished_prayers/ui/profile_tos_pp_feedback/pp_screen.dart';
+import 'package:cherished_prayers/ui/profile_tos_pp_feedback/tos_screen.dart';
 import 'package:flutter/material.dart';
 
 class NavigationDrawer extends StatelessWidget {
@@ -21,12 +26,24 @@ class NavigationDrawer extends StatelessWidget {
               _getName(),
               _getReligion(),
               SizedBox(height: 20.0),
-              _getNavRow(AssetConstants.NAV_PROFILE, StringConstants.MY_PROFILE, (){print("My profile");}),
+              _getNavRow(AssetConstants.NAV_PROFILE, StringConstants.MY_PROFILE, (){
+                Navigator.of(context).pop();
+                NavigationHelper.push(context, HomeScreen(selectedIndex: 4));
+              }),
               _getNavRow(AssetConstants.NAV_SETTINGS, StringConstants.SETTINGS, (){print("Settings");}),
               _getNavRow(AssetConstants.NAV_NOTIFICATION, StringConstants.NOTIFICATIONS, (){print("Notifications");}),
-              _getNavRow(AssetConstants.NAV_TOS, StringConstants.TOS, (){print("TOS");}),
-              _getNavRow(AssetConstants.NAV_PRIVACY_POLICY, StringConstants.PP, (){print("PP");}),
-              _getNavRow(AssetConstants.NAV_LIKE, StringConstants.FEEDBACK, (){print("Give Feedback");}),
+              _getNavRow(AssetConstants.NAV_TOS, StringConstants.TOS, (){
+                Navigator.of(context).pop();
+                NavigationHelper.push(context, TermsOfServiceScreen());
+              }),
+              _getNavRow(AssetConstants.NAV_PRIVACY_POLICY, StringConstants.PP, (){
+                Navigator.of(context).pop();
+                NavigationHelper.push(context, PrivacyPolicyScreen());
+              }),
+              _getNavRow(AssetConstants.NAV_LIKE, StringConstants.FEEDBACK, (){
+                Navigator.of(context).pop();
+                NavigationHelper.push(context, FeedBackScreen());
+              }),
               _getNavRow(AssetConstants.NAV_RATE_US, StringConstants.RATE, (){print("Rate Us");}),
               SizedBox(height: 30.0),
             ],

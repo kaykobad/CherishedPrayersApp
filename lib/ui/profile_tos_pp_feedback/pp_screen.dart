@@ -67,10 +67,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
       centerTitle: true,
       elevation: 0,
       backgroundColor: ColorConstants.darkPrimaryColor,
-      leading: Icon(
-        Icons.arrow_back,
-        color: ColorConstants.lightPrimaryColor,
-      ),
+      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
       title: Text(
         StringConstants.PP_PAGE_HEADER,
         style: TextStyle(color: ColorConstants.white),

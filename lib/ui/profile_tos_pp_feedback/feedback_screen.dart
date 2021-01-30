@@ -67,10 +67,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
       centerTitle: true,
       elevation: 0,
       backgroundColor: ColorConstants.white,
-      leading: Icon(
-        Icons.arrow_back,
-        color: ColorConstants.lightPrimaryColor,
-      ),
+      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
       title: Text(
         StringConstants.FEEDBACK_TITLE,
         style: TextStyle(color: ColorConstants.black),
