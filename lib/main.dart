@@ -5,12 +5,15 @@ import 'package:cherished_prayers/theme/themes.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _setThemeMode();
-  runApp(MyApp());
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+  String packageName = packageInfo.packageName;
+  runApp(MyApp(packageName));
 }
 
 Future _setThemeMode() async {
@@ -21,6 +24,10 @@ Future _setThemeMode() async {
 }
 
 class MyApp extends StatefulWidget {
+  final String packageName;
+
+  const MyApp(this.packageName);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -37,7 +44,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => AppDataStorage(),
+      create: (context) => AppDataStorage(widget.packageName),
       child: MaterialApp(
         title: StringConstants.APP_NAME,
         debugShowCheckedModeBanner: false,
