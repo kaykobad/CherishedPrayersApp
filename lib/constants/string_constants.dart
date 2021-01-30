@@ -52,6 +52,15 @@ class StringConstants {
   static const String NEW_PASSWORD_HINT = "New password";
   static const String NEW_PASSWORD_2_HINT = "Reenter new password";
 
+  // Navigation Drawer
+  static const String MY_PROFILE = "My profile";
+  static const String SETTINGS = "Settings";
+  static const String NOTIFICATIONS = "Notifications";
+  static const String TOS = "Terms of Use";
+  static const String PP = "Privacy policy";
+  static const String FEEDBACK = "Give Feedback";
+  static const String RATE = "Rate Us";
+
   //Feedback
   static const String FEEDBACK_TITLE = "Give Feedback";
   static const String FEEDBACK_SUB_TITLE = "Share your honest feedback about Cherished Prayers";

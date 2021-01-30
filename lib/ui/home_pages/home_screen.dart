@@ -1,4 +1,5 @@
 import 'package:cherished_prayers/constants/color_constants.dart';
+import 'package:cherished_prayers/ui/shared_widgets/drawer.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,11 +28,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_titles[_selectedIndex]),
-        centerTitle: true,
+      appBar: _getAppBar(),
+      drawer: NavigationDrawer(
+        name: "Kaykobad Reza",
+        religion: "Islam",
       ),
-      drawer: _getDrawer(),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
@@ -39,22 +40,13 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _getDrawer() {
-    return Drawer(
-      child: Container(
-        color: ColorConstants.drawerColor,
-        child: Column(
-          children: [
-            DrawerHeader(
-              child: Icon(
-                Icons.account_circle_outlined,
-                color: ColorConstants.lightPrimaryColor,
-                size: 84,
-              )
-            ),
-          ],
-        ),
-      ),
+  AppBar _getAppBar() {
+    return AppBar(
+      title: Text(_titles[_selectedIndex], style: TextStyle(color: ColorConstants.black)),
+      centerTitle: true,
+      backgroundColor: ColorConstants.white,
+      elevation: 0,
+      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor)
     );
   }
 

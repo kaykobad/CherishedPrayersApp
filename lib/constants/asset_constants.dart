@@ -5,6 +5,8 @@ class AssetConstants {
   static const String ARTICLE = "assets/images/article.png";
   static const String PP = "assets/images/pp.png";
   static const String FEEDBACK = "assets/images/feedback.png";
+
+  // Navigation Drawer
   static const String NAV_NOTIFICATION = "assets/images/notifications.png";
   static const String NAV_PRIVACY_POLICY = "assets/images/privacy_policy.png";
   static const String NAV_PROFILE = "assets/images/profile.png";
