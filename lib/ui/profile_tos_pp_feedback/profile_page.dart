@@ -11,15 +11,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: Image.asset(
-            AssetConstants.PROFILE_BG,
-            fit: BoxFit.cover,
-            alignment: Alignment.topCenter,
-          ),
-        ),
+        _getBgImage(),
       ],
+    );
+  }
+
+  Align _getBgImage() {
+    return Align(
+      alignment: Alignment.topCenter,
+      child: Image.asset(
+        AssetConstants.PROFILE_BG_2,
+        fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
+      ),
     );
   }
 }

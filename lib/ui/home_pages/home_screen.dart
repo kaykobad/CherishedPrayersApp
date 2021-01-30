@@ -61,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
       flexibleSpace: Image.asset(
         AssetConstants.PROFILE_BG,
         fit: BoxFit.cover,
+        alignment: Alignment.topCenter,
       ),
       elevation: 0,
       iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
