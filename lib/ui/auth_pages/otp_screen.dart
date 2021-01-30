@@ -3,6 +3,7 @@ import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/ui/auth_pages/reset_password_screen.dart';
+import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -42,7 +43,7 @@ class _OTPScreenState extends State<OTPScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  _getLogo(),
+                  CustomLogo(AssetConstants.APP_LOGO, 84.0),
                   _getTitle(),
                   SizedBox(height: 20.0),
                   _getVerificationHint(),
@@ -57,19 +58,6 @@ class _OTPScreenState extends State<OTPScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _getLogo() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 40.0),
-      child: Center(
-        child: Image.asset(
-          AssetConstants.APP_LOGO,
-          width: 84,
-          fit: BoxFit.contain,
         ),
       ),
     );
