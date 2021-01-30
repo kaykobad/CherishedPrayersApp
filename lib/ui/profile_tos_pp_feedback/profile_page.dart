@@ -1,5 +1,6 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
+import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -101,11 +102,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     _getName(),
                     SizedBox(height: 5.0),
-                    _getTextRow("Religion", "Islam", () { }),
+                    _getTextRow(StringConstants.PP_RELIGION, "Islam", () { }),
                     Divider(color: ColorConstants.backGroundGray),
-                    _getTextRow("Transcription Language", "English", () { }),
+                    _getTextRow(StringConstants.PP_LANGUAGE, "English", () { }),
                     Divider(color: ColorConstants.backGroundGray),
-                    _getTextRow("Country", "United States", () { }),
+                    _getTextRow(StringConstants.PP_COUNTRY, "United States", () { }),
                     Divider(color: ColorConstants.backGroundGray),
                     SizedBox(height: 20.0),
                     _getFriendsCard(),
@@ -212,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               GestureDetector(
                 onTap: () => print("All friends"),
                 child: Text(
-                  "See all friends",
+                  StringConstants.PP_SEE_ALL_FRIENDS,
                   style: TextStyle(
                     color: ColorConstants.lightPrimaryColor,
                     fontSize: 14.0,

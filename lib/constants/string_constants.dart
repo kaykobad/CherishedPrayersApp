@@ -57,7 +57,7 @@ class StringConstants {
   static const String SETTINGS = "Settings";
   static const String NOTIFICATIONS = "Notifications";
   static const String TOS = "Terms of Use";
-  static const String PP = "Privacy policy";
+  static const String PP = "Privacy Policy";
   static const String FEEDBACK = "Give Feedback";
   static const String RATE = "Rate Us";
 
@@ -67,6 +67,12 @@ class StringConstants {
   static const String FEEDBACK_HINT = "Write feedback here...";
   static const String RATE_EXPERIENCE = "Rate your experience";
   static const String SHARE_FEEDBACK = "SHARE FEEDBACK";
+
+  // Profile Page
+  static const String PP_RELIGION = "Religion";
+  static const String PP_LANGUAGE = "Transcription Language";
+  static const String PP_COUNTRY = "Country";
+  static const String PP_SEE_ALL_FRIENDS = "See all friends";
 
   // Terms of Service
   static const String TOS_PAGE_HEADER = "Terms of Use";
