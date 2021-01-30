@@ -1,12 +1,17 @@
+import 'dart:io';
+
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/feedback_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/pp_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/tos_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NavigationDrawer extends StatelessWidget {
   final String name;
@@ -44,13 +49,33 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.of(context).pop();
                 NavigationHelper.push(context, FeedBackScreen());
               }),
-              _getNavRow(AssetConstants.NAV_RATE_US, StringConstants.RATE, (){print("Rate Us");}),
+              _getNavRow(AssetConstants.NAV_RATE_US, StringConstants.RATE, () {
+                _takeToAppStore(context);
+              }),
               SizedBox(height: 30.0),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void _takeToAppStore(BuildContext context) async {
+    String packageName = RepositoryProvider.of<AppDataStorage>(context).packageName;
+
+    String url = '';
+
+    if (Platform.isAndroid) {
+      url = "https://play.google.com/store/apps/details?id=" + packageName;
+    } else {
+      url = "market://details?id=" + packageName;
+    }
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      print('Could not launch $url');
+    }
   }
 
   GestureDetector _getNavRow(String assetPath, String text, VoidCallback onTap) {
