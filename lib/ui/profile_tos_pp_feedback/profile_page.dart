@@ -1,7 +1,9 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -11,6 +13,13 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   double _height;
   double _width;
+  AppDataStorage _appDataStorage;
+
+  @override
+  void initState() {
+    super.initState();
+    _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               radius: 80,
               backgroundColor: ColorConstants.white,
               backgroundImage: NetworkImage(
-                'https://myinternship.com.au/wp-content/uploads/2019/10/Male-6.jpg',
+                _appDataStorage.userData.avatar ?? 'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
               ),
             ),
             Align(
@@ -102,11 +111,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     _getName(),
                     SizedBox(height: 5.0),
-                    _getTextRow(StringConstants.PP_RELIGION, "Islam", () { }),
+                    _getTextRow(StringConstants.PP_RELIGION, _appDataStorage.userData.religion, () { }),
                     Divider(color: ColorConstants.backGroundGray),
-                    _getTextRow(StringConstants.PP_LANGUAGE, "English", () { }),
+                    _getTextRow(StringConstants.PP_LANGUAGE, _appDataStorage.userData.language, () { }),
                     Divider(color: ColorConstants.backGroundGray),
-                    _getTextRow(StringConstants.PP_COUNTRY, "United States", () { }),
+                    _getTextRow(StringConstants.PP_COUNTRY, _appDataStorage.userData.country, () { }),
                     Divider(color: ColorConstants.backGroundGray),
                     SizedBox(height: 20.0),
                     _getFriendsCard(),
@@ -123,7 +132,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _getName() {
     return Text(
-      "Kaykobad Reza",
+      _appDataStorage.userData.firstName,
       style: TextStyle(
         fontSize: 22.0,
       ),
@@ -176,35 +185,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     radius: 20,
                     backgroundColor: ColorConstants.white,
                     backgroundImage: NetworkImage(
-                      'https://myinternship.com.au/wp-content/uploads/2019/10/Male-6.jpg',
+                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
                     ),
                   ),
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: ColorConstants.white,
                     backgroundImage: NetworkImage(
-                      'https://myinternship.com.au/wp-content/uploads/2019/10/Male-6.jpg',
+                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
                     ),
                   ),
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: ColorConstants.white,
                     backgroundImage: NetworkImage(
-                      'https://myinternship.com.au/wp-content/uploads/2019/10/Male-6.jpg',
+                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
                     ),
                   ),
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: ColorConstants.white,
                     backgroundImage: NetworkImage(
-                      'https://myinternship.com.au/wp-content/uploads/2019/10/Male-6.jpg',
+                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
                     ),
                   ),
                   CircleAvatar(
                     radius: 20,
                     backgroundColor: ColorConstants.white,
                     backgroundImage: NetworkImage(
-                      'https://myinternship.com.au/wp-content/uploads/2019/10/Male-6.jpg',
+                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
                     ),
                   ),
                 ],
