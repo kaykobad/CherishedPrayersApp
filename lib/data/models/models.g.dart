@@ -110,6 +110,32 @@ Map<String, dynamic> _$ConfirmPasswordResetRequestToJson(
       'new_password_2': instance.newPassword2,
     };
 
+ConfirmVerifyEmailResponse _$ConfirmVerifyEmailResponseFromJson(
+    Map<String, dynamic> json) {
+  return ConfirmVerifyEmailResponse(
+    json['detail'] as String,
+  );
+}
+
+Map<String, dynamic> _$ConfirmVerifyEmailResponseToJson(
+        ConfirmVerifyEmailResponse instance) =>
+    <String, dynamic>{
+      'detail': instance.detail,
+    };
+
+ErrorVerificationResponse _$ErrorVerificationResponseFromJson(
+    Map<String, dynamic> json) {
+  return ErrorVerificationResponse(
+    json['success'] as String,
+  );
+}
+
+Map<String, dynamic> _$ErrorVerificationResponseToJson(
+        ErrorVerificationResponse instance) =>
+    <String, dynamic>{
+      'success': instance.success,
+    };
+
 UpdateValueRequest _$UpdateValueRequestFromJson(Map<String, dynamic> json) {
   return UpdateValueRequest(
     json['value'] as String,
@@ -147,6 +173,21 @@ Map<String, dynamic> _$FeedbackRequestToJson(FeedbackRequest instance) =>
       'rating': instance.rating,
     };
 
+UpdateProfilePictureResponse _$UpdateProfilePictureResponseFromJson(
+    Map<String, dynamic> json) {
+  return UpdateProfilePictureResponse(
+    json['detail'] as String,
+    json['avatar'] as String,
+  );
+}
+
+Map<String, dynamic> _$UpdateProfilePictureResponseToJson(
+        UpdateProfilePictureResponse instance) =>
+    <String, dynamic>{
+      'detail': instance.detail,
+      'avatar': instance.avatar,
+    };
+
 ErrorModel _$ErrorModelFromJson(Map<String, dynamic> json) {
   return ErrorModel(
     json['error'] as String,
@@ -158,4 +199,44 @@ Map<String, dynamic> _$ErrorModelToJson(ErrorModel instance) =>
     <String, dynamic>{
       'error': instance.error,
       'details': instance.details,
+    };
+
+DetailOnlyResponse _$DetailOnlyResponseFromJson(Map<String, dynamic> json) {
+  return DetailOnlyResponse(
+    json['detail'] as String,
+  );
+}
+
+Map<String, dynamic> _$DetailOnlyResponseToJson(DetailOnlyResponse instance) =>
+    <String, dynamic>{
+      'detail': instance.detail,
+    };
+
+AuthUserResponse _$AuthUserResponseFromJson(Map<String, dynamic> json) {
+  return AuthUserResponse(
+    json['id'] as int,
+    json['email'] as String,
+    json['first_name'] as String,
+    json['last_name'] as String,
+    json['auth_token'] as String,
+    json['date_joined'] as String,
+    json['country'] as String,
+    json['language'] as String,
+    json['religion'] as String,
+    json['avatar'] as String,
+  );
+}
+
+Map<String, dynamic> _$AuthUserResponseToJson(AuthUserResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'email': instance.email,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
+      'auth_token': instance.authToken,
+      'date_joined': instance.dateJoined,
+      'country': instance.country,
+      'language': instance.language,
+      'religion': instance.religion,
+      'avatar': instance.avatar,
     };
