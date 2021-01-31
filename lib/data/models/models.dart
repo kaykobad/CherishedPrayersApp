@@ -17,3 +17,6 @@ part 'auth_models/confirm_password_reset_request.dart';
 part 'profile_feedback_rating_models/update_value_request.dart';
 part 'profile_feedback_rating_models/update_profile_picture_request.dart';
 part 'profile_feedback_rating_models/feedback_request.dart';
+
+// Error Model
+part 'shared_models/error_model.dart';
