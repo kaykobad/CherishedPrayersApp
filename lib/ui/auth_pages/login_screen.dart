@@ -18,6 +18,7 @@ import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passwordController;
   String _emailErrorText;
   String _passwordErrorText;
+  AppDataStorage _appDataStorage;
   AuthBloc _authBloc;
   StreamSubscription<AuthState> _authBlocListener;
 
@@ -39,15 +41,25 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController = TextEditingController();
     _emailErrorText = "";
     _passwordErrorText = "";
-    _authBloc = RepositoryProvider.of<AppDataStorage>(context).authBloc;
+    _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
+    _authBloc = _appDataStorage.authBloc;
     _listenAuthBloc();
   }
 
   _listenAuthBloc() {
-    _authBlocListener = _authBloc.listen((state) {
-      if (state is ErrorState) {
-        print("errorstate");
+    _authBlocListener = _authBloc.listen((state) async {
+      if (state is LoadingState) {
+        EasyLoading.show(
+          status: "Login in progress",
+        );
+      } else if (state is ErrorState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showError(
+          state.error.error + '\n' + state.error.details.join(' ')
+        );
       } else if (state is LoginSuccessfulState) {
+        await EasyLoading.dismiss();
+        _appDataStorage.userData = state.authUserData;
         NavigationHelper.push(context, HomeScreen());
       }
     });
@@ -135,21 +147,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _getSignInButton(BuildContext context) {
-    return BlocBuilder(
-      cubit: _authBloc,
-      builder: (context, state) {
-        bool _isLoading = false;
-        if (state is LoadingState) {
-          _isLoading = true;
-        }
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-          child: SizedBox(
-            width: double.infinity,
-            child: RoundedCornerButton(StringConstants.SIGN_IN, _login),
-          ),
-        );
-      },
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: RoundedCornerButton(StringConstants.SIGN_IN, _login),
+      ),
     );
   }
 
@@ -184,15 +187,26 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() {
     String _email = _emailController.text;
     String _password = _passwordController.text;
-    _emailErrorText = "";
-    _passwordErrorText = "";
 
-    if (!validateEmail(_email)) _emailErrorText = StringConstants.EMAIL_ERROR;
-    else if (!validatePassword(_password)) _passwordErrorText = StringConstants.PASSWORD_ERROR;
+    if (!validateEmail(_email)) {
+      EasyLoading.showToast(
+        StringConstants.EMAIL_ERROR,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    }
+    else if (!validatePassword(_password)) {
+      EasyLoading.showToast(
+        StringConstants.PASSWORD_ERROR,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    }
     else {
       LoginRequest loginRequest = LoginRequest(_email, _password);
       _authBloc.add(LoginEvent(loginRequest));
     }
-    print(_emailErrorText + _passwordErrorText);
   }
 }

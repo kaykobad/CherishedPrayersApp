@@ -1,3 +1,4 @@
+import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/theme/app_config.dart';
@@ -7,15 +8,33 @@ import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_state.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await _setThemeMode();
+  configLoading();
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
   String packageName = packageInfo.packageName;
   runApp(MyApp(packageName));
+}
+
+void configLoading() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 5000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.custom
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = ColorConstants.white
+    ..backgroundColor = ColorConstants.gray
+    ..indicatorColor = ColorConstants.white
+    ..textColor = ColorConstants.white
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = true
+    ..dismissOnTap = false;
 }
 
 Future _setThemeMode() async {
@@ -63,6 +82,7 @@ class _MyAppState extends State<MyApp> {
         darkTheme: AppThemes.darkTheme,
         themeMode: themeManager.currentThemeMode(),
         home: SplashScreen(),
+        builder: EasyLoading.init()
       ),
     );
   }
