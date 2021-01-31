@@ -21,7 +21,12 @@ part 'profile_feedback_rating_models/update_profile_picture_request.dart';
 part 'profile_feedback_rating_models/feedback_request.dart';
 part 'profile_feedback_rating_models/update_profile_picture_response.dart';
 
-// Shared Model
+// Shared Models
 part 'shared_models/error_model.dart';
 part 'shared_models/detail_only_response.dart';
 part 'shared_models/auth_user_response.dart';
+
+// Configuration Models
+part 'configurations/country_model.dart';
+part 'configurations/language_model.dart';
+part 'configurations/religion_model.dart';

@@ -240,3 +240,42 @@ Map<String, dynamic> _$AuthUserResponseToJson(AuthUserResponse instance) =>
       'religion': instance.religion,
       'avatar': instance.avatar,
     };
+
+CountryModel _$CountryModelFromJson(Map<String, dynamic> json) {
+  return CountryModel(
+    json['id'] as int,
+    json['country'] as String,
+  );
+}
+
+Map<String, dynamic> _$CountryModelToJson(CountryModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'country': instance.country,
+    };
+
+LanguageModel _$LanguageModelFromJson(Map<String, dynamic> json) {
+  return LanguageModel(
+    json['id'] as int,
+    json['language'] as String,
+  );
+}
+
+Map<String, dynamic> _$LanguageModelToJson(LanguageModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'language': instance.language,
+    };
+
+ReligionModel _$ReligionModelFromJson(Map<String, dynamic> json) {
+  return ReligionModel(
+    json['id'] as int,
+    json['religion'] as String,
+  );
+}
+
+Map<String, dynamic> _$ReligionModelToJson(ReligionModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'religion': instance.religion,
+    };
