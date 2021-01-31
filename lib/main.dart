@@ -1,6 +1,6 @@
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
-import 'package:cherished_prayers/theme/theme_config.dart';
+import 'package:cherished_prayers/theme/app_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
 import 'package:flutter/material.dart';
