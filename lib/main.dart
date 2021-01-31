@@ -2,6 +2,8 @@ import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/theme/app_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
+import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
+import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_state.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,18 +35,27 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  AuthBloc authBloc;
+
   @override
   void initState() {
     super.initState();
+    authBloc = AuthBloc(InitialAuthState());
     themeManager.addListener(() {
       setState(() {});
     });
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    authBloc?.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => AppDataStorage(widget.packageName),
+      create: (context) => AppDataStorage(widget.packageName, authBloc),
       child: MaterialApp(
         title: StringConstants.APP_NAME,
         debugShowCheckedModeBanner: false,

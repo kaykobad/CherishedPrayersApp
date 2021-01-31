@@ -9,5 +9,5 @@ class AppDataStorage {
 
   String get authToken => userData?.authToken;
 
-  AppDataStorage(this.packageName);
+  AppDataStorage(this.packageName, this.authBloc);
 }

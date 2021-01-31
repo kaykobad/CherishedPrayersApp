@@ -9,11 +9,11 @@ class ApiProvider {
 
   Future<Either<ErrorModel, AuthUserResponse>> login(LoginRequest data) async {
     try {
-      Either<ErrorModel, AuthUserResponse> response = await _dio.post(ApiEndpoints.LOGIN, data: data);
-      return response.fold(
-          (failure) => Left(failure),
-          (success) => Right(success),
-      );
+      var response = await _dio.post(ApiEndpoints.LOGIN, data: data);
+      if (response['error'] != null) {
+        return Left(ErrorModel.fromJson(response));
+      }
+      return Right(AuthUserResponse.fromJson(response));
     } catch (error, stacktrace) {
       print("Exception occured: $error stackTrace: $stacktrace");
       return Left(ErrorModel(error, [stacktrace.toString()]));

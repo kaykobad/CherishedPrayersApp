@@ -1,7 +1,15 @@
+import 'dart:async';
+
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/helpers/input_validator.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
+import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_event.dart';
+import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_state.dart';
 import 'package:cherished_prayers/ui/auth_pages/email_input_screen.dart';
 import 'package:cherished_prayers/ui/auth_pages/registration_screen.dart';
 import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
@@ -9,6 +17,7 @@ import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,6 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _passwordController;
   String _emailErrorText;
   String _passwordErrorText;
+  AuthBloc _authBloc;
+  StreamSubscription<AuthState> _authBlocListener;
 
   @override
   void initState() {
@@ -28,6 +39,18 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordController = TextEditingController();
     _emailErrorText = "";
     _passwordErrorText = "";
+    _authBloc = RepositoryProvider.of<AppDataStorage>(context).authBloc;
+    _listenAuthBloc();
+  }
+
+  _listenAuthBloc() {
+    _authBlocListener = _authBloc.listen((state) {
+      if (state is ErrorState) {
+        print("errorstate");
+      } else if (state is LoginSuccessfulState) {
+        NavigationHelper.push(context, HomeScreen());
+      }
+    });
   }
 
   @override
@@ -35,6 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController?.dispose();
     _passwordController?.dispose();
+    _authBlocListener?.cancel();
   }
 
   @override
@@ -111,14 +135,21 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _getSignInButton(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
-      child: SizedBox(
-        width: double.infinity,
-        child: RoundedCornerButton(StringConstants.SIGN_IN, (){
-          NavigationHelper.push(context, HomeScreen());
-        }),
-      ),
+    return BlocBuilder(
+      cubit: _authBloc,
+      builder: (context, state) {
+        bool _isLoading = false;
+        if (state is LoadingState) {
+          _isLoading = true;
+        }
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
+          child: SizedBox(
+            width: double.infinity,
+            child: RoundedCornerButton(StringConstants.SIGN_IN, _login),
+          ),
+        );
+      },
     );
   }
 
@@ -148,5 +179,20 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       onTap: () => NavigationHelper.push(context, RegisterScreen()),
     );
+  }
+
+  void _login() {
+    String _email = _emailController.text;
+    String _password = _passwordController.text;
+    _emailErrorText = "";
+    _passwordErrorText = "";
+
+    if (!validateEmail(_email)) _emailErrorText = StringConstants.EMAIL_ERROR;
+    else if (!validatePassword(_password)) _passwordErrorText = StringConstants.PASSWORD_ERROR;
+    else {
+      LoginRequest loginRequest = LoginRequest(_email, _password);
+      _authBloc.add(LoginEvent(loginRequest));
+    }
+    print(_emailErrorText + _passwordErrorText);
   }
 }
