@@ -1,12 +1,21 @@
+import 'dart:async';
+
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/auth_pages/otp_screen.dart';
+import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'auth_bloc/auth_bloc.dart';
+import 'auth_bloc/auth_state.dart';
 
 class EmailInputScreen extends StatefulWidget {
   @override
@@ -15,19 +24,43 @@ class EmailInputScreen extends StatefulWidget {
 
 class _EmailInputScreenState extends State<EmailInputScreen> {
   TextEditingController _emailController;
-  String _emailErrorText;
+  AppDataStorage _appDataStorage;
+  AuthBloc _authBloc;
+  StreamSubscription<AuthState> _authBlocListener;
 
   @override
   void initState() {
     super.initState();
     _emailController = TextEditingController();
-    _emailErrorText = "";
+    _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
+    _authBloc = _appDataStorage.authBloc;
+    _listenAuthBloc();
+  }
+
+  _listenAuthBloc() {
+    _authBlocListener = _authBloc.listen((state) async {
+      if (state is LoadingState) {
+        EasyLoading.show(
+          status: "Login in progress...",
+        );
+      } else if (state is ErrorState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showError(
+            state.error.error + '\n' + state.error.details.join(' ')
+        );
+      } else if (state is LoginSuccessfulState) {
+        await EasyLoading.dismiss();
+        _appDataStorage.userData = state.authUserData;
+        NavigationHelper.pushAndRemoveAll(context, HomeScreen());
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
     _emailController?.dispose();
+    _authBlocListener?.cancel();
   }
 
   @override

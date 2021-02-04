@@ -44,7 +44,7 @@ class EmailSentState extends AuthState {
 }
 
 class EmailVerifiedState extends AuthState {
-  final ConfirmVerifyEmailResponse confirmVerifyEmailResponse;
+  final DetailOnlyResponse confirmVerifyEmailResponse;
 
   EmailVerifiedState(this.confirmVerifyEmailResponse);
 

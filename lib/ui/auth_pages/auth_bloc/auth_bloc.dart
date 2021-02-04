@@ -18,6 +18,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (failure) => ErrorState(failure),
           (success) => LoginSuccessfulState(success),
       );
+    } else if (event is VerifyEmailEvent) {
+      yield LoadingState();
+      Either<ErrorModel, EmailVerificationResponse> _response = await apiProvider.verifyEmail(event.verifyEmailRequest);
+
+      yield _response.fold(
+          (failure) => ErrorState(failure),
+          (success) => EmailSentState(success),
+      );
+    } else if (event is ConfirmEmailVerificationEvent) {
+      yield LoadingState();
+      Either<ErrorModel, DetailOnlyResponse> _response = await apiProvider.confirmEmailVerification(event.confirmVerifyEmailRequest);
+
+      yield _response.fold(
+          (failure) => ErrorState(failure),
+          (success) => EmailVerifiedState(success),
+      );
+    } else if (event is RegistrationEvent) {
+      yield LoadingState();
+      Either<ErrorModel, AuthUserResponse> _response = await apiProvider.register(event.registerRequest);
+
+      yield _response.fold(
+          (failure) => ErrorState(failure),
+          (success) => RegistrationSuccessfulState(success),
+      );
     }
   }
 
