@@ -7,11 +7,6 @@ import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/helpers/input_validator.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
-import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
-import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_event.dart';
-import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_state.dart';
-import 'package:cherished_prayers/ui/auth_pages/email_input_screen.dart';
-import 'package:cherished_prayers/ui/auth_pages/registration_screen.dart';
 import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
@@ -19,6 +14,12 @@ import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'auth_bloc/auth_bloc.dart';
+import 'auth_bloc/auth_event.dart';
+import 'auth_bloc/auth_state.dart';
+import 'email_input_screen.dart';
+import 'registration_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
