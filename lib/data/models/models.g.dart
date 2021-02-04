@@ -123,15 +123,15 @@ Map<String, dynamic> _$ConfirmVerifyEmailResponseToJson(
       'detail': instance.detail,
     };
 
-ErrorVerificationResponse _$ErrorVerificationResponseFromJson(
+EmailVerificationResponse _$EmailVerificationResponseFromJson(
     Map<String, dynamic> json) {
-  return ErrorVerificationResponse(
+  return EmailVerificationResponse(
     json['success'] as String,
   );
 }
 
-Map<String, dynamic> _$ErrorVerificationResponseToJson(
-        ErrorVerificationResponse instance) =>
+Map<String, dynamic> _$EmailVerificationResponseToJson(
+        EmailVerificationResponse instance) =>
     <String, dynamic>{
       'success': instance.success,
     };

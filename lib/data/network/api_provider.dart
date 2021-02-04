@@ -33,13 +33,13 @@ class ApiProvider {
     }
   }
 
-  Future<Either<ErrorModel, ErrorVerificationResponse>> verifyEmail(VerifyEmailRequest data) async {
+  Future<Either<ErrorModel, EmailVerificationResponse>> verifyEmail(VerifyEmailRequest data) async {
     try {
       var response = await _dio.post(ApiEndpoints.EMAIL_VERIFY, data: data);
       if (response['error'] != null) {
         return Left(ErrorModel.fromJson(response));
       }
-      return Right(ErrorVerificationResponse.fromJson(response));
+      return Right(EmailVerificationResponse.fromJson(response));
     } catch (error, stacktrace) {
       print("Exception occurred: $error stackTrace: $stacktrace");
       return Left(ErrorModel(error, [stacktrace.toString()]));
