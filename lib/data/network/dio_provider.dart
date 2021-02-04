@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
@@ -48,6 +50,8 @@ class DioProvider {
         onReceiveProgress: onReceiveProgress,
       );
       return response.data;
+    } on SocketException {
+      return ErrorModel("No Internet!", ["Please check internet connection and try again."]).toJson();
     } on Exception catch (e) {
       return ErrorModel("Error!", [e.toString()]).toJson();
     }
@@ -73,6 +77,8 @@ class DioProvider {
         onReceiveProgress: onReceiveProgress,
       );
       return response.data;
+    } on SocketException {
+      return ErrorModel("No Internet!", ["Please check internet connection and try again."]).toJson();
     } on Exception catch (e) {
       return ErrorModel("Error!", [e.toString()]).toJson();
     }
