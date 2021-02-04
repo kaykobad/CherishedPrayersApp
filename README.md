@@ -1,16 +1,24 @@
-# cherished_prayers
+# Cherished Prayers
 
-A new Flutter application.
+## Introduction
+This project will let the user record the prayers according to his requirements. There
+will be one main person who will be handling the working of this project, that will be
+admin. He will need to login into his account. The added people will be able to post
+in case of any problem regarding prayer and the people who will be reading this post
+may respond if they know the solution of that problem. The user will also be given an
+opportunity to provide rating, complains, feedback and suggestions about the
+experience with application.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Features
+This project contains the following features along with an admin panel and API's.
+- **Authentication:** Ability to register, login, change password, reset password,
+  verify email address and logout. It contains the following pages.
+    - Splash Page
+    - Get Started Page
+    - Authentication Flow Selection Page
+    - Login Page
+    - Registration page
+    - Email Verification Page
+    - OTP Input Page
+    - Reset Password Page
+    
