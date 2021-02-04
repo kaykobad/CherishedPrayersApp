@@ -25,6 +25,33 @@ class LoginSuccessfulState extends AuthState {
   List<Object> get props => [authUserData];
 }
 
+class RegistrationSuccessfulState extends AuthState {
+  final AuthUserResponse authUserData;
+
+  RegistrationSuccessfulState(this.authUserData);
+
+  @override
+  List<Object> get props => [authUserData];
+}
+
+class EmailSentState extends AuthState {
+  final EmailVerificationResponse emailVerificationResponse;
+
+  EmailSentState(this.emailVerificationResponse);
+
+  @override
+  List<Object> get props => [emailVerificationResponse];
+}
+
+class EmailVerifiedState extends AuthState {
+  final ConfirmVerifyEmailResponse confirmVerifyEmailResponse;
+
+  EmailVerifiedState(this.confirmVerifyEmailResponse);
+
+  @override
+  List<Object> get props => [confirmVerifyEmailResponse];
+}
+
 class ErrorState extends AuthState {
   final ErrorModel error;
 
