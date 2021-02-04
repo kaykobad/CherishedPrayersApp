@@ -16,6 +16,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
+    //TODO: Check internet connection here then navigate
     Future.delayed(Duration(seconds: 3), () {
       NavigationHelper.pushReplacement(context, GetStartedScreen());
     });

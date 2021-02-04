@@ -28,8 +28,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _emailController;
   TextEditingController _passwordController;
-  String _emailErrorText;
-  String _passwordErrorText;
   AppDataStorage _appDataStorage;
   AuthBloc _authBloc;
   StreamSubscription<AuthState> _authBlocListener;
@@ -39,8 +37,6 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _emailErrorText = "";
-    _passwordErrorText = "";
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _authBloc = _appDataStorage.authBloc;
     _listenAuthBloc();
@@ -50,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _authBlocListener = _authBloc.listen((state) async {
       if (state is LoadingState) {
         EasyLoading.show(
-          status: "Login in progress",
+          status: "Login in progress...",
         );
       } else if (state is ErrorState) {
         await EasyLoading.dismiss();
@@ -60,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (state is LoginSuccessfulState) {
         await EasyLoading.dismiss();
         _appDataStorage.userData = state.authUserData;
-        NavigationHelper.push(context, HomeScreen());
+        NavigationHelper.pushAndRemoveAll(context, HomeScreen());
       }
     });
   }
