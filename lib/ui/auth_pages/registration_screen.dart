@@ -1,13 +1,25 @@
+import 'dart:async';
+
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/helpers/input_validator.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_event.dart';
 import 'package:cherished_prayers/ui/auth_pages/login_screen.dart';
-import 'package:cherished_prayers/ui/auth_pages/otp_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'auth_bloc/auth_bloc.dart';
+import 'auth_bloc/auth_state.dart';
+import 'otp_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -18,10 +30,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController _nameController;
   TextEditingController _emailController;
   TextEditingController _passwordController;
-  String _nameErrorText;
-  String _emailErrorText;
-  String _passwordErrorText;
   bool _obscureText;
+  AppDataStorage _appDataStorage;
+  AuthBloc _authBloc;
+  StreamSubscription<AuthState> _authBlocListener;
 
   @override
   void initState() {
@@ -29,10 +41,28 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameController = TextEditingController();
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
-    _nameErrorText = "";
-    _emailErrorText = "";
-    _passwordErrorText = "";
     _obscureText = true;
+    _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
+    _authBloc = _appDataStorage.authBloc;
+    _listenAuthBloc();
+  }
+
+  _listenAuthBloc() {
+    _authBlocListener = _authBloc.listen((state) async {
+      if (state is LoadingState) {
+        EasyLoading.show(
+          status: "Sending email...",
+        );
+      } else if (state is ErrorState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showError(
+            state.error.error + '\n' + state.error.details.join(' ')
+        );
+      } else if (state is EmailSentState) {
+        await EasyLoading.dismiss();
+        NavigationHelper.push(context, OTPScreen());
+      }
+    });
   }
 
   @override
@@ -41,6 +71,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _nameController?.dispose();
     _emailController?.dispose();
     _passwordController?.dispose();
+    _authBlocListener?.cancel();
   }
 
   @override
@@ -126,9 +157,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
       child: SizedBox(
         width: double.infinity,
-        child: RoundedCornerButton(StringConstants.SIGN_UP, (){
-          NavigationHelper.push(context, OTPScreen());
-        }),
+        child: RoundedCornerButton(StringConstants.SIGN_UP, _sendOTP),
       ),
     );
   }
@@ -159,5 +188,43 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
       onTap: () => NavigationHelper.push(context, LoginScreen()),
     );
+  }
+
+  void _sendOTP() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+    String _name = _nameController.text;
+    String _email = _emailController.text;
+    String _password = _passwordController.text;
+
+    if (!validateName(_name)) {
+      EasyLoading.showToast(
+        StringConstants.NAME_ERROR,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    } else if (!validateEmail(_email)) {
+      EasyLoading.showToast(
+        StringConstants.EMAIL_ERROR,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    }
+    else if (!validatePassword(_password)) {
+      EasyLoading.showToast(
+        StringConstants.PASSWORD_ERROR,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    }
+    else {
+      RegisterRequest registerRequest = RegisterRequest(_email, _name, "", _password);
+      VerifyEmailRequest verifyEmailRequest = VerifyEmailRequest(_email);
+      _appDataStorage.registerRequest = registerRequest;
+      _authBloc.add(VerifyEmailEvent(verifyEmailRequest));
+    }
   }
 }

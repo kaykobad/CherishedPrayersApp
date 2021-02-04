@@ -12,6 +12,7 @@ import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -182,6 +183,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _login() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
     String _email = _emailController.text;
     String _password = _passwordController.text;
 

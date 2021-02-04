@@ -9,6 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 class OTPScreen extends StatefulWidget {
+  final bool isRegistration;
+
+  const OTPScreen({Key key, this.isRegistration=true}) : super(key: key);
+
   @override
   _OTPScreenState createState() => _OTPScreenState();
 }

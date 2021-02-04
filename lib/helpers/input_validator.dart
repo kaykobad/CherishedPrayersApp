@@ -12,3 +12,8 @@ bool validatePassword(String password) {
 bool validateBothPassword(String p1, String p2) {
   return p1==p2 && validatePassword(p1);
 }
+
+bool validateName(String name) {
+  RegExp nameValidator = RegExp(r"^[a-zA-Z\d_ ]{2,100}");
+  return nameValidator.hasMatch(name);
+}

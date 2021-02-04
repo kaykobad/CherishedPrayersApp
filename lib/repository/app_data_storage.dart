@@ -4,6 +4,7 @@ import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
 class AppDataStorage {
   final String packageName;
   AuthUserResponse userData;
+  RegisterRequest registerRequest;
   // ignore: close_sinks
   AuthBloc authBloc;
 
