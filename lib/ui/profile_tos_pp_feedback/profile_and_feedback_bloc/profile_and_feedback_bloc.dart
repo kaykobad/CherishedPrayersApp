@@ -16,7 +16,16 @@ class ProfileAndFeedbackBloc extends Bloc<ProfileAndFeedbackEvent, ProfileAndFee
       if (response.detail.contains("Success")) {
         yield FeedbackSentState(response);
       } else {
-        yield FeedbackErrorState(ErrorModel("", [response.detail]));
+        yield ProfileAndFeedbackErrorState(ErrorModel("", [response.detail]));
+      }
+    } else if (event is UpdateProfilePictureEvent) {
+      yield ProfileAndFeedbackLoadingState();
+      UpdateProfilePictureResponse response = await apiProvider.updateProfilePicture(event.updateProfilePictureRequest, event.authToken);
+
+      if (response.detail.contains("Success")) {
+        yield ProfilePictureUpdatedState(response);
+      } else {
+        yield ProfileAndFeedbackErrorState(ErrorModel("", [response.detail]));
       }
     }
   }

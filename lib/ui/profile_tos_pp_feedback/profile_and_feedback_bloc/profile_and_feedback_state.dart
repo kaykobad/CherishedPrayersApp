@@ -25,11 +25,20 @@ class FeedbackSentState extends ProfileAndFeedbackState {
   List<Object> get props => [feedbackResponse];
 }
 
-class FeedbackErrorState extends ProfileAndFeedbackState {
+class ProfileAndFeedbackErrorState extends ProfileAndFeedbackState {
   final ErrorModel error;
 
-  FeedbackErrorState(this.error);
+  ProfileAndFeedbackErrorState(this.error);
 
   @override
   List<Object> get props => [error];
+}
+
+class ProfilePictureUpdatedState extends ProfileAndFeedbackState {
+  final UpdateProfilePictureResponse updateProfilePictureResponse;
+
+  ProfilePictureUpdatedState(this.updateProfilePictureResponse);
+
+  @override
+  List<Object> get props => [updateProfilePictureResponse];
 }

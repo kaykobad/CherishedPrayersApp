@@ -15,3 +15,13 @@ class SendFeedbackEvent extends ProfileAndFeedbackEvent {
   @override
   List<Object> get props => [feedbackRequest, authToken];
 }
+
+class UpdateProfilePictureEvent extends ProfileAndFeedbackEvent {
+  final UpdateProfilePictureRequest updateProfilePictureRequest;
+  final String authToken;
+
+  UpdateProfilePictureEvent(this.updateProfilePictureRequest, this.authToken);
+
+  @override
+  List<Object> get props => [updateProfilePictureRequest, authToken];
+}

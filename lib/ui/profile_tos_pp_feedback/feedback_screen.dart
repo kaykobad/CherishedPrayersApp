@@ -45,7 +45,7 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
         EasyLoading.show(
           status: "Sending feedback...",
         );
-      } else if (state is FeedbackErrorState) {
+      } else if (state is ProfileAndFeedbackErrorState) {
         await EasyLoading.dismiss();
         EasyLoading.showError(
           state.error.error + '\n' + state.error.details.join(' '),
