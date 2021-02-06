@@ -42,6 +42,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (failure) => ErrorState(failure),
           (success) => RegistrationSuccessfulState(success),
       );
+    } else if (event is ResetPasswordEvent) {
+      yield LoadingState();
+      Either<ErrorModel, DetailOnlyResponse> _response = await apiProvider.resetPassword(event.resetPasswordRequest);
+
+      yield _response.fold(
+          (failure) => ErrorState(failure),
+          (success) => PasswordResetInitiatedState(success),
+      );
+    } else if (event is ConfirmResetPasswordEvent) {
+      yield LoadingState();
+      Either<ErrorModel, DetailOnlyResponse> _response = await apiProvider.confirmPasswordReset(event.confirmPasswordResetRequest);
+
+      yield _response.fold(
+          (failure) => ErrorState(failure),
+          (success) => PasswordResetConfirmedState(success),
+      );
     }
   }
 
