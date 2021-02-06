@@ -8,6 +8,7 @@ import 'dio_provider.dart';
 class ApiProvider {
   final _dio = DioProvider();
 
+  // Authentication
   Future<Either<ErrorModel, AuthUserResponse>> login(LoginRequest data) async {
     try {
       var response = await _dio.post(ApiEndpoints.LOGIN, data: data);
@@ -86,6 +87,7 @@ class ApiProvider {
     }
   }
 
+  // Feedback
   Future<DetailOnlyResponse> sendFeedback(FeedbackRequest data, String authToken) async {
     try {
       var response = await _dio.post(ApiEndpoints.POST_FEEDBACK, data: data, options: Options (
@@ -97,6 +99,21 @@ class ApiProvider {
     } catch (error, stacktrace) {
       print("Exception occurred: $error stackTrace: $stacktrace");
       return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
+  // Profile
+  Future<UpdateProfilePictureResponse> updateProfilePicture(UpdateProfilePictureRequest data, String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.UPDATE_PROFILE_PICTURE, data: data, options: Options (
+        headers: {
+          "Authorization" : "Token $authToken",
+        }
+      ));
+      return UpdateProfilePictureResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return UpdateProfilePictureResponse("Error! Something went wrong. Please try again later.", "");
     }
   }
 }
