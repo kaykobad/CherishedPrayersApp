@@ -8,9 +8,10 @@ class ProfileAndFeedbackEvent extends Equatable {
 
 class SendFeedbackEvent extends ProfileAndFeedbackEvent {
   final FeedbackRequest feedbackRequest;
+  final String authToken;
 
-  SendFeedbackEvent(this.feedbackRequest);
+  SendFeedbackEvent(this.feedbackRequest, this.authToken);
 
   @override
-  List<Object> get props => [feedbackRequest];
+  List<Object> get props => [feedbackRequest, authToken];
 }

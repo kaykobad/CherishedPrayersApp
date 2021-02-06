@@ -65,7 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (state is ErrorState) {
         await EasyLoading.dismiss();
         EasyLoading.showError(
-          state.error.error + '\n' + state.error.details.join(' ')
+          state.error.error + '\n' + state.error.details.join(' '),
         );
       } else if (state is LoginSuccessfulState) {
         await EasyLoading.dismiss();

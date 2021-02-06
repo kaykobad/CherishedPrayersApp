@@ -11,7 +11,7 @@ class ProfileAndFeedbackBloc extends Bloc<ProfileAndFeedbackEvent, ProfileAndFee
   Stream<ProfileAndFeedbackState> mapEventToState(ProfileAndFeedbackEvent event) async* {
     if (event is SendFeedbackEvent) {
       yield ProfileAndFeedbackLoadingState();
-      DetailOnlyResponse response = await apiProvider.sendFeedback(event.feedbackRequest);
+      DetailOnlyResponse response = await apiProvider.sendFeedback(event.feedbackRequest, event.authToken);
 
       if (response.detail.contains("Success")) {
         yield FeedbackSentState(response);

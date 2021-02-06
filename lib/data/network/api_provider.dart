@@ -1,6 +1,7 @@
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 
 import 'dio_provider.dart';
 
@@ -85,9 +86,13 @@ class ApiProvider {
     }
   }
 
-  Future<DetailOnlyResponse> sendFeedback(FeedbackRequest data) async {
+  Future<DetailOnlyResponse> sendFeedback(FeedbackRequest data, String authToken) async {
     try {
-      var response = await _dio.post(ApiEndpoints.POST_FEEDBACK, data: data);
+      var response = await _dio.post(ApiEndpoints.POST_FEEDBACK, data: data, options: Options (
+        headers: {
+          "Authorization" : "Token $authToken",
+        }
+      ));
       return DetailOnlyResponse.fromJson(response);
     } catch (error, stacktrace) {
       print("Exception occurred: $error stackTrace: $stacktrace");
