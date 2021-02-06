@@ -43,6 +43,24 @@ class EmailSentState extends AuthState {
   List<Object> get props => [emailVerificationResponse];
 }
 
+class PasswordResetInitiatedState extends AuthState {
+  final DetailOnlyResponse response;
+
+  PasswordResetInitiatedState(this.response);
+
+  @override
+  List<Object> get props => [response];
+}
+
+class PasswordResetConfirmedState extends AuthState {
+  final DetailOnlyResponse passwordResetConfirmed;
+
+  PasswordResetConfirmedState(this.passwordResetConfirmed);
+
+  @override
+  List<Object> get props => [passwordResetConfirmed];
+}
+
 class EmailVerifiedState extends AuthState {
   final DetailOnlyResponse confirmVerifyEmailResponse;
 

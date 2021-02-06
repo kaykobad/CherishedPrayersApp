@@ -41,3 +41,21 @@ class ConfirmEmailVerificationEvent extends AuthEvent {
   @override
   List<Object> get props => [confirmVerifyEmailRequest];
 }
+
+class ResetPasswordEvent extends AuthEvent {
+  final ResetPasswordRequest resetPasswordRequest;
+
+  ResetPasswordEvent(this.resetPasswordRequest);
+
+  @override
+  List<Object> get props => [resetPasswordRequest];
+}
+
+class ConfirmResetPasswordEvent extends AuthEvent {
+  final ConfirmPasswordResetRequest confirmPasswordResetRequest;
+
+  ConfirmResetPasswordEvent(this.confirmPasswordResetRequest);
+
+  @override
+  List<Object> get props => [confirmPasswordResetRequest];
+}
