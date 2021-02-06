@@ -84,4 +84,14 @@ class ApiProvider {
       return Left(ErrorModel(error, [stacktrace.toString()]));
     }
   }
+
+  Future<DetailOnlyResponse> sendFeedback(FeedbackRequest data) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.POST_FEEDBACK, data: data);
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
 }

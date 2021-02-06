@@ -11,6 +11,11 @@ class ProfileAndFeedbackInitialState extends ProfileAndFeedbackState {
   List<Object> get props => [];
 }
 
+class ProfileAndFeedbackLoadingState extends ProfileAndFeedbackState {
+  @override
+  List<Object> get props => [];
+}
+
 class FeedbackSentState extends ProfileAndFeedbackState {
   final DetailOnlyResponse feedbackResponse;
 
