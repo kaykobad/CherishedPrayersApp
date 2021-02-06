@@ -1,12 +1,22 @@
+import 'dart:async';
+
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/auth_pages/reset_password_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+
+import 'auth_bloc/auth_bloc.dart';
+import 'auth_bloc/auth_event.dart';
+import 'auth_bloc/auth_state.dart';
 
 class OTPScreen extends StatefulWidget {
   final bool isRegistration;
@@ -19,19 +29,44 @@ class OTPScreen extends StatefulWidget {
 
 class _OTPScreenState extends State<OTPScreen> {
   TextEditingController _otpController;
-  String _otpErrorText;
+  AppDataStorage _appDataStorage;
+  AuthBloc _authBloc;
+  StreamSubscription<AuthState> _authBlocListener;
 
   @override
   void initState() {
     super.initState();
     _otpController = TextEditingController();
-    _otpErrorText = "";
+    _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
+    _authBloc = _appDataStorage.authBloc;
+    _listenAuthBloc();
+  }
+
+  _listenAuthBloc() {
+    _authBlocListener = _authBloc.listen((state) async {
+      if (state is LoadingState) {
+        EasyLoading.show(
+          status: "Email verification in progress...",
+        );
+      } else if (state is ErrorState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showError(
+            state.error.error + '\n' + state.error.details.join(' ')
+        );
+      } else if (state is EmailSentState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess(
+          "Email sent. Check your inbox for a verification code.", dismissOnTap: true,
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
     _otpController?.dispose();
+    _authBlocListener?.cancel();
   }
 
   @override
@@ -156,7 +191,15 @@ class _OTPScreenState extends State<OTPScreen> {
           ),
         ),
       ),
-      onTap: () => print("resend"),
+      onTap: _resendOTP,
     );
+  }
+
+  void _resendOTP() {
+    if (widget.isRegistration) {
+      String _email = _appDataStorage.registerRequest.email;
+      VerifyEmailRequest verifyEmailRequest = VerifyEmailRequest(_email);
+      _authBloc.add(VerifyEmailEvent(verifyEmailRequest));
+    }
   }
 }
