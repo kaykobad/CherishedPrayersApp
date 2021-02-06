@@ -6,6 +6,7 @@ import 'package:cherished_prayers/theme/themes.dart';
 import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
 import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_state.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -14,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await _setThemeMode();
   configLoading();
   PackageInfo packageInfo = await PackageInfo.fromPlatform();
