@@ -6,10 +6,11 @@ import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
-import 'package:cherished_prayers/ui/auth_pages/reset_password_screen.dart';
+import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
@@ -58,6 +59,16 @@ class _OTPScreenState extends State<OTPScreen> {
         EasyLoading.showSuccess(
           "Email sent. Check your inbox for a verification code.", dismissOnTap: true,
         );
+      } else if (state is EmailVerifiedState) {
+        await EasyLoading.dismiss();
+        EasyLoading.show(
+          status: "Registration in progress...",
+        );
+        _authBloc.add(RegistrationEvent(_appDataStorage.registerRequest));
+      } else if (state is RegistrationSuccessfulState) {
+        await EasyLoading.dismiss();
+        _appDataStorage.userData = state.authUserData;
+        NavigationHelper.pushAndRemoveAll(context, HomeScreen());
       }
     });
   }
@@ -65,8 +76,8 @@ class _OTPScreenState extends State<OTPScreen> {
   @override
   void dispose() {
     super.dispose();
-    _otpController?.dispose();
     _authBlocListener?.cancel();
+    _otpController?.dispose();
   }
 
   @override
@@ -160,9 +171,7 @@ class _OTPScreenState extends State<OTPScreen> {
       padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
       child: SizedBox(
         width: double.infinity,
-        child: RoundedCornerButton(StringConstants.VERIFY, (){
-          NavigationHelper.push(context, ResetPasswordScreen());
-        }),
+        child: RoundedCornerButton(StringConstants.VERIFY, _verifyAndRegister),
       ),
     );
   }
@@ -196,10 +205,22 @@ class _OTPScreenState extends State<OTPScreen> {
   }
 
   void _resendOTP() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
     if (widget.isRegistration) {
       String _email = _appDataStorage.registerRequest.email;
       VerifyEmailRequest verifyEmailRequest = VerifyEmailRequest(_email);
       _authBloc.add(VerifyEmailEvent(verifyEmailRequest));
+    }
+  }
+
+  void _verifyAndRegister() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+    if (widget.isRegistration) {
+      String _otp = _otpController.text;
+      ConfirmVerifyEmailRequest confirmVerifyEmailRequest = ConfirmVerifyEmailRequest(_appDataStorage.registerRequest.email, _otp);
+      _authBloc.add(ConfirmEmailVerificationEvent(confirmVerifyEmailRequest));
     }
   }
 }

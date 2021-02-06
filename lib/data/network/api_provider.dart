@@ -48,7 +48,7 @@ class ApiProvider {
 
   Future<Either<ErrorModel, DetailOnlyResponse>> confirmEmailVerification(ConfirmVerifyEmailRequest data) async {
     try {
-      var response = await _dio.post(ApiEndpoints.REGISTER, data: data);
+      var response = await _dio.post(ApiEndpoints.EMAIL_VERIFY_CONFIRMATION, data: data);
       if (response['error'] != null) {
         return Left(ErrorModel.fromJson(response));
       }
