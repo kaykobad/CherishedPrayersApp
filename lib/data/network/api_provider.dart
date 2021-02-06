@@ -58,4 +58,30 @@ class ApiProvider {
       return Left(ErrorModel(error, [stacktrace.toString()]));
     }
   }
+
+  Future<Either<ErrorModel, DetailOnlyResponse>> resetPassword(ResetPasswordRequest data) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.RESET_PASSWORD, data: data);
+      if (response['error'] != null) {
+        return Left(ErrorModel.fromJson(response));
+      }
+      return Right(DetailOnlyResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(ErrorModel(error, [stacktrace.toString()]));
+    }
+  }
+
+  Future<Either<ErrorModel, DetailOnlyResponse>> confirmPasswordReset(ConfirmPasswordResetRequest data) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.RESET_PASSWORD_CONFIRMATION, data: data);
+      if (response['error'] != null) {
+        return Left(ErrorModel.fromJson(response));
+      }
+      return Right(DetailOnlyResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(ErrorModel(error, [stacktrace.toString()]));
+    }
+  }
 }
