@@ -22,9 +22,9 @@ class NavigationDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: SingleChildScrollView(
-        child: Container(
-          color: ColorConstants.drawerColor,
+      child: Container(
+        color: ColorConstants.drawerColor,
+        child: SingleChildScrollView(
           child: Column(
             children: [
               _getAvatar(),

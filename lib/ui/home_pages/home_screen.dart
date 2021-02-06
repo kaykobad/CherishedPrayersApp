@@ -1,8 +1,10 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
+import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_page.dart';
 import 'package:cherished_prayers/ui/shared_widgets/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   final int selectedIndex;
@@ -25,6 +27,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   static const List<String> _titles = ['Feed', 'Chat', 'Stories', 'Friends', 'Profile'];
 
+  AppDataStorage _appDataStorage;
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -35,6 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _selectedIndex = widget.selectedIndex;
+    _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
   }
 
   @override
@@ -42,8 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: _selectedIndex == 4 ? _getAppbarWithImage() : _getAppBar(),
       drawer: NavigationDrawer(
-        name: "Kaykobad Reza",
-        religion: "Islam",
+        name: _appDataStorage.userData.firstName,
+        religion: _appDataStorage.userData.religion ?? "",
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
