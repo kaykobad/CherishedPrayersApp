@@ -1,12 +1,25 @@
+import 'dart:async';
+
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/helpers/input_validator.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_event.dart';
 import 'package:cherished_prayers/ui/auth_pages/login_screen.dart';
+import 'package:cherished_prayers/ui/auth_pages/otp_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+
+import 'auth_bloc/auth_bloc.dart';
+import 'auth_bloc/auth_state.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   @override
@@ -16,24 +29,51 @@ class ResetPasswordScreen extends StatefulWidget {
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   TextEditingController _passwordController;
   TextEditingController _passwordController2;
-  String _passwordErrorText;
   bool _obscureText;
   bool _obscureText2;
-
+  AppDataStorage _appDataStorage;
+  AuthBloc _authBloc;
+  StreamSubscription<AuthState> _authBlocListener;
 
   @override
   void initState() {
     super.initState();
     _passwordController = TextEditingController();
     _passwordController2 = TextEditingController();
-    _passwordErrorText = "";
     _obscureText = true;
     _obscureText2 = true;
+    _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
+    _authBloc = _appDataStorage.authBloc;
+    _listenAuthBloc();
+  }
+
+  _listenAuthBloc() {
+    _authBlocListener = _authBloc.listen((state) async {
+      if (state is LoadingState) {
+        EasyLoading.show(
+          status: "Resetting password...",
+        );
+      } else if (state is ErrorState) {
+        await EasyLoading.dismiss();
+
+        if (state.error.error == "Security code invalid or expired.") {
+          NavigationHelper.pushReplacement(context, OTPScreen(isRegistration: false, status: "Please provide a valid OTP.",));
+        } else {
+          EasyLoading.showError(
+            state.error.error + '\n' + state.error.details.join(' ')
+          );
+        }
+      } else if (state is PasswordResetConfirmedState) {
+        await EasyLoading.dismiss();
+        NavigationHelper.push(context, LoginScreen(isFromPasswordReset: true));
+      }
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
+    _authBlocListener?.cancel();
     _passwordController?.dispose();
     _passwordController2?.dispose();
   }
@@ -93,9 +133,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
       padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
       child: SizedBox(
         width: double.infinity,
-        child: RoundedCornerButton(StringConstants.RESET_PASSWORD_BUTTON, (){
-          NavigationHelper.push(context, LoginScreen());
-        }),
+        child: RoundedCornerButton(StringConstants.RESET_PASSWORD_BUTTON, _resetPassword),
       ),
     );
   }
@@ -138,5 +176,37 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         },
       ),
     );
+  }
+
+  void _resetPassword() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+
+    String _password = _passwordController.text;
+    String _password2 = _passwordController2.text;
+
+    if (_password != _password2) {
+      EasyLoading.showToast(
+        StringConstants.BOTH_PASSWORD_MUST_MATCH,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    } else if (!validatePassword(_password)) {
+      EasyLoading.showToast(
+        StringConstants.PASSWORD_ERROR,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    } else {
+      ConfirmPasswordResetRequest confirmPasswordResetRequest = ConfirmPasswordResetRequest(
+        _appDataStorage.passwordResetEmail,
+        _appDataStorage.passwordResetOTP,
+        _password,
+        _password2,
+      );
+      _authBloc.add(ConfirmResetPasswordEvent(confirmPasswordResetRequest));
+    }
+
   }
 }

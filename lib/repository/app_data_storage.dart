@@ -8,6 +8,10 @@ class AppDataStorage {
   // ignore: close_sinks
   AuthBloc authBloc;
 
+  // Password reset functionality
+  String passwordResetEmail;
+  String passwordResetOTP;
+
   String get authToken => userData?.authToken;
 
   AppDataStorage(this.packageName, this.authBloc);

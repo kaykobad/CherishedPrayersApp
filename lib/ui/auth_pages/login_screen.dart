@@ -23,6 +23,10 @@ import 'email_input_screen.dart';
 import 'registration_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  final bool isFromPasswordReset;
+
+  const LoginScreen({Key key, this.isFromPasswordReset=false}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -42,6 +46,14 @@ class _LoginScreenState extends State<LoginScreen> {
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _authBloc = _appDataStorage.authBloc;
     _listenAuthBloc();
+    if (widget.isFromPasswordReset) {
+      EasyLoading.showToast(
+        "Password reset successful. Please login to continue.",
+        toastPosition: EasyLoadingToastPosition.bottom,
+        duration: Duration(seconds: 3),
+        dismissOnTap: true,
+      );
+    }
   }
 
   _listenAuthBloc() {

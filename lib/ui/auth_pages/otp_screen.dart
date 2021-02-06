@@ -6,6 +6,7 @@ import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/auth_pages/reset_password_screen.dart';
 import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
@@ -21,8 +22,9 @@ import 'auth_bloc/auth_state.dart';
 
 class OTPScreen extends StatefulWidget {
   final bool isRegistration;
+  final String status;
 
-  const OTPScreen({Key key, this.isRegistration=true}) : super(key: key);
+  const OTPScreen({Key key, this.isRegistration=true, this.status=""}) : super(key: key);
 
   @override
   _OTPScreenState createState() => _OTPScreenState();
@@ -41,6 +43,14 @@ class _OTPScreenState extends State<OTPScreen> {
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _authBloc = _appDataStorage.authBloc;
     _listenAuthBloc();
+    if (widget.status != "") {
+      EasyLoading.showToast(
+        widget.status,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    }
   }
 
   _listenAuthBloc() {
@@ -211,6 +221,10 @@ class _OTPScreenState extends State<OTPScreen> {
       String _email = _appDataStorage.registerRequest.email;
       VerifyEmailRequest verifyEmailRequest = VerifyEmailRequest(_email);
       _authBloc.add(VerifyEmailEvent(verifyEmailRequest));
+    } else {
+      String _email = _appDataStorage.passwordResetEmail;
+      ResetPasswordRequest resetPasswordRequest = ResetPasswordRequest(_email);
+      _authBloc.add(ResetPasswordEvent(resetPasswordRequest));
     }
   }
 
@@ -221,6 +235,9 @@ class _OTPScreenState extends State<OTPScreen> {
       String _otp = _otpController.text;
       ConfirmVerifyEmailRequest confirmVerifyEmailRequest = ConfirmVerifyEmailRequest(_appDataStorage.registerRequest.email, _otp);
       _authBloc.add(ConfirmEmailVerificationEvent(confirmVerifyEmailRequest));
+    } else {
+      _appDataStorage.passwordResetOTP = _otpController.text;
+      NavigationHelper.push(context, ResetPasswordScreen());
     }
   }
 }

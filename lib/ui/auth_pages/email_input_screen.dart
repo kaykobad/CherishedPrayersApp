@@ -3,14 +3,17 @@ import 'dart:async';
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/helpers/input_validator.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_event.dart';
 import 'package:cherished_prayers/ui/auth_pages/otp_screen.dart';
-import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/custom_text_fileld.dart';
 import 'package:cherished_prayers/ui/shared_widgets/logo.dart';
 import 'package:cherished_prayers/ui/shared_widgets/rounded_corner_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -41,17 +44,16 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
     _authBlocListener = _authBloc.listen((state) async {
       if (state is LoadingState) {
         EasyLoading.show(
-          status: "Login in progress...",
+          status: "Sending email...",
         );
       } else if (state is ErrorState) {
         await EasyLoading.dismiss();
         EasyLoading.showError(
             state.error.error + '\n' + state.error.details.join(' ')
         );
-      } else if (state is LoginSuccessfulState) {
+      } else if (state is PasswordResetInitiatedState) {
         await EasyLoading.dismiss();
-        _appDataStorage.userData = state.authUserData;
-        NavigationHelper.pushAndRemoveAll(context, HomeScreen());
+        NavigationHelper.push(context, OTPScreen(isRegistration: false));
       }
     });
   }
@@ -59,8 +61,8 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
   @override
   void dispose() {
     super.dispose();
-    _emailController?.dispose();
     _authBlocListener?.cancel();
+    _emailController?.dispose();
   }
 
   @override
@@ -112,10 +114,26 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
       padding: const EdgeInsets.fromLTRB(10.0, 0.0, 10.0, 0.0),
       child: SizedBox(
         width: double.infinity,
-        child: RoundedCornerButton(StringConstants.SEND_OTP, (){
-          NavigationHelper.push(context, OTPScreen());
-        }),
+        child: RoundedCornerButton(StringConstants.SEND_OTP, _sendOTP),
       ),
     );
+  }
+
+  void _sendOTP() {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    String _email = _emailController.text;
+
+    if (!validateEmail(_email)) {
+      EasyLoading.showToast(
+        StringConstants.EMAIL_ERROR,
+        duration: Duration(seconds: 3),
+        toastPosition: EasyLoadingToastPosition.bottom,
+        dismissOnTap: true,
+      );
+    } else {
+      _appDataStorage.passwordResetEmail = _email;
+      ResetPasswordRequest resetPasswordRequest = ResetPasswordRequest(_email);
+      _authBloc.add(ResetPasswordEvent(resetPasswordRequest));
+    }
   }
 }
