@@ -17,8 +17,19 @@ This project contains the following features along with an admin panel and API's
     - Get Started Page
     - Authentication Flow Selection Page
     - Login Page
-    - Registration page
+    - Registration Page
     - Email Verification Page
     - OTP Input Page
     - Reset Password Page
+- **Profile:** Ability to view and edit profile information.
+    - Profile page with profile picture, country, religion and language update ability
+- **Feedback:** Ability to provide feedback and rating  for the app.
+    - Feedback and Rating Page
+- **Terms of Service:** Page for showing Terms of Service of the application.
+    - Terms of Service Page
+- **Privacy Policy:** Page for showing Privacy Policy of the application.
+    - Privacy Policy Page
+- **Rating:** Tapping on rating will take the user to the Play Store or App Store page of the
+  application for providing rating. Since the app is not published yet, you will see "Not Found".
+    
     
