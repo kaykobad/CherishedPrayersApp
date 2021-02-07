@@ -52,6 +52,14 @@ class ProfileAndFeedbackBloc extends Bloc<ProfileAndFeedbackEvent, ProfileAndFee
         (failure) => ProfileAndFeedbackErrorState(failure),
         (success) => AllReligionsFetchedState(success),
       );
+    } else if (event is UpdateCLREvent) {
+      yield ProfileAndFeedbackLoadingState();
+      Either<ErrorModel, DetailOnlyResponse> _response = await apiProvider.updateCLR(event.updateValueRequest, event.authToken, event.selector);
+
+      yield _response.fold(
+        (failure) => ProfileAndFeedbackErrorState(failure),
+        (success) => CLRUpdatedState(success, event.selector),
+      );
     }
   }
 

@@ -69,3 +69,13 @@ class AllReligionsFetchedState extends ProfileAndFeedbackState {
   @override
   List<Object> get props => [allReligionsResponse];
 }
+
+class CLRUpdatedState extends ProfileAndFeedbackState {
+  final DetailOnlyResponse detailOnlyResponse;
+  final int selector;
+
+  CLRUpdatedState(this.detailOnlyResponse, this.selector);
+
+  @override
+  List<Object> get props => [detailOnlyResponse, selector];
+}

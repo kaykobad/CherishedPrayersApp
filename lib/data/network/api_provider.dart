@@ -150,4 +150,25 @@ class ApiProvider {
       return Left(ErrorModel("Error! Something went wrong. Please try again later.", [""]));
     }
   }
+
+  // 1: Country, 2: Language, 3: Religion
+  Future<Either<ErrorModel, DetailOnlyResponse>> updateCLR(UpdateValueRequest data, String authToken, int selector) async {
+    try {
+      List<String> _urls = [ApiEndpoints.UPDATE_COUNTRY, ApiEndpoints.UPDATE_LANGUAGE, ApiEndpoints.UPDATE_RELIGION];
+      var response = await _dio.post(_urls[selector-1], data: data, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+
+      if (response['detail'].contains("Success")) {
+        return Right(DetailOnlyResponse.fromJson(response));
+      } else {
+        return Left(ErrorModel(response["detail"], [""]));
+      }
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(ErrorModel("Error! Something went wrong. Please try again later.", [""]));
+    }
+  }
 }

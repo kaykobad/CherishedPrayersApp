@@ -40,3 +40,14 @@ class FetchAllReligionsEvent extends ProfileAndFeedbackEvent {
   @override
   List<Object> get props => [];
 }
+
+class UpdateCLREvent extends ProfileAndFeedbackEvent {
+  final UpdateValueRequest updateValueRequest;
+  final String authToken;
+  final int selector;
+
+  UpdateCLREvent(this.updateValueRequest, this.authToken, this.selector);
+
+  @override
+  List<Object> get props => [updateValueRequest, authToken, selector];
+}
