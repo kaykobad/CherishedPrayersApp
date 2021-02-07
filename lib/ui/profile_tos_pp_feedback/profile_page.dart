@@ -27,6 +27,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ProfileAndFeedbackBloc _profileBloc;
   StreamSubscription<ProfileAndFeedbackState> _listenProfileState;
   String _authToken;
+  String _selectedValue;
   final picker = ImagePicker();
 
   @override
@@ -54,6 +55,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         EasyLoading.showSuccess(state.updateProfilePictureResponse.detail);
         _appDataStorage.userData.avatar = state.updateProfilePictureResponse.avatar;
         setState(() {});
+      } else if (state is AllCountriesFetchedState) {
+        await EasyLoading.dismiss();
+        _appDataStorage.allCountries = state.allCountriesResponse.countries;
+        List<String> values = _getData(1);
+      } else if (state is AllLanguagesFetchedState) {
+        await EasyLoading.dismiss();
+        _appDataStorage.allLanguages = state.allLanguagesResponse.languages;
+        List<String> values = _getData(2);
+      } else if (state is AllReligionsFetchedState) {
+        await EasyLoading.dismiss();
+        _appDataStorage.allReligions = state.allReligionsResponse.religions;
+        List<String> values = _getData(3);
       }
     });
   }
@@ -292,5 +305,65 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Widget _getDropDown(List<String> values) {
+    return DropdownButton<String>(
+      elevation: 16,
+      icon: Icon(Icons.arrow_drop_down_circle),
+      items: values.map((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+      onChanged: (value) {
+        _selectedValue = value;
+      },
+    );
+  }
+
+  // Selector: for selecting update category
+  // 1: Country, 2: Language, 3: religion
+  List<String> _getData(int selector) {
+    List<String> values = [];
+
+    if (selector == 1) {
+      for (CountryModel e in _appDataStorage.allCountries) {
+        values.add(e.country);
+      }
+    } else if (selector == 2) {
+      for (LanguageModel e in _appDataStorage.allLanguages) {
+        values.add(e.language);
+      }
+    } else if (selector == 3) {
+      for (ReligionModel e in _appDataStorage.allReligions) {
+        values.add(e.religion);
+      }
+    }
+
+    return values;
+  }
+
+  void showSelectionDialog(String title, Widget dropdown, int selector) {
+    showDialog(
+      context: context,
+      child: AlertDialog(
+        title: Text(title),
+        content: dropdown,
+        actions: [
+          FlatButton(
+            onPressed: () {
+              _startUpdate(selector);
+            },
+            child: Text("Update"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _startUpdate(int selector) {
+    print("Updating");
   }
 }
