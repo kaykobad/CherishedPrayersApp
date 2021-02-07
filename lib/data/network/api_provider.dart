@@ -119,4 +119,35 @@ class ApiProvider {
       return UpdateProfilePictureResponse("Error! Something went wrong. Please try again later.", "");
     }
   }
+
+  // Configurations
+  Future<Either<ErrorModel, AllCountriesResponse>> getAllCountries() async {
+    try {
+      var response = await _dio.get(ApiEndpoints.GET_ALL_COUNTRIES);
+      return Right(AllCountriesResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(ErrorModel("Error! Something went wrong. Please try again later.", [""]));
+    }
+  }
+
+  Future<Either<ErrorModel, AllLanguagesResponse>> getAllLanguages() async {
+    try {
+      var response = await _dio.get(ApiEndpoints.GET_ALL_LANGUAGES);
+      return Right(AllLanguagesResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(ErrorModel("Error! Something went wrong. Please try again later.", [""]));
+    }
+  }
+
+  Future<Either<ErrorModel, AllReligionsResponse>> getAllReligions() async {
+    try {
+      var response = await _dio.get(ApiEndpoints.GET_ALL_RELIGIONS);
+      return Right(AllReligionsResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(ErrorModel("Error! Something went wrong. Please try again later.", [""]));
+    }
+  }
 }
