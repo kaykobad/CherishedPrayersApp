@@ -1,9 +1,19 @@
+import 'dart:async';
+
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_and_feedback_bloc/profile_and_feedback_event.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
+
+import 'profile_and_feedback_bloc/profile_and_feedback_bloc.dart';
+import 'profile_and_feedback_bloc/profile_and_feedback_state.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -14,11 +24,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
   double _height;
   double _width;
   AppDataStorage _appDataStorage;
+  ProfileAndFeedbackBloc _profileBloc;
+  StreamSubscription<ProfileAndFeedbackState> _listenProfileState;
+  String _authToken;
+  final picker = ImagePicker();
 
   @override
   void initState() {
     super.initState();
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
+    _profileBloc = ProfileAndFeedbackBloc(ProfileAndFeedbackInitialState());
+    _authToken = RepositoryProvider.of<AppDataStorage>(context).authToken;
+    _listenProfileBloc();
+  }
+
+  _listenProfileBloc() {
+    _listenProfileState = _profileBloc.listen((state) async {
+      if (state is ProfileAndFeedbackLoadingState) {
+        EasyLoading.show(
+          status: "Updating profile picture...",
+        );
+      } else if (state is ProfileAndFeedbackErrorState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showError(
+          state.error.error + '\n' + state.error.details.join(' '),
+        );
+      } else if (state is ProfilePictureUpdatedState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess(state.updateProfilePictureResponse.detail);
+        _appDataStorage.userData.avatar = state.updateProfilePictureResponse.avatar;
+        setState(() {});
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _listenProfileState?.cancel();
+    _profileBloc?.close();
   }
 
   @override
@@ -59,15 +103,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               radius: 80,
               backgroundColor: ColorConstants.white,
               backgroundImage: NetworkImage(
-                _appDataStorage.userData.avatar ?? 'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
+                _appDataStorage.userData.avatar == null ? 'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg' : ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar,
               ),
             ),
             Align(
               alignment: Alignment.bottomRight,
               child: MaterialButton(
-                onPressed: () {
-                  print("Hello");
-                },
+                onPressed: _getImage,
                 elevation: 2.0,
                 color: Colors.white,
                 child: Icon(
@@ -83,6 +125,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future _getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      UpdateProfilePictureRequest updateProfilePictureRequest = UpdateProfilePictureRequest(pickedFile.path);
+      _profileBloc.add(UpdateProfilePictureEvent(updateProfilePictureRequest, _authToken));
+    } else {
+      EasyLoading.showToast(
+        "No picture selected.",
+        duration: Duration(seconds: 3),
+        dismissOnTap: true,
+        toastPosition: EasyLoadingToastPosition.bottom,
+      );
+    }
   }
 
   Widget _getBody() {

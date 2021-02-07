@@ -2,20 +2,20 @@ part of models;
 
 @JsonSerializable()
 class AuthUserResponse {
-  final int id;
-  final String email;
+  int id;
+  String email;
   @JsonKey(name: 'first_name')
-  final String firstName;
+  String firstName;
   @JsonKey(name: 'last_name')
-  final String lastName;
+  String lastName;
   @JsonKey(name: 'auth_token')
-  final String authToken;
+  String authToken;
   @JsonKey(name: 'date_joined')
-  final String dateJoined;
-  final String country;
-  final String language;
-  final String religion;
-  final String avatar;
+  String dateJoined;
+  String country;
+  String language;
+  String religion;
+  String avatar;
 
   AuthUserResponse(
     this.id,

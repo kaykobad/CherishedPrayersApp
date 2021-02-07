@@ -1,4 +1,5 @@
 class ApiEndpoints {
+  static const String URL_ROOT = "https://cp.mycodeacademia.com";
   static const String BASE_URL = "https://cp.mycodeacademia.com/api/";
 
   // Auth URLs
@@ -16,7 +17,7 @@ class ApiEndpoints {
   static const String UPDATE_COUNTRY = "account/profile/update-country/";
   static const String UPDATE_LANGUAGE = "account/profile/update-language/";
   static const String UPDATE_RELIGION = "account/profile/update-religion/";
-  static const String UPDATE_PROFILE_PICTURE = "account/profile/update-profile-picture/";
+  static const String UPDATE_PROFILE_PICTURE = "api/account/profile/update-avatar/";
 
   // Feedback URLs
   static const String POST_FEEDBACK = "feedback/post-feedback/";

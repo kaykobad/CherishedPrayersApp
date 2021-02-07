@@ -105,7 +105,10 @@ class ApiProvider {
   // Profile
   Future<UpdateProfilePictureResponse> updateProfilePicture(UpdateProfilePictureRequest data, String authToken) async {
     try {
-      var response = await _dio.post(ApiEndpoints.UPDATE_PROFILE_PICTURE, data: data, options: Options (
+      FormData formData = FormData.fromMap({
+        "avatar": await MultipartFile.fromFile(data.avatar),
+      });
+      var response = await _dio.post(ApiEndpoints.UPDATE_PROFILE_PICTURE, data: formData, options: Options (
         headers: {
           "Authorization" : "Token $authToken",
         }
