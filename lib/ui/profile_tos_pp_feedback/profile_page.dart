@@ -43,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _listenProfileState = _profileBloc.listen((state) async {
       if (state is ProfileAndFeedbackLoadingState) {
         EasyLoading.show(
-          status: "Updating profile picture...",
+          status: "Updating data...",
         );
       } else if (state is ProfileAndFeedbackErrorState) {
         await EasyLoading.dismiss();
@@ -59,14 +59,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         await EasyLoading.dismiss();
         _appDataStorage.allCountries = state.allCountriesResponse.countries;
         List<String> values = _getData(1);
+        Widget dropDown = _getDropDown(values);
+        showSelectionDialog("Update Country", dropDown, 1);
       } else if (state is AllLanguagesFetchedState) {
         await EasyLoading.dismiss();
         _appDataStorage.allLanguages = state.allLanguagesResponse.languages;
         List<String> values = _getData(2);
+        Widget dropDown = _getDropDown(values);
+        showSelectionDialog("Update Language", dropDown, 2);
       } else if (state is AllReligionsFetchedState) {
         await EasyLoading.dismiss();
         _appDataStorage.allReligions = state.allReligionsResponse.religions;
         List<String> values = _getData(3);
+        Widget dropDown = _getDropDown(values);
+        showSelectionDialog("Update Religion", dropDown, 3);
       }
     });
   }
@@ -182,11 +188,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     _getName(),
                     SizedBox(height: 5.0),
-                    _getTextRow(StringConstants.PP_RELIGION, _appDataStorage.userData.religion, () { }),
+                    _getTextRow(StringConstants.PP_RELIGION, _appDataStorage.userData.religion, () {
+                      if (_appDataStorage.allReligions == null) {
+                        _profileBloc.add(FetchAllReligionsEvent());
+                      } else {
+                        List<String> values = _getData(3);
+                        Widget dropDown = _getDropDown(values);
+                        showSelectionDialog("Update Religion", dropDown, 3);
+                      }
+                    }),
                     Divider(color: ColorConstants.backGroundGray),
-                    _getTextRow(StringConstants.PP_LANGUAGE, _appDataStorage.userData.language, () { }),
+                    _getTextRow(StringConstants.PP_LANGUAGE, _appDataStorage.userData.language, () {
+                      if (_appDataStorage.allLanguages == null) {
+                        _profileBloc.add(FetchAllLanguagesEvent());
+                      } else {
+                        List<String> values = _getData(2);
+                        Widget dropDown = _getDropDown(values);
+                        showSelectionDialog("Update Language", dropDown, 2);
+                      }
+                    }),
                     Divider(color: ColorConstants.backGroundGray),
-                    _getTextRow(StringConstants.PP_COUNTRY, _appDataStorage.userData.country, () { }),
+                    _getTextRow(StringConstants.PP_COUNTRY, _appDataStorage.userData.country, () {
+                      if (_appDataStorage.allCountries == null) {
+                        _profileBloc.add(FetchAllCountriesEvent());
+                      } else {
+                        List<String> values = _getData(1);
+                        Widget dropDown = _getDropDown(values);
+                        showSelectionDialog("Update Country", dropDown, 1);
+                      }
+                    }),
                     Divider(color: ColorConstants.backGroundGray),
                     SizedBox(height: 20.0),
                     _getFriendsCard(),
@@ -310,6 +340,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _getDropDown(List<String> values) {
     return DropdownButton<String>(
       elevation: 16,
+      isExpanded: true,
       icon: Icon(Icons.arrow_drop_down_circle),
       items: values.map((String value) {
         return DropdownMenuItem<String>(
@@ -354,9 +385,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           FlatButton(
             onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: Colors.red),
+            ),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(style: BorderStyle.none),
+            ),
+          ),
+          FlatButton(
+            onPressed: () {
               _startUpdate(selector);
             },
             child: Text("Update"),
+            shape: RoundedRectangleBorder(
+              side: BorderSide(style: BorderStyle.none),
+            ),
           ),
         ],
       ),
@@ -364,6 +410,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _startUpdate(int selector) {
-    print("Updating");
+    print("Updating $selector");
   }
 }
