@@ -154,6 +154,7 @@ class _OTPScreenState extends State<OTPScreen> {
       length: 6,
       obscureText: false,
       animationType: AnimationType.fade,
+      textCapitalization: TextCapitalization.characters,
       pinTheme: PinTheme(
         shape: PinCodeFieldShape.underline,
         fieldHeight: 50,

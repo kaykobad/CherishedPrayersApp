@@ -80,7 +80,7 @@ class DioProvider {
     } on SocketException {
       return ErrorModel("No Internet!", ["Please check internet connection and try again."]).toJson();
     } on Exception catch (e) {
-      return ErrorModel("Error!", [e.toString()]).toJson();
+      return ErrorModel("Error!", ["Please check internet connection or try again later."]);
     }
   }
 }

@@ -193,9 +193,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _sendOTP() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
 
-    String _name = _nameController.text;
-    String _email = _emailController.text;
-    String _password = _passwordController.text;
+    String _name = _nameController.text.trim();
+    String _email = _emailController.text.trim();
+    String _password = _passwordController.text.trim();
 
     if (!validateName(_name)) {
       EasyLoading.showToast(

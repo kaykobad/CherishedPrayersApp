@@ -197,8 +197,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
 
-    String _email = _emailController.text;
-    String _password = _passwordController.text;
+    String _email = _emailController.text.trim();
+    String _password = _passwordController.text.trim();
 
     if (!validateEmail(_email)) {
       EasyLoading.showToast(

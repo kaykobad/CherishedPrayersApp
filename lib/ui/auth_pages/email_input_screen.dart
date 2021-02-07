@@ -121,7 +121,7 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
 
   void _sendOTP() {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
-    String _email = _emailController.text;
+    String _email = _emailController.text.trim();
 
     if (!validateEmail(_email)) {
       EasyLoading.showToast(
