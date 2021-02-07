@@ -59,10 +59,10 @@ class _FeedBackScreenState extends State<FeedBackScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _listenFeedbackState?.cancel();
     _feedbackBloc?.close();
     _feedbackController?.dispose();
+    super.dispose();
   }
 
   @override

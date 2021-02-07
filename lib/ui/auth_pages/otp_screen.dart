@@ -85,9 +85,9 @@ class _OTPScreenState extends State<OTPScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _authBlocListener?.cancel();
     _otpController?.dispose();
+    super.dispose();
   }
 
   @override

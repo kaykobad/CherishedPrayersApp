@@ -72,10 +72,10 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _authBlocListener?.cancel();
     _passwordController?.dispose();
     _passwordController2?.dispose();
+    super.dispose();
   }
 
   @override

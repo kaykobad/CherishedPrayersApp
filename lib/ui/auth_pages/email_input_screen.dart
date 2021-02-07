@@ -60,9 +60,9 @@ class _EmailInputScreenState extends State<EmailInputScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _authBlocListener?.cancel();
     _emailController?.dispose();
+    super.dispose();
   }
 
   @override
