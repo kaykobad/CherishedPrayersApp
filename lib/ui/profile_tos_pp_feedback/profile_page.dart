@@ -36,7 +36,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _profileBloc = ProfileAndFeedbackBloc(ProfileAndFeedbackInitialState());
     _authToken = RepositoryProvider.of<AppDataStorage>(context).authToken;
-    _selectedValue = "";
     _listenProfileBloc();
   }
 
@@ -60,20 +59,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
         await EasyLoading.dismiss();
         _appDataStorage.allCountries = state.allCountriesResponse.countries;
         List<String> values = _getData(1);
-        Widget dropDown = _getDropDown(values, "Select Country");
-        showSelectionDialog("Update Country", dropDown, 1);
+        showSelectionDialog("Update Country", values, "Select Country", 1);
       } else if (state is AllLanguagesFetchedState) {
         await EasyLoading.dismiss();
         _appDataStorage.allLanguages = state.allLanguagesResponse.languages;
         List<String> values = _getData(2);
-        Widget dropDown = _getDropDown(values, "Select Language");
-        showSelectionDialog("Update Language", dropDown, 2);
+        showSelectionDialog("Update Language", values, "Select Language", 2);
       } else if (state is AllReligionsFetchedState) {
         await EasyLoading.dismiss();
         _appDataStorage.allReligions = state.allReligionsResponse.religions;
         List<String> values = _getData(3);
-        Widget dropDown = _getDropDown(values, "Select Religion");
-        showSelectionDialog("Update Religion", dropDown, 3);
+        showSelectionDialog("Update Religion", values, "Select Religion", 3);
       } else if (state is CLRUpdatedState) {
         await EasyLoading.dismiss();
         if (state.selector == 1) _appDataStorage.userData.country = _selectedValue;
@@ -81,7 +77,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         else _appDataStorage.userData.religion = _selectedValue;
         EasyLoading.showSuccess(state.detailOnlyResponse.detail);
         setState(() {});
-    }
+      }
     });
   }
 
@@ -197,35 +193,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     _getName(),
                     SizedBox(height: 5.0),
                     _getTextRow(StringConstants.PP_RELIGION, _appDataStorage.userData.religion, () {
-                      _selectedValue = "";
+                      _selectedValue = null;
                       if (_appDataStorage.allReligions == null) {
                         _profileBloc.add(FetchAllReligionsEvent());
                       } else {
                         List<String> values = _getData(3);
-                        Widget dropDown = _getDropDown(values, "Select Religion");
-                        showSelectionDialog("Update Religion", dropDown, 3);
+                        showSelectionDialog("Update Religion", values, "Select Religion", 3);
                       }
                     }),
                     Divider(color: ColorConstants.backGroundGray),
                     _getTextRow(StringConstants.PP_LANGUAGE, _appDataStorage.userData.language, () {
-                      _selectedValue = "";
+                      _selectedValue = null;
                       if (_appDataStorage.allLanguages == null) {
                         _profileBloc.add(FetchAllLanguagesEvent());
                       } else {
                         List<String> values = _getData(2);
-                        Widget dropDown = _getDropDown(values, "Select Language");
-                        showSelectionDialog("Update Language", dropDown, 2);
+                        showSelectionDialog("Update Language", values, "Select Language", 2);
                       }
                     }),
                     Divider(color: ColorConstants.backGroundGray),
                     _getTextRow(StringConstants.PP_COUNTRY, _appDataStorage.userData.country, () {
-                      _selectedValue = "";
+                      _selectedValue = null;
                       if (_appDataStorage.allCountries == null) {
                         _profileBloc.add(FetchAllCountriesEvent());
                       } else {
                         List<String> values = _getData(1);
-                        Widget dropDown = _getDropDown(values, "Select Country");
-                        showSelectionDialog("Update Country", dropDown, 1);
+                        showSelectionDialog("Update Country", values, "Select Country", 1);
                       }
                     }),
                     Divider(color: ColorConstants.backGroundGray),
@@ -348,26 +341,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _getDropDown(List<String> values, String hint) {
-    return DropdownButton<String>(
-      value: _selectedValue == "" ? null : _selectedValue,
-      elevation: 16,
-      isExpanded: true,
-      icon: Icon(Icons.arrow_drop_down_circle),
-      items: values.map((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-      onChanged: (value) {
-        setState(() {
-          _selectedValue = value;
-        });
-      },
-      hint: Text(hint),
-    );
-  }
+  // Widget _getDropDown(List<String> values, String hint) {
+  //   return DropdownButton<String>(
+  //     value: _selectedValue,
+  //     //elevation: 16,
+  //     isExpanded: true,
+  //     //icon: Icon(Icons.arrow_drop_down_circle, color: ColorConstants.lightPrimaryColor),
+  //     items: values.map((String value) {
+  //       return DropdownMenuItem<String>(
+  //         value: value,
+  //         child: Text(value),
+  //       );
+  //     }).toList(),
+  //     onChanged: (s) {
+  //       setState(() {
+  //         _selectedValue = s;
+  //       });
+  //       print(_selectedValue);
+  //     },
+  //     hint: Text(hint),
+  //   );
+  // }
 
   // Selector: for selecting update category
   // 1: Country, 2: Language, 3: religion
@@ -391,46 +385,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return values;
   }
 
-  void showSelectionDialog(String title, Widget dropdown, int selector) {
+  void showSelectionDialog(String title, List<String> values, String hint, int selector) {
     showDialog(
       context: context,
       child: AlertDialog(
         title: Text(title),
-        content: dropdown,
-        actions: [
-          FlatButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: Text(
-              "Cancel",
-              style: TextStyle(color: Colors.red),
-            ),
-            shape: RoundedRectangleBorder(
-              side: BorderSide(style: BorderStyle.none),
-            ),
-          ),
-          FlatButton(
-            onPressed: () async {
-              if (_selectedValue == "") {
-                EasyLoading.showToast(
-                  "Please select a value",
-                  toastPosition: EasyLoadingToastPosition.bottom,
-                  duration: Duration(seconds: 3),
-                  dismissOnTap: true,
-                );
-              } else {
-                Navigator.of(context).pop();
-                UpdateValueRequest updateValueRequest = UpdateValueRequest(_selectedValue);
-                _profileBloc.add(UpdateCLREvent(updateValueRequest, _authToken, selector));
-              }
-            },
-            child: Text("Update"),
-            shape: RoundedRectangleBorder(
-              side: BorderSide(style: BorderStyle.none),
-            ),
-          ),
-        ],
+        content: DropdownButton<String>(
+          value: _selectedValue,
+          isExpanded: true,
+          items: values.map((String value) {
+            return DropdownMenuItem<String>(value: value, child: Text(value));
+          }).toList(),
+          onChanged: (s) {
+            _selectedValue = s;
+            UpdateValueRequest updateValueRequest = UpdateValueRequest(_selectedValue);
+            _profileBloc.add(UpdateCLREvent(updateValueRequest, _authToken, selector));
+            Navigator.of(context).pop();
+          },
+          hint: Text(hint),
+        ),
+        // actions: [
+        //   FlatButton(
+        //     onPressed: () {
+        //       Navigator.of(context).pop();
+        //     },
+        //     child: Text(
+        //       "Cancel",
+        //       style: TextStyle(color: Colors.red),
+        //     ),
+        //     shape: RoundedRectangleBorder(
+        //       side: BorderSide(style: BorderStyle.none),
+        //     ),
+        //   ),
+        //   FlatButton(
+        //     onPressed: () async {
+        //       if (_selectedValue == "") {
+        //         EasyLoading.showToast(
+        //           "Please select a value",
+        //           toastPosition: EasyLoadingToastPosition.bottom,
+        //           duration: Duration(seconds: 3),
+        //           dismissOnTap: true,
+        //         );
+        //       } else {
+        //         Navigator.of(context).pop();
+        //         UpdateValueRequest updateValueRequest = UpdateValueRequest(_selectedValue);
+        //         _profileBloc.add(UpdateCLREvent(updateValueRequest, _authToken, selector));
+        //       }
+        //     },
+        //     child: Text("Update"),
+        //     shape: RoundedRectangleBorder(
+        //       side: BorderSide(style: BorderStyle.none),
+        //     ),
+        //   ),
+        // ],
       ),
     );
   }
