@@ -12,6 +12,11 @@ class AppDataStorage {
   String passwordResetEmail;
   String passwordResetOTP;
 
+  // Configurations
+  List<CountryModel> allCountries;
+  List<LanguageModel> allLanguages;
+  List<ReligionModel> allReligions;
+
   String get authToken => userData?.authToken;
 
   AppDataStorage(this.packageName, this.authBloc);

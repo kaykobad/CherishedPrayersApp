@@ -42,3 +42,30 @@ class ProfilePictureUpdatedState extends ProfileAndFeedbackState {
   @override
   List<Object> get props => [updateProfilePictureResponse];
 }
+
+class AllCountriesFetchedState extends ProfileAndFeedbackState {
+  final AllCountriesResponse allCountriesResponse;
+
+  AllCountriesFetchedState(this.allCountriesResponse);
+
+  @override
+  List<Object> get props => [allCountriesResponse];
+}
+
+class AllLanguagesFetchedState extends ProfileAndFeedbackState {
+  final AllLanguagesResponse allLanguagesResponse;
+
+  AllLanguagesFetchedState(this.allLanguagesResponse);
+
+  @override
+  List<Object> get props => [allLanguagesResponse];
+}
+
+class AllReligionsFetchedState extends ProfileAndFeedbackState {
+  final AllReligionsResponse allReligionsResponse;
+
+  AllReligionsFetchedState(this.allReligionsResponse);
+
+  @override
+  List<Object> get props => [allReligionsResponse];
+}

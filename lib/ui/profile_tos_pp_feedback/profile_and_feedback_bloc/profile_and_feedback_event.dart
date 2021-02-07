@@ -25,3 +25,18 @@ class UpdateProfilePictureEvent extends ProfileAndFeedbackEvent {
   @override
   List<Object> get props => [updateProfilePictureRequest, authToken];
 }
+
+class FetchAllCountriesEvent extends ProfileAndFeedbackEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class FetchAllLanguagesEvent extends ProfileAndFeedbackEvent {
+  @override
+  List<Object> get props => [];
+}
+
+class FetchAllReligionsEvent extends ProfileAndFeedbackEvent {
+  @override
+  List<Object> get props => [];
+}
