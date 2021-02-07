@@ -30,3 +30,6 @@ part 'shared_models/auth_user_response.dart';
 part 'configurations/country_model.dart';
 part 'configurations/language_model.dart';
 part 'configurations/religion_model.dart';
+part 'configurations/all_countries_response.dart';
+part 'configurations/all_languages_model.dart';
+part 'configurations/all_religions_response.dart';

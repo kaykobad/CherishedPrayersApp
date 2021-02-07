@@ -279,3 +279,50 @@ Map<String, dynamic> _$ReligionModelToJson(ReligionModel instance) =>
       'id': instance.id,
       'religion': instance.religion,
     };
+
+AllCountriesResponse _$AllCountriesResponseFromJson(Map<String, dynamic> json) {
+  return AllCountriesResponse(
+    (json['countries'] as List)
+        ?.map((e) =>
+            e == null ? null : CountryModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$AllCountriesResponseToJson(
+        AllCountriesResponse instance) =>
+    <String, dynamic>{
+      'countries': instance.countries,
+    };
+
+AllLanguagesResponse _$AllLanguagesResponseFromJson(Map<String, dynamic> json) {
+  return AllLanguagesResponse(
+    (json['languages'] as List)
+        ?.map((e) => e == null
+            ? null
+            : LanguageModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$AllLanguagesResponseToJson(
+        AllLanguagesResponse instance) =>
+    <String, dynamic>{
+      'languages': instance.languages,
+    };
+
+AllReligionsResponse _$AllReligionsResponseFromJson(Map<String, dynamic> json) {
+  return AllReligionsResponse(
+    (json['religions'] as List)
+        ?.map((e) => e == null
+            ? null
+            : ReligionModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$AllReligionsResponseToJson(
+        AllReligionsResponse instance) =>
+    <String, dynamic>{
+      'religions': instance.religions,
+    };
