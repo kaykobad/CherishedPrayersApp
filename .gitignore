@@ -40,7 +40,8 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
-ios/podfile
+ios/Podfile
+ios/Podfile.lock
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
 buildkeys/

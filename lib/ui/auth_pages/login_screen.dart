@@ -4,6 +4,7 @@ import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:cherished_prayers/helpers/input_validator.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
@@ -70,6 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else if (state is LoginSuccessfulState) {
         await EasyLoading.dismiss();
         _appDataStorage.userData = state.authUserData;
+        addUserToFirebase(state.authUserData);
         NavigationHelper.pushAndRemoveAll(context, HomeScreen());
       }
     });

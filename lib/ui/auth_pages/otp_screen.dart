@@ -4,6 +4,7 @@ import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/auth_pages/reset_password_screen.dart';
@@ -78,6 +79,7 @@ class _OTPScreenState extends State<OTPScreen> {
       } else if (state is RegistrationSuccessfulState) {
         await EasyLoading.dismiss();
         _appDataStorage.userData = state.authUserData;
+        addUserToFirebase(state.authUserData);
         NavigationHelper.pushAndRemoveAll(context, HomeScreen());
       }
     });

@@ -5,6 +5,7 @@ import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
+import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_and_feedback_bloc/profile_and_feedback_event.dart';
 import 'package:flutter/material.dart';
@@ -54,6 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         await EasyLoading.dismiss();
         EasyLoading.showSuccess(state.updateProfilePictureResponse.detail);
         _appDataStorage.userData.avatar = state.updateProfilePictureResponse.avatar;
+        addUserToFirebase(_appDataStorage.userData);
         setState(() {});
       } else if (state is AllCountriesFetchedState) {
         await EasyLoading.dismiss();
