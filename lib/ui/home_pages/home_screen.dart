@@ -1,6 +1,7 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/chat_pages/all_threads_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_page.dart';
 import 'package:cherished_prayers/ui/shared_widgets/drawer.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
     Text('Index 0: Feed', style: optionStyle),
-    Text('Index 1: Chat', style: optionStyle),
+    AllThreadsPage(),
     Text('Index 2: Stories', style: optionStyle),
     Text('Index 3: Friends', style: optionStyle),
     ProfileScreen(),

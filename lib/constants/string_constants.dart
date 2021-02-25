@@ -121,4 +121,6 @@ class StringConstants {
   static const String PP_P_11 = "You can help maintain the security of your account by configuring two-factor authentication.";
   static const String PP_P_12 = "We store the information we collect for as long as it is necessary for the purpose(s) for which we originally collected it. We may retain certain information for legitimate business purposes or as required by law.";
 
+  // Chat
+  static const String THREAD_HEADER = "Chat";
 }
