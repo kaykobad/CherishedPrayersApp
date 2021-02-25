@@ -12,19 +12,19 @@ void addUserToFirebase(AuthUserResponse userData) async {
 
   if (documents.length == 0) {
     FirebaseFirestore.instance.collection(USER_COLLECTION)
-      .doc(userData.id.toString()).set({
+      .doc("user_${userData.id.toString()}").set({
         "id": userData.id,
         "name": userData.firstName,
-        "avatar": ApiEndpoints.URL_ROOT + userData.avatar,
+        "avatar": userData.avatar == null ? "" : "${ApiEndpoints.URL_ROOT}${userData.avatar}",
       })
       .then((value) => print("New user added to firebase"))
       .catchError((error) => print("Failed to add user: $error"));
   } else {
     FirebaseFirestore.instance.collection(USER_COLLECTION)
-      .doc(userData.id.toString()).update({
+      .doc("user_${userData.id.toString()}").update({
         "id": userData.id,
         "name": userData.firstName,
-        "avatar": ApiEndpoints.URL_ROOT + userData.avatar,
+        "avatar": userData.avatar == null ? "" : "${ApiEndpoints.URL_ROOT}${userData.avatar}",
       })
       .then((value) => print("User data updated to firebase"))
       .catchError((error) => print("Failed to update user: $error"));

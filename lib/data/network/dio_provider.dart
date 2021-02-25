@@ -6,6 +6,11 @@ import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 import 'api_endpoints.dart';
 
+final genericError = {
+  "error": "Something went wrong!",
+  "details": ["Please check internet connection or try again later."]
+};
+
 class DioProvider {
   final String _baseUrl = ApiEndpoints.BASE_URL;
   Dio _dio;
@@ -51,9 +56,15 @@ class DioProvider {
       );
       return response.data;
     } on SocketException {
-      return ErrorModel("No Internet!", ["Please check internet connection and try again."]).toJson();
+      return genericError;
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.RESPONSE) {
+        return e.response.data;
+      } else {
+        return genericError;
+      }
     } on Exception catch (e) {
-      return ErrorModel("Error!", [e.toString()]).toJson();
+      return genericError;
     }
   }
 
@@ -78,9 +89,15 @@ class DioProvider {
       );
       return response.data;
     } on SocketException {
-      return ErrorModel("No Internet!", ["Please check internet connection and try again."]).toJson();
+      return genericError;
+    } on DioError catch (e) {
+      if (e.type == DioErrorType.RESPONSE) {
+        return e.response.data;
+      } else {
+        return genericError;
+      }
     } on Exception catch (e) {
-      return ErrorModel("Error!", ["Please check internet connection or try again later."]);
+      return genericError;
     }
   }
 }
