@@ -326,3 +326,49 @@ Map<String, dynamic> _$AllReligionsResponseToJson(
     <String, dynamic>{
       'religions': instance.religions,
     };
+
+Thread _$ThreadFromJson(Map<String, dynamic> json) {
+  return Thread(
+    json['id'] as String,
+    json['firstUserId'] as int,
+    json['firstUserName'] as String,
+    json['firstUserAvatar'] as String,
+    json['firstUserUnseenMessageCount'] as int,
+    json['secondUserId'] as int,
+    json['secondUserName'] as String,
+    json['secondUserAvatar'] as String,
+    json['secondUserUnseenMessageCount'] as int,
+    json['lastMessage'] as String,
+  );
+}
+
+Map<String, dynamic> _$ThreadToJson(Thread instance) => <String, dynamic>{
+      'id': instance.id,
+      'firstUserId': instance.firstUserId,
+      'firstUserName': instance.firstUserName,
+      'firstUserAvatar': instance.firstUserAvatar,
+      'firstUserUnseenMessageCount': instance.firstUserUnseenMessageCount,
+      'secondUserId': instance.secondUserId,
+      'secondUserName': instance.secondUserName,
+      'secondUserAvatar': instance.secondUserAvatar,
+      'secondUserUnseenMessageCount': instance.secondUserUnseenMessageCount,
+      'lastMessage': instance.lastMessage,
+    };
+
+Message _$MessageFromJson(Map<String, dynamic> json) {
+  return Message(
+    json['threadId'] as String,
+    json['senderId'] as int,
+    json['sentDate'] as String,
+    json['message'] as String,
+    json['type'] as int,
+  );
+}
+
+Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
+      'threadId': instance.threadId,
+      'senderId': instance.senderId,
+      'sentDate': instance.sentDate,
+      'message': instance.message,
+      'type': instance.type,
+    };

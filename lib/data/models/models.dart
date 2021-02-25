@@ -33,3 +33,7 @@ part 'configurations/religion_model.dart';
 part 'configurations/all_countries_response.dart';
 part 'configurations/all_languages_model.dart';
 part 'configurations/all_religions_response.dart';
+
+// Chat Models
+part 'chat_models/thread_model.dart';
+part 'chat_models/message_model.dart';
