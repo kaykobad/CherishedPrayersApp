@@ -37,4 +37,8 @@ class Thread {
   String getReceiverAvatar(int myId) {
     return myId == firstUserId ? this.secondUserAvatar : this.firstUserAvatar;
   }
+
+  int getUnseenMessageCount(int myId) {
+    return myId == firstUserId ? this.firstUserUnseenMessageCount : this.secondUserUnseenMessageCount;
+  }
 }
