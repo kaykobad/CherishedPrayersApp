@@ -1,8 +1,10 @@
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
+import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/chat_pages/all_threads_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_page.dart';
+import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cherished_prayers/ui/shared_widgets/drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _selectedIndex == 4 ? _getAppbarWithImage() : _getAppBar(),
+      appBar: _getAppBar(),
       drawer: NavigationDrawer(
         name: _appDataStorage.userData.firstName,
         religion: _appDataStorage.userData.religion ?? "",
@@ -56,6 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       bottomNavigationBar: _getBottomNavigationBar(),
     );
+  }
+
+  AppBar _getAppBar() {
+    if (_selectedIndex == 1) return _getAppbarWithAvatar();
+    else if (_selectedIndex == 4) return _getAppbarWithImage();
+    return _getGeneralAppBar();
   }
 
   AppBar _getAppbarWithImage() {
@@ -74,13 +82,29 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  AppBar _getAppBar() {
+  AppBar _getGeneralAppBar() {
     return AppBar(
       title: Text(_titles[_selectedIndex], style: TextStyle(color: ColorConstants.black)),
       centerTitle: true,
       backgroundColor: ColorConstants.white,
       elevation: 0,
       iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
+    );
+  }
+
+  AppBar _getAppbarWithAvatar() {
+    return AppBar(
+      title: Text(_titles[_selectedIndex], style: TextStyle(color: ColorConstants.black)),
+      centerTitle: true,
+      backgroundColor: ColorConstants.white,
+      elevation: 0,
+      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
+      actions: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: CustomAvatar(url: _appDataStorage.userData.avatar == null ? null : ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar, size: 36),
+        ),
+      ],
     );
   }
 

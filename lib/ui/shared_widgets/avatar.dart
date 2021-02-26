@@ -1,5 +1,4 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
@@ -11,21 +10,30 @@ class CustomAvatar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ImageProvider _placeholderImage = AssetImage(AssetConstants.PROFILE_PICTURE);
-
-    if (url == null) {
-      return CircleAvatar(
-        backgroundImage: _placeholderImage,
-        backgroundColor: ColorConstants.white,
-        radius: size,
-      );
-    }
-
-    return CircleAvatar(
-      backgroundColor: ColorConstants.white,
-      backgroundImage: NetworkImage(url),
-      radius: size,
+    return Material(
+      child: url != null
+        ? CachedNetworkImage(
+            placeholder: (context, url) => Container(
+              child: CircularProgressIndicator(
+                strokeWidth: 1.0,
+                valueColor: AlwaysStoppedAnimation<Color>(ColorConstants.lightPrimaryColor),
+              ),
+              width: size,
+              height: size,
+              padding: EdgeInsets.all(2.0),
+            ),
+            imageUrl: url,
+            width: size,
+            height: size,
+            fit: BoxFit.cover,
+          )
+          : Icon(
+            Icons.account_circle,
+            size: size,
+            color: ColorConstants.lightPrimaryColor,
+          ),
+      borderRadius: BorderRadius.all(Radius.circular(size/2)),
+      clipBehavior: Clip.hardEdge,
     );
   }
-
 }

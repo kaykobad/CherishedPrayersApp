@@ -9,6 +9,7 @@ import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_and_feedback_bloc/profile_and_feedback_event.dart';
+import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -125,13 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         color: Colors.transparent,
         child: Stack(
           children: [
-            CircleAvatar(
-              radius: 80,
-              backgroundColor: ColorConstants.white,
-              backgroundImage: _appDataStorage.userData.avatar == null
-                ? AssetImage(AssetConstants.PROFILE_PICTURE)
-                : NetworkImage(ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar),
-            ),
+            CustomAvatar(url: _appDataStorage.userData.avatar == null ? null : ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar, size: 160),
             Align(
               alignment: Alignment.bottomRight,
               child: MaterialButton(
