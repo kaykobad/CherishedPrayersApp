@@ -1,8 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:badges/badges.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,80 +51,61 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
     );
   }
 
-  AppBar _getAppBar() {
-    return AppBar(
-      centerTitle: true,
-      elevation: 0,
-      backgroundColor: Colors.white,
-      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
-      title: Text(
-        StringConstants.THREAD_HEADER,
-        style: TextStyle(color: ColorConstants.black),
-      ),
-    );
-  }
-
   Widget buildItem(DocumentSnapshot document) {
     Thread t = Thread.fromJson(document.data());
     int myId = _appDataStorage.userData.id;
+    int unreadMessageCount = t.getUnseenMessageCount(myId);
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
+    return Column(
       children: [
-        Material(
-          child: t.getReceiverAvatar(myId) != null
-              ? CachedNetworkImage(
-                placeholder: (context, url) => Container(
-                  child: CircularProgressIndicator(
-                    strokeWidth: 1.0,
-                    valueColor: AlwaysStoppedAnimation<Color>(ColorConstants.lightPrimaryColor),
-                  ),
-                  width: 50.0,
-                  height: 50.0,
-                  padding: EdgeInsets.all(15.0),
-                ),
-                imageUrl: t.getReceiverAvatar(myId),
-                width: 50.0,
-                height: 50.0,
-                fit: BoxFit.cover,
-              )
-              : Icon(
-                Icons.account_circle,
-                size: 50.0,
-                color: ColorConstants.gray,
-              ),
-          borderRadius: BorderRadius.all(Radius.circular(25.0)),
-          clipBehavior: Clip.hardEdge,
-        ),
-        Flexible(
-          child: Container(
-            child: Column(
-              children: <Widget>[
-                Container(
-                  child: Text(
-                    _appDataStorage.userData.firstName,
-                    style: TextStyle(
-                      color: ColorConstants.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 18,
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomAvatar(url: t.getReceiverAvatar(myId), size: 60.0),
+            Flexible(
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        _appDataStorage.userData.firstName,
+                        style: TextStyle(
+                          color: ColorConstants.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
                     ),
-                  ),
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                    Container(
+                      child: Text(
+                        t.lastMessage*30,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: unreadMessageCount == 0 ? ColorConstants.gray : ColorConstants.black),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                    )
+                  ],
                 ),
-                Container(
-                  child: Text(
-                    t.lastMessage,
-                    style: TextStyle(color: ColorConstants.gray),
-                  ),
-                  alignment: Alignment.centerLeft,
-                  margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                )
-              ],
+                margin: EdgeInsets.only(left: 10.0),
+              ),
             ),
-            margin: EdgeInsets.only(left: 20.0),
-          ),
+            SizedBox(width: 8.0),
+            if (unreadMessageCount != 0) Badge(
+              toAnimate: false,
+              shape: BadgeShape.circle,
+              badgeColor: ColorConstants.lightPrimaryColor,
+              badgeContent: Text('$unreadMessageCount', style: TextStyle(color: Colors.white)),
+            ),
+            SizedBox(width: 4.0),
+            Icon(Icons.more_vert, color: ColorConstants.lightPrimaryColor),
+          ],
         ),
+        SizedBox(height: 12.0),
+        Divider(color: Colors.grey[400], height: 1.0),
       ],
     );
   }
