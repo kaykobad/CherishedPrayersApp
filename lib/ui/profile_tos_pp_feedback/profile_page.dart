@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
@@ -127,9 +128,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
             CircleAvatar(
               radius: 80,
               backgroundColor: ColorConstants.white,
-              backgroundImage: NetworkImage(
-                _appDataStorage.userData.avatar == null ? 'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg' : ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar,
-              ),
+              backgroundImage: _appDataStorage.userData.avatar == null
+                ? AssetImage(AssetConstants.PROFILE_PICTURE)
+                : NetworkImage(ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar),
             ),
             Align(
               alignment: Alignment.bottomRight,
@@ -343,28 +344,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Widget _getDropDown(List<String> values, String hint) {
-  //   return DropdownButton<String>(
-  //     value: _selectedValue,
-  //     //elevation: 16,
-  //     isExpanded: true,
-  //     //icon: Icon(Icons.arrow_drop_down_circle, color: ColorConstants.lightPrimaryColor),
-  //     items: values.map((String value) {
-  //       return DropdownMenuItem<String>(
-  //         value: value,
-  //         child: Text(value),
-  //       );
-  //     }).toList(),
-  //     onChanged: (s) {
-  //       setState(() {
-  //         _selectedValue = s;
-  //       });
-  //       print(_selectedValue);
-  //     },
-  //     hint: Text(hint),
-  //   );
-  // }
-
   // Selector: for selecting update category
   // 1: Country, 2: Language, 3: religion
   List<String> _getData(int selector) {
@@ -406,40 +385,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
           hint: Text(hint),
         ),
-        // actions: [
-        //   FlatButton(
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //     },
-        //     child: Text(
-        //       "Cancel",
-        //       style: TextStyle(color: Colors.red),
-        //     ),
-        //     shape: RoundedRectangleBorder(
-        //       side: BorderSide(style: BorderStyle.none),
-        //     ),
-        //   ),
-        //   FlatButton(
-        //     onPressed: () async {
-        //       if (_selectedValue == "") {
-        //         EasyLoading.showToast(
-        //           "Please select a value",
-        //           toastPosition: EasyLoadingToastPosition.bottom,
-        //           duration: Duration(seconds: 3),
-        //           dismissOnTap: true,
-        //         );
-        //       } else {
-        //         Navigator.of(context).pop();
-        //         UpdateValueRequest updateValueRequest = UpdateValueRequest(_selectedValue);
-        //         _profileBloc.add(UpdateCLREvent(updateValueRequest, _authToken, selector));
-        //       }
-        //     },
-        //     child: Text("Update"),
-        //     shape: RoundedRectangleBorder(
-        //       side: BorderSide(style: BorderStyle.none),
-        //     ),
-        //   ),
-        // ],
       ),
     );
   }

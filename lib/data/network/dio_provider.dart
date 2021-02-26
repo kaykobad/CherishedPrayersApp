@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cherished_prayers/data/models/models.dart';
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
@@ -36,6 +37,12 @@ class DioProvider {
           maxWidth: 90,
           compact: true
       ));
+
+      (_dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+          client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
+          return client;
+        };
     }
   }
 

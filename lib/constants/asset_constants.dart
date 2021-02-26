@@ -7,6 +7,7 @@ class AssetConstants {
   static const String FEEDBACK = "assets/images/feedback.png";
   static const String PROFILE_BG = "assets/images/profile_bg.png";
   static const String PROFILE_BG_2 = "assets/images/profile_bg_2.png";
+  static const String PROFILE_PICTURE = "assets/images/profile.png";
 
   // Navigation Drawer
   static const String NAV_NOTIFICATION = "assets/images/notifications.png";

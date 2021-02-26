@@ -1,6 +1,6 @@
 class ApiEndpoints {
-  static const String URL_ROOT = "https://cp.mycodeacademia.com";
-  static const String BASE_URL = "https://cp.mycodeacademia.com/api/";
+  static const String URL_ROOT = "http://cp.kaykobadreza.com";
+  static const String BASE_URL = "http://cp.kaykobadreza.com/api/";
 
   // Auth URLs
   static const String LOGIN = "account/auth/login/";
