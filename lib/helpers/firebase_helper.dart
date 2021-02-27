@@ -38,6 +38,7 @@ Future<Thread> getThread(ChatUserData user1, ChatUserData user2) async {
   String threadId = "thread_";
   if (user1.id > user2.id) threadId += "${user2.id}_${user1.id}";
   else threadId += "${user1.id}_${user2.id}";
+  Thread t;
   
   final QuerySnapshot result = await FirebaseFirestore.instance
       .collection(THREAD_COLLECTION)
@@ -45,27 +46,57 @@ Future<Thread> getThread(ChatUserData user1, ChatUserData user2) async {
   final List<DocumentSnapshot> documents = result.docs;
 
   if (documents.length == 0) {
-    Thread t = Thread(threadId, user1.id, user1.name, user1.avatar, 0, user2.id, user2.name, user2.avatar, 0, "");
+    t = Thread(threadId, user1.id, user1.name, user1.avatar, 0, user2.id, user2.name, user2.avatar, 0, "", 0, 0, 0, [user1.id, user2.id]);
     FirebaseFirestore.instance.collection(THREAD_COLLECTION)
       .doc(threadId).set(t.toJson())
       .then((value) {
         print("New thread added to firebase");
-        return t;
       })
       .catchError((error) {
         print("Failed to create thread: $error");
-        return null;
+        t = null;
       });
   } else {
     FirebaseFirestore.instance.collection(THREAD_COLLECTION)
       .doc(threadId).get()
       .then((value) {
         print("Thread data got from firebase");
-        return Thread.fromJson(value.data());
+        t = Thread.fromJson(value.data());
       })
       .catchError((error) {
         print("Failed to get thread data: $error");
-        return null;
+        t = null;
       });
+  }
+  return t;
+}
+
+void updateThreadAvatar(ChatUserData userData) async {
+  final QuerySnapshot result = await FirebaseFirestore.instance
+    .collection(THREAD_COLLECTION)
+    .where("users", arrayContains: userData.id).get();
+
+  final List<DocumentSnapshot> documents = result.docs;
+
+  for (DocumentSnapshot d in documents) {
+    Thread t = Thread.fromJson(d.data());
+    if (t.firstUserId == userData.id) {
+      t.firstUserAvatar = userData.avatar == null ? "" : "${ApiEndpoints.URL_ROOT}${userData.avatar}";
+      t.firstUserName = userData.name;
+    }
+    else{
+      t.secondUserAvatar = userData.avatar == null ? "" : "${ApiEndpoints.URL_ROOT}${userData.avatar}";
+      t.secondUserName = userData.name;
+    }
+
+    FirebaseFirestore.instance.collection(THREAD_COLLECTION)
+      .doc(t.id).set(t.toJson())
+      .then((value) {
+      print("${t.id} updated");
+    })
+      .catchError((error) {
+      print("Failed to update thread: $error");
+      t = null;
+    });
   }
 }

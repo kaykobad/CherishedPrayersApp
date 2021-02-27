@@ -1,9 +1,9 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/constants/string_constants.dart';
+import 'package:cherished_prayers/data/models/chat_models/chat_user_data.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/helpers/firebase_helper.dart';
@@ -58,6 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         EasyLoading.showSuccess(state.updateProfilePictureResponse.detail);
         _appDataStorage.userData.avatar = state.updateProfilePictureResponse.avatar;
         addUserToFirebase(_appDataStorage.userData);
+        updateThreadAvatar(ChatUserData.fromAuthUserData(_appDataStorage.userData));
         setState(() {});
       } else if (state is AllCountriesFetchedState) {
         await EasyLoading.dismiss();

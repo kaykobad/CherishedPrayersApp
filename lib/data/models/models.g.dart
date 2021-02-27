@@ -339,6 +339,10 @@ Thread _$ThreadFromJson(Map<String, dynamic> json) {
     json['secondUserAvatar'] as String,
     json['secondUserUnseenMessageCount'] as int,
     json['lastMessage'] as String,
+    json['lastUpdateTimeStamp'] as int,
+    json['firstUserDeleteUntil'] as int,
+    json['secondUserDeleteUntil'] as int,
+    (json['users'] as List)?.map((e) => e as int)?.toList(),
   );
 }
 
@@ -353,6 +357,10 @@ Map<String, dynamic> _$ThreadToJson(Thread instance) => <String, dynamic>{
       'secondUserAvatar': instance.secondUserAvatar,
       'secondUserUnseenMessageCount': instance.secondUserUnseenMessageCount,
       'lastMessage': instance.lastMessage,
+      'lastUpdateTimeStamp': instance.lastUpdateTimeStamp,
+      'firstUserDeleteUntil': instance.firstUserDeleteUntil,
+      'secondUserDeleteUntil': instance.secondUserDeleteUntil,
+      'users': instance.users,
     };
 
 Message _$MessageFromJson(Map<String, dynamic> json) {

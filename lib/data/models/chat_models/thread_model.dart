@@ -11,7 +11,15 @@ class Thread {
   String secondUserName;
   String secondUserAvatar;
   int secondUserUnseenMessageCount;
+  @JsonKey(nullable: true)
   String lastMessage;
+  @JsonKey(nullable: true)
+  int lastUpdateTimeStamp;
+  @JsonKey(nullable: true)
+  int firstUserDeleteUntil;
+  @JsonKey(nullable: true)
+  int secondUserDeleteUntil;
+  List<int> users;
 
   Thread(
     this.id,
@@ -24,6 +32,10 @@ class Thread {
     this.secondUserAvatar,
     this.secondUserUnseenMessageCount,
     this.lastMessage,
+    this.lastUpdateTimeStamp,
+    this.firstUserDeleteUntil,
+    this.secondUserDeleteUntil,
+    this.users,
   );
 
   factory Thread.fromJson(Map<String, dynamic> json) => _$ThreadFromJson(json);
@@ -40,5 +52,9 @@ class Thread {
 
   int getUnseenMessageCount(int myId) {
     return myId == firstUserId ? this.firstUserUnseenMessageCount : this.secondUserUnseenMessageCount;
+  }
+
+  DateTime getLocalTime() {
+    return DateTime.fromMillisecondsSinceEpoch(this.lastUpdateTimeStamp).toLocal();
   }
 }

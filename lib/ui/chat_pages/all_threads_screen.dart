@@ -30,7 +30,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
         child: Container(
           padding: EdgeInsets.all(12.0),
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('Threads').snapshots(),
+            stream: FirebaseFirestore.instance.collection('Threads').where("users", arrayContains: _appDataStorage.userData.id).snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Center(
