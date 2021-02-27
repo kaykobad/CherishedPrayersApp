@@ -104,6 +104,7 @@ class _ChatScreenState extends State<ChatScreen> {
           m.toJson(),
         );
       });
+      // TODO: Update last message, unread message counter, timestamp on threads
       listScrollController.animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     } else {
       EasyLoading.showToast('Please type message to send', toastPosition: EasyLoadingToastPosition.bottom, dismissOnTap: true);
@@ -114,6 +115,8 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget buildItem(int index, DocumentSnapshot document) {
     Message m = Message.fromJson(document.data());
 
+    // TODO: Fix date time show issue
+    // TODO: Move sender avatar to right
     if (m.senderId == _myId) {
       // Right (my message)
       return Row(
@@ -300,6 +303,8 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  // TODO: ADD APPBAR
+  // TODO: Implement Push Notification
   @override
   Widget build(BuildContext context) {
     return Scaffold(
