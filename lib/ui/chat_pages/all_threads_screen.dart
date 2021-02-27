@@ -30,7 +30,10 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
         child: Container(
           padding: EdgeInsets.all(12.0),
           child: StreamBuilder(
-            stream: FirebaseFirestore.instance.collection('Threads').where("users", arrayContains: _appDataStorage.userData.id).snapshots(),
+            stream: FirebaseFirestore.instance.collection('Threads')
+                .where("users", arrayContains: _appDataStorage.userData.id)
+                .orderBy("lastUpdateTimeStamp")
+                .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return Center(
@@ -56,6 +59,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
     Thread t = Thread.fromJson(document.data());
     int myId = _appDataStorage.userData.id;
     int unreadMessageCount = t.getUnseenMessageCount(myId);
+    String avatarPath = t.getReceiverAvatar(myId);
 
     return GestureDetector(
       onTap: () {
@@ -66,14 +70,14 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomAvatar(url: t.getReceiverAvatar(myId), size: 60.0),
+              CustomAvatar(url: avatarPath == "" ? null : avatarPath, size: 60.0),
               Flexible(
                 child: Container(
                   child: Column(
                     children: <Widget>[
                       Container(
                         child: Text(
-                          _appDataStorage.userData.firstName,
+                          t.getReceiverName(myId),
                           style: TextStyle(
                             color: ColorConstants.black,
                             fontWeight: FontWeight.w500,
@@ -85,7 +89,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
                       ),
                       Container(
                         child: Text(
-                          t.lastMessage*30,
+                          t.lastMessage,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(color: unreadMessageCount == 0 ? ColorConstants.gray : ColorConstants.black),
