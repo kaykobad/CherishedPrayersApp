@@ -23,6 +23,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  // TODO: Add appbar
   List<QueryDocumentSnapshot> listMessage = new List.from([]);
   AppDataStorage _appDataStorage;
   int _limit = 20;

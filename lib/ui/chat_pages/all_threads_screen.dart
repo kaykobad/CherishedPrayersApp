@@ -15,6 +15,9 @@ class AllThreadsPage extends StatefulWidget {
 }
 
 class _AllThreadsPageState extends State<AllThreadsPage> {
+  // TODO: Add menu popup functionality to delete message
+  // TODO: Add search thread functionality
+  // TODO: Add delete thread functionality
   AppDataStorage _appDataStorage;
 
   @override
