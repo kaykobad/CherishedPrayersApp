@@ -412,6 +412,20 @@ class _ChatScreenState extends State<ChatScreen> {
             return Center(child: CircularProgressIndicator(valueColor: AlwaysStoppedAnimation<Color>(ColorConstants.lightPrimaryColor)));
           } else {
             listMessage.addAll(snapshot.data.docs);
+            // Set my unseen message to zero
+            FirebaseFirestore.instance.runTransaction((transaction) async {
+              var documentReference = FirebaseFirestore.instance
+                  .collection('Threads')
+                  .doc(t.id);
+              if (t.firstUserId == _myId) {
+                transaction.update(documentReference, {'firstUserUnseenMessageCount': 0});
+                t.firstUserUnseenMessageCount = 0;
+              }
+              else {
+                transaction.update(documentReference, {'secondUserUnseenMessageCount': 0});
+                t.secondUserUnseenMessageCount = 0;
+              }
+            });
             return ListView.builder(
               padding: EdgeInsets.all(10.0),
               itemBuilder: (context, index) => buildItem(index, snapshot.data.docs[index]),

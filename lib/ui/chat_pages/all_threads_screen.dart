@@ -32,7 +32,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
           child: StreamBuilder(
             stream: FirebaseFirestore.instance.collection('Threads')
                 .where("users", arrayContains: _appDataStorage.userData.id)
-                .orderBy("lastUpdateTimeStamp")
+                .orderBy("lastUpdateTimeStamp", descending: true)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
