@@ -31,6 +31,7 @@ class _ChatScreenState extends State<ChatScreen> {
   bool isLoading;
   String imageUrl;
   int _myId;
+  Thread t;
 
   final TextEditingController textEditingController = TextEditingController();
   final ScrollController listScrollController = ScrollController();
@@ -52,6 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
     isLoading = false;
     imageUrl = '';
     _myId = _appDataStorage.userData.id;
+    t = widget.thread;
   }
 
   Future getImage() async {
@@ -97,14 +99,31 @@ class _ChatScreenState extends State<ChatScreen> {
           .collection('Messages')
           .doc(sentTime.toString());
 
-      Message m = Message(widget.thread.id, _myId, sentTime, content, type);
+      // Sending message
+      Message m = Message(t.id, _myId, sentTime, content, type);
       FirebaseFirestore.instance.runTransaction((transaction) async {
         transaction.set(
           documentReference,
           m.toJson(),
         );
       });
-      // TODO: Update last message, unread message counter, timestamp on threads
+
+      // Updating thread
+      FirebaseFirestore.instance.runTransaction((transaction) async {
+        var documentReference = FirebaseFirestore.instance
+            .collection('Threads')
+            .doc(t.id);
+        DocumentSnapshot documentSnapShot = await documentReference.get();
+        t = Thread.fromJson(documentSnapShot.data());
+        t.lastUpdateTimeStamp = sentTime;
+        t.lastMessage = type == 0 ? m.message : "Sent and image";
+        if (t.firstUserId == _myId) {
+          t.firstUserUnseenMessageCount = 0;
+          t.secondUserUnseenMessageCount += 1;
+        }
+        transaction.set(documentReference, t.toJson());
+      });
+
       listScrollController.animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     } else {
       EasyLoading.showToast('Please type message to send', toastPosition: EasyLoadingToastPosition.bottom, dismissOnTap: true);
@@ -199,7 +218,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             height: 35.0,
                             padding: EdgeInsets.all(10.0),
                           ),
-                          imageUrl: widget.thread.getReceiverAvatar(_myId),
+                          imageUrl: t.getReceiverAvatar(_myId),
                           width: 35.0,
                           height: 35.0,
                           fit: BoxFit.cover,
@@ -384,7 +403,7 @@ class _ChatScreenState extends State<ChatScreen> {
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Messages')
-            .where("threadId", isEqualTo: widget.thread.id)
+            .where("threadId", isEqualTo: t.id)
             .orderBy('sentDate', descending: true)
             .limit(_limit)
             .snapshots(),
