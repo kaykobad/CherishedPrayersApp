@@ -115,6 +115,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
           ),
           SizedBox(height: 12.0),
           Divider(color: Colors.grey[400], height: 1.0),
+          SizedBox(height: 12.0),
         ],
       ),
     );

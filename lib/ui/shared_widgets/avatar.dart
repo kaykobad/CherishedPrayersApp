@@ -20,7 +20,12 @@ class CustomAvatar extends StatelessWidget {
               ),
               width: size,
               height: size,
-              padding: EdgeInsets.all(2.0),
+              padding: EdgeInsets.all(10.0),
+            ),
+            errorWidget: (_, __, ___) => Icon(
+              Icons.account_circle,
+              size: size,
+              color: ColorConstants.lightPrimaryColor,
             ),
             imageUrl: url,
             width: size,
@@ -28,10 +33,10 @@ class CustomAvatar extends StatelessWidget {
             fit: BoxFit.cover,
           )
           : Icon(
-            Icons.account_circle,
-            size: size,
-            color: ColorConstants.lightPrimaryColor,
-          ),
+              Icons.account_circle,
+              size: size,
+              color: ColorConstants.lightPrimaryColor,
+            ),
       borderRadius: BorderRadius.all(Radius.circular(size/2)),
       clipBehavior: Clip.hardEdge,
     );
