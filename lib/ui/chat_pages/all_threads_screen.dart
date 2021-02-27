@@ -63,7 +63,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
 
     return GestureDetector(
       onTap: () {
-        NavigationHelper.push(context, ChatScreen());
+        NavigationHelper.push(context, ChatScreen(thread: t));
       },
       child: Column(
         children: [

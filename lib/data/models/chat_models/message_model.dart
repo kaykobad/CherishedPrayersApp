@@ -4,7 +4,7 @@ part of models;
 class Message {
   String threadId;
   int senderId;
-  String sentDate;
+  int sentDate;
   String message;
   int type;
 

@@ -367,7 +367,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
   return Message(
     json['threadId'] as String,
     json['senderId'] as int,
-    json['sentDate'] as String,
+    json['sentDate'] as int,
     json['message'] as String,
     json['type'] as int,
   );
