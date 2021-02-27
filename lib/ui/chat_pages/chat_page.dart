@@ -228,11 +228,11 @@ class _ChatScreenState extends State<ChatScreen> {
                     ? Container(
                         child: Text(
                           m.message,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                         ),
                         padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                         width: 200.0,
-                        decoration: BoxDecoration(color: ColorConstants.gray, borderRadius: BorderRadius.circular(8.0)),
+                        decoration: BoxDecoration(color: ColorConstants.backGroundGray, borderRadius: BorderRadius.circular(8.0)),
                         margin: EdgeInsets.only(left: 10.0),
                       )
                     : Container(
@@ -336,18 +336,15 @@ class _ChatScreenState extends State<ChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 8.0),
-          child: Stack(
-            children: <Widget>[
-              Column(
-                children: <Widget>[
-                  buildListMessage(),
-                  buildInput(),
-                ],
-              ),
-            ],
-          ),
+        child: Stack(
+          children: <Widget>[
+            Column(
+              children: <Widget>[
+                buildListMessage(),
+                buildInput(),
+              ],
+            ),
+          ],
         ),
       ),
     );
