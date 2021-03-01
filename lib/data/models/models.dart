@@ -26,6 +26,7 @@ part 'profile_feedback_rating_models/report_bug_request.dart';
 part 'shared_models/error_model.dart';
 part 'shared_models/detail_only_response.dart';
 part 'shared_models/auth_user_response.dart';
+part 'shared_models/generic_user_model.dart';
 
 // Configuration Models
 part 'configurations/country_model.dart';
@@ -38,3 +39,7 @@ part 'configurations/all_religions_response.dart';
 // Chat Models
 part 'chat_models/thread_model.dart';
 part 'chat_models/message_model.dart';
+
+// Friends Models
+part 'friends_models/get_all_friends_response.dart';
+part 'friends_models/single_friend_response.dart';
