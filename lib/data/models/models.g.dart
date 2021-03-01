@@ -716,3 +716,17 @@ Map<String, dynamic> _$GenericPostResponseToJson(
       'post_privacy': instance.postPrivacy,
       'comments': instance.comments,
     };
+
+AllPostsResponse _$AllPostsResponseFromJson(Map<String, dynamic> json) {
+  return AllPostsResponse(
+    (json['posts'] as List)
+        ?.map((e) =>
+            e == null ? null : PostResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$AllPostsResponseToJson(AllPostsResponse instance) =>
+    <String, dynamic>{
+      'posts': instance.posts,
+    };

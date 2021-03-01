@@ -58,3 +58,4 @@ part 'feed_models/post_request.dart';
 part 'feed_models/post_response.dart';
 part 'feed_models/single_comment_response.dart';
 part 'feed_models/generic_post_response.dart';
+part 'feed_models/all_posts_response.dart';
