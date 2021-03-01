@@ -56,3 +56,5 @@ part 'friends_models/get_all_blocked_users_response.dart';
 // Feed Models
 part 'feed_models/post_request.dart';
 part 'feed_models/post_response.dart';
+part 'feed_models/single_comment_response.dart';
+part 'feed_models/generic_post_response.dart';

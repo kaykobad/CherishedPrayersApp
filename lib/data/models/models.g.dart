@@ -645,3 +645,74 @@ Map<String, dynamic> _$PostResponseToJson(PostResponse instance) =>
       'attachment': instance.attachment,
       'post_privacy': instance.postPrivacy,
     };
+
+SingleCommentResponse _$SingleCommentResponseFromJson(
+    Map<String, dynamic> json) {
+  return SingleCommentResponse(
+    json['id'] as int,
+    json['comment'] as String,
+    json['author'] == null
+        ? null
+        : GenericUserResponse.fromJson(json['author'] as Map<String, dynamic>),
+    json['post_id'] as int,
+    json['post_text'] as String,
+    json['date_created'] as String,
+    json['is_edited'] as bool,
+    json['date_edited'] as String,
+    json['attachment'] as String,
+    json['total_likes'] as int,
+  );
+}
+
+Map<String, dynamic> _$SingleCommentResponseToJson(
+        SingleCommentResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'comment': instance.comment,
+      'author': instance.author,
+      'post_id': instance.postId,
+      'post_text': instance.postText,
+      'date_created': instance.dateCreated,
+      'is_edited': instance.isEdited,
+      'date_edited': instance.dateEdited,
+      'attachment': instance.attachment,
+      'total_likes': instance.totalLikes,
+    };
+
+GenericPostResponse _$GenericPostResponseFromJson(Map<String, dynamic> json) {
+  return GenericPostResponse(
+    json['id'] as int,
+    json['post'] as String,
+    json['date_created'] as String,
+    json['is_edited'] as bool,
+    json['date_edited'] as String,
+    json['author'] == null
+        ? null
+        : GenericUserResponse.fromJson(json['author'] as Map<String, dynamic>),
+    json['total_likes'] as int,
+    json['total_comments'] as int,
+    json['attachment'] as String,
+    json['post_privacy'] as String,
+    (json['comments'] as List)
+        ?.map((e) => e == null
+            ? null
+            : SingleCommentResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$GenericPostResponseToJson(
+        GenericPostResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'post': instance.post,
+      'date_created': instance.dateCreated,
+      'is_edited': instance.isEdited,
+      'date_edited': instance.dateEdited,
+      'author': instance.author,
+      'total_likes': instance.totalLikes,
+      'total_comments': instance.totalComments,
+      'attachment': instance.attachment,
+      'post_privacy': instance.postPrivacy,
+      'comments': instance.comments,
+    };
