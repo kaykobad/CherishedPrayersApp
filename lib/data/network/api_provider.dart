@@ -265,4 +265,125 @@ class ApiProvider {
       return DetailOnlyResponse("Error! Something went wrong. please try again later.");
     }
   }
+
+  Future<DetailOnlyResponse> acceptFriendRequest(String authToken, int reqId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.ACCEPT_FRIEND_REQUEST.replaceAll("rid", reqId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
+  Future<DetailOnlyResponse> rejectFriendRequest(String authToken, int reqId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.REJECT_FRIEND_REQUEST.replaceAll("rid", reqId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
+  Future<DetailOnlyResponse> cancelFriendRequest(String authToken, int reqId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.CANCEL_FRIEND_REQUEST.replaceAll("rid", reqId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, GetFriendSuggestionsResponse>> getFriendSuggestions(String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.FRIEND_SUGGESTIONS, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(GetFriendSuggestionsResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, SearchPeopleResponse>> searchPeople(SearchPeopleRequest data, String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.SEARCH_PEOPLE, data: data, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(SearchPeopleResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<DetailOnlyResponse> blockUser(String authToken, int userId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.BLOCK_USER.replaceAll("uid", userId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
+  Future<DetailOnlyResponse> unBlockUser(String authToken, int userId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.UN_BLOCK_USER.replaceAll("uid", userId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, GetAllBlockedUsersResponse>> getBlockedUsers(String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.GET_BLOCKED_USERS, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(GetAllBlockedUsersResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
 }
