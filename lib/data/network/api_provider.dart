@@ -185,4 +185,84 @@ class ApiProvider {
       return Left(ErrorModel("Error! Something went wrong. Please try again later.", [""]));
     }
   }
+
+  // Friends
+  Future<DetailOnlyResponse> sendFriendRequest(String authToken, int userId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.SEND_FRIEND_REQUEST.replaceAll("uid", userId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, GetAllFriendsResponse>> getAllFriends(String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.GET_ALL_FRIENDS, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(GetAllFriendsResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, GetAllSentFriendRequestResponse>> getAllSentFriendRequests(String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.GET_ALL_SENT_REQUEST, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(GetAllSentFriendRequestResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, GetAllReceivedFriendRequestResponse>> getAllReceivedFriendRequests(String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.GET_ALL_RECEIVED_REQUEST, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(GetAllReceivedFriendRequestResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<DetailOnlyResponse> unFriend(String authToken, int userId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.UN_FRIEND.replaceAll("uid", userId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
 }
