@@ -47,3 +47,7 @@ part 'friends_models/single_sent_friend_request_response.dart';
 part 'friends_models/get_all_sent_friend_request_response.dart';
 part 'friends_models/single_received_friend_request_response.dart';
 part 'friends_models/get_all_received_friend_request_response.dart';
+part 'friends_models/get_friend_suggestion_response.dart';
+part 'friends_models/search_people_request.dart';
+part 'friends_models/single_people_response.dart';
+part 'friends_models/search_people_response.dart';

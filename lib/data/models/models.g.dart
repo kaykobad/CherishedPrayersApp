@@ -525,3 +525,64 @@ Map<String, dynamic> _$GetAllReceivedFriendRequestResponseToJson(
     <String, dynamic>{
       'all_received_requests': instance.allReceivedRequests,
     };
+
+GetFriendSuggestionsResponse _$GetFriendSuggestionsResponseFromJson(
+    Map<String, dynamic> json) {
+  return GetFriendSuggestionsResponse(
+    (json['suggestions'] as List)
+        ?.map((e) => e == null
+            ? null
+            : GenericUserResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$GetFriendSuggestionsResponseToJson(
+        GetFriendSuggestionsResponse instance) =>
+    <String, dynamic>{
+      'suggestions': instance.suggestions,
+    };
+
+SearchPeopleRequest _$SearchPeopleRequestFromJson(Map<String, dynamic> json) {
+  return SearchPeopleRequest(
+    json['search_keyword'] as String,
+  );
+}
+
+Map<String, dynamic> _$SearchPeopleRequestToJson(
+        SearchPeopleRequest instance) =>
+    <String, dynamic>{
+      'search_keyword': instance.searchKeyword,
+    };
+
+SinglePeopleResponse _$SinglePeopleResponseFromJson(Map<String, dynamic> json) {
+  return SinglePeopleResponse(
+    json['user'] == null
+        ? null
+        : GenericUserResponse.fromJson(json['user'] as Map<String, dynamic>),
+    json['is_friend'] as bool,
+  );
+}
+
+Map<String, dynamic> _$SinglePeopleResponseToJson(
+        SinglePeopleResponse instance) =>
+    <String, dynamic>{
+      'user': instance.user,
+      'is_friend': instance.isFriend,
+    };
+
+SearchPeopleResponse _$SearchPeopleResponseFromJson(Map<String, dynamic> json) {
+  return SearchPeopleResponse(
+    (json['search_result'] as List)
+        ?.map((e) => e == null
+            ? null
+            : SinglePeopleResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$SearchPeopleResponseToJson(
+        SearchPeopleResponse instance) =>
+    <String, dynamic>{
+      'search_result': instance.searchResult,
+    };
