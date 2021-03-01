@@ -439,6 +439,20 @@ class ApiProvider {
     }
   }
 
+  Future<DetailOnlyResponse> deletePost(String authToken, int postId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.DELETE_POST.replaceAll("pid", postId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
   Future<Either<DetailOnlyResponse, GenericPostResponse>> getPostDetails(String authToken, int postId) async {
     try {
       var response = await _dio.post(ApiEndpoints.POST_DETAILS.replaceAll("pid", postId.toString()), options: Options (
@@ -456,9 +470,91 @@ class ApiProvider {
     }
   }
 
-  Future<DetailOnlyResponse> deletePost(String authToken, int postId) async {
+  Future<DetailOnlyResponse> likePost(String authToken, int postId) async {
     try {
-      var response = await _dio.post(ApiEndpoints.DELETE_POST.replaceAll("pid", postId.toString()), options: Options (
+      var response = await _dio.post(ApiEndpoints.LIKE_POST.replaceAll("pid", postId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, AllPostsResponse>> getMyFeed(String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.MY_FEED, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(AllPostsResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, GenericPostResponse>> addComment(AddCommentRequest data, String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.ADD_COMMENT, data: data, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(GenericPostResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, GenericPostResponse>> updateComment(UpdateCommentRequest data, String authToken, int commentId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.UPDATE_COMMENT.replaceAll("cid", commentId.toString()), data: data, options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(GenericPostResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<Either<DetailOnlyResponse, GenericPostResponse>> deleteComment(String authToken, int commentId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.UPDATE_COMMENT.replaceAll("cid", commentId.toString()), options: Options (
+          headers: {
+            "Authorization" : "Token $authToken",
+          }
+      ));
+      if (response['detail'] != null) {
+        return Left(DetailOnlyResponse.fromJson(response));
+      }
+      return Right(GenericPostResponse.fromJson(response));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(DetailOnlyResponse("Error! Something went wrong. please try again later."));
+    }
+  }
+
+  Future<DetailOnlyResponse> likeComment(String authToken, int commentId) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.LIKE_COMMENT.replaceAll("cid", commentId.toString()), options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }
