@@ -188,6 +188,17 @@ Map<String, dynamic> _$UpdateProfilePictureResponseToJson(
       'avatar': instance.avatar,
     };
 
+ReportBugRequest _$ReportBugRequestFromJson(Map<String, dynamic> json) {
+  return ReportBugRequest(
+    json['bug_information'] as String,
+  );
+}
+
+Map<String, dynamic> _$ReportBugRequestToJson(ReportBugRequest instance) =>
+    <String, dynamic>{
+      'bug_information': instance.bugInformation,
+    };
+
 ErrorModel _$ErrorModelFromJson(Map<String, dynamic> json) {
   return ErrorModel(
     json['error'] as String,

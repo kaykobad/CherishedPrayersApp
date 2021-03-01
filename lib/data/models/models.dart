@@ -20,6 +20,7 @@ part 'profile_feedback_rating_models/update_value_request.dart';
 part 'profile_feedback_rating_models/update_profile_picture_request.dart';
 part 'profile_feedback_rating_models/feedback_request.dart';
 part 'profile_feedback_rating_models/update_profile_picture_response.dart';
+part 'profile_feedback_rating_models/report_bug_request.dart';
 
 // Shared Models
 part 'shared_models/error_model.dart';
