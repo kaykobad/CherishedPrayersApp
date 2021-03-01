@@ -102,6 +102,20 @@ class ApiProvider {
     }
   }
 
+  Future<DetailOnlyResponse> reportBug(ReportBugRequest data, String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.REPORT_BUG, data: data, options: Options (
+        headers: {
+          "Authorization" : "Token $authToken",
+        }
+      ));
+      return DetailOnlyResponse.fromJson(response);
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return DetailOnlyResponse("Error! Something went wrong. please try again later.");
+    }
+  }
+
   // Profile
   Future<UpdateProfilePictureResponse> updateProfilePicture(UpdateProfilePictureRequest data, String authToken) async {
     try {
