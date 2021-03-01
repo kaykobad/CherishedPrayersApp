@@ -52,3 +52,7 @@ part 'friends_models/search_people_request.dart';
 part 'friends_models/single_people_response.dart';
 part 'friends_models/search_people_response.dart';
 part 'friends_models/get_all_blocked_users_response.dart';
+
+// Feed Models
+part 'feed_models/post_request.dart';
+part 'feed_models/post_response.dart';

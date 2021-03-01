@@ -603,3 +603,45 @@ Map<String, dynamic> _$GetAllBlockedUsersResponseToJson(
     <String, dynamic>{
       'blocked_users': instance.blockedUsers,
     };
+
+PostRequest _$PostRequestFromJson(Map<String, dynamic> json) {
+  return PostRequest(
+    json['post'] as String,
+  );
+}
+
+Map<String, dynamic> _$PostRequestToJson(PostRequest instance) =>
+    <String, dynamic>{
+      'post': instance.post,
+    };
+
+PostResponse _$PostResponseFromJson(Map<String, dynamic> json) {
+  return PostResponse(
+    json['id'] as int,
+    json['post'] as String,
+    json['date_created'] as String,
+    json['is_edited'] as bool,
+    json['date_edited'] as String,
+    json['author'] == null
+        ? null
+        : GenericUserResponse.fromJson(json['author'] as Map<String, dynamic>),
+    json['total_likes'] as int,
+    json['total_comments'] as int,
+    json['attachment'] as String,
+    json['post_privacy'] as String,
+  );
+}
+
+Map<String, dynamic> _$PostResponseToJson(PostResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'post': instance.post,
+      'date_created': instance.dateCreated,
+      'is_edited': instance.isEdited,
+      'date_edited': instance.dateEdited,
+      'author': instance.author,
+      'total_likes': instance.totalLikes,
+      'total_comments': instance.totalComments,
+      'attachment': instance.attachment,
+      'post_privacy': instance.postPrivacy,
+    };
