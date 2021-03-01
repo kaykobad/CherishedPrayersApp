@@ -43,3 +43,5 @@ part 'chat_models/message_model.dart';
 // Friends Models
 part 'friends_models/get_all_friends_response.dart';
 part 'friends_models/single_friend_response.dart';
+part 'friends_models/single_sent_friend_request_response.dart';
+part 'friends_models/get_all_sent_friend_request_response.dart';

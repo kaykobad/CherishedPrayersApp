@@ -252,6 +252,32 @@ Map<String, dynamic> _$AuthUserResponseToJson(AuthUserResponse instance) =>
       'avatar': instance.avatar,
     };
 
+GenericUserResponse _$GenericUserResponseFromJson(Map<String, dynamic> json) {
+  return GenericUserResponse(
+    json['id'] as int,
+    json['email'] as String,
+    json['first_name'] as String,
+    json['last_name'] as String,
+    json['country'] as String,
+    json['language'] as String,
+    json['religion'] as String,
+    json['avatar'] as String,
+  );
+}
+
+Map<String, dynamic> _$GenericUserResponseToJson(
+        GenericUserResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'email': instance.email,
+      'first_name': instance.firstName,
+      'last_name': instance.lastName,
+      'country': instance.country,
+      'language': instance.language,
+      'religion': instance.religion,
+      'avatar': instance.avatar,
+    };
+
 CountryModel _$CountryModelFromJson(Map<String, dynamic> json) {
   return CountryModel(
     json['id'] as int,
@@ -390,4 +416,75 @@ Map<String, dynamic> _$MessageToJson(Message instance) => <String, dynamic>{
       'sentDate': instance.sentDate,
       'message': instance.message,
       'type': instance.type,
+    };
+
+GetAllFriendsResponse _$GetAllFriendsResponseFromJson(
+    Map<String, dynamic> json) {
+  return GetAllFriendsResponse(
+    (json['all_friends'] as List)
+        ?.map((e) => e == null
+            ? null
+            : SingleFriendResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$GetAllFriendsResponseToJson(
+        GetAllFriendsResponse instance) =>
+    <String, dynamic>{
+      'all_friends': instance.allFriends,
+    };
+
+SingleFriendResponse _$SingleFriendResponseFromJson(Map<String, dynamic> json) {
+  return SingleFriendResponse(
+    json['friend'] == null
+        ? null
+        : GenericUserResponse.fromJson(json['friend'] as Map<String, dynamic>),
+    json['friend_since'] as String,
+  );
+}
+
+Map<String, dynamic> _$SingleFriendResponseToJson(
+        SingleFriendResponse instance) =>
+    <String, dynamic>{
+      'friend': instance.friend,
+      'friend_since': instance.friendSince,
+    };
+
+SingleSentFriendRequestResponse _$SingleSentFriendRequestResponseFromJson(
+    Map<String, dynamic> json) {
+  return SingleSentFriendRequestResponse(
+    json['id'] as int,
+    json['receiver'] == null
+        ? null
+        : GenericUserResponse.fromJson(
+            json['receiver'] as Map<String, dynamic>),
+    json['request_send_date'] as String,
+  );
+}
+
+Map<String, dynamic> _$SingleSentFriendRequestResponseToJson(
+        SingleSentFriendRequestResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'receiver': instance.receiver,
+      'request_send_date': instance.requestSendDate,
+    };
+
+GetAllSentFriendRequestResponse _$GetAllSentFriendRequestResponseFromJson(
+    Map<String, dynamic> json) {
+  return GetAllSentFriendRequestResponse(
+    (json['all_sent_requests'] as List)
+        ?.map((e) => e == null
+            ? null
+            : SingleSentFriendRequestResponse.fromJson(
+                e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$GetAllSentFriendRequestResponseToJson(
+        GetAllSentFriendRequestResponse instance) =>
+    <String, dynamic>{
+      'all_sent_requests': instance.allSentRequests,
     };
