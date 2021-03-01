@@ -730,3 +730,28 @@ Map<String, dynamic> _$AllPostsResponseToJson(AllPostsResponse instance) =>
     <String, dynamic>{
       'posts': instance.posts,
     };
+
+AddCommentRequest _$AddCommentRequestFromJson(Map<String, dynamic> json) {
+  return AddCommentRequest(
+    json['post_id'] as int,
+    json['comment'] as String,
+  );
+}
+
+Map<String, dynamic> _$AddCommentRequestToJson(AddCommentRequest instance) =>
+    <String, dynamic>{
+      'post_id': instance.postId,
+      'comment': instance.comment,
+    };
+
+UpdateCommentRequest _$UpdateCommentRequestFromJson(Map<String, dynamic> json) {
+  return UpdateCommentRequest(
+    json['comment'] as String,
+  );
+}
+
+Map<String, dynamic> _$UpdateCommentRequestToJson(
+        UpdateCommentRequest instance) =>
+    <String, dynamic>{
+      'comment': instance.comment,
+    };

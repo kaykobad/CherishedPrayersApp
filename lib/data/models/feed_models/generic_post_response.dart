@@ -18,6 +18,7 @@ class GenericPostResponse {
   String attachment;
   @JsonKey(name: 'post_privacy')
   String postPrivacy;
+  @JsonKey(nullable: true)
   List<SingleCommentResponse> comments;
 
   GenericPostResponse(
