@@ -488,3 +488,40 @@ Map<String, dynamic> _$GetAllSentFriendRequestResponseToJson(
     <String, dynamic>{
       'all_sent_requests': instance.allSentRequests,
     };
+
+SingleReceivedFriendRequestResponse
+    _$SingleReceivedFriendRequestResponseFromJson(Map<String, dynamic> json) {
+  return SingleReceivedFriendRequestResponse(
+    json['id'] as int,
+    json['sender'] == null
+        ? null
+        : GenericUserResponse.fromJson(json['sender'] as Map<String, dynamic>),
+    json['request_send_date'] as String,
+  );
+}
+
+Map<String, dynamic> _$SingleReceivedFriendRequestResponseToJson(
+        SingleReceivedFriendRequestResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'sender': instance.sender,
+      'request_send_date': instance.requestSendDate,
+    };
+
+GetAllReceivedFriendRequestResponse
+    _$GetAllReceivedFriendRequestResponseFromJson(Map<String, dynamic> json) {
+  return GetAllReceivedFriendRequestResponse(
+    (json['all_received_requests'] as List)
+        ?.map((e) => e == null
+            ? null
+            : SingleReceivedFriendRequestResponse.fromJson(
+                e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$GetAllReceivedFriendRequestResponseToJson(
+        GetAllReceivedFriendRequestResponse instance) =>
+    <String, dynamic>{
+      'all_received_requests': instance.allReceivedRequests,
+    };
