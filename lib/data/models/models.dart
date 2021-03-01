@@ -51,3 +51,4 @@ part 'friends_models/get_friend_suggestion_response.dart';
 part 'friends_models/search_people_request.dart';
 part 'friends_models/single_people_response.dart';
 part 'friends_models/search_people_response.dart';
+part 'friends_models/get_all_blocked_users_response.dart';

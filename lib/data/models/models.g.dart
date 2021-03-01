@@ -586,3 +586,20 @@ Map<String, dynamic> _$SearchPeopleResponseToJson(
     <String, dynamic>{
       'search_result': instance.searchResult,
     };
+
+GetAllBlockedUsersResponse _$GetAllBlockedUsersResponseFromJson(
+    Map<String, dynamic> json) {
+  return GetAllBlockedUsersResponse(
+    (json['blocked_users'] as List)
+        ?.map((e) => e == null
+            ? null
+            : GenericUserResponse.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
+}
+
+Map<String, dynamic> _$GetAllBlockedUsersResponseToJson(
+        GetAllBlockedUsersResponse instance) =>
+    <String, dynamic>{
+      'blocked_users': instance.blockedUsers,
+    };
