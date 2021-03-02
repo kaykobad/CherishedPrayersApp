@@ -440,11 +440,16 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget buildListMessage() {
+    int deletedUntil;
+    if (t.firstUserId == _myId) deletedUntil = t.firstUserDeleteUntil ?? 0;
+    else deletedUntil = t.secondUserDeleteUntil ?? 0;
+
     return Flexible(
       child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('Messages')
             .where("threadId", isEqualTo: t.id)
+            .where("sentDate", isGreaterThan: deletedUntil)
             .orderBy('sentDate', descending: true)
             .limit(_limit)
             .snapshots(),
