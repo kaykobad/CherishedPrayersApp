@@ -19,6 +19,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
   // TODO: Add search thread functionality
   // TODO: Add delete thread functionality
   AppDataStorage _appDataStorage;
+  List<QueryDocumentSnapshot> threadList = new List.from([]);
 
   @override
   void initState() {
@@ -45,6 +46,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
                   ),
                 );
               } else {
+                threadList.addAll(snapshot.data.docs);
                 return ListView.builder(
                   padding: EdgeInsets.all(10.0),
                   itemBuilder: (context, index) => buildItem(snapshot.data.docs[index]),
@@ -65,6 +67,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
     String avatarPath = t.getReceiverAvatar(myId);
 
     return GestureDetector(
+      behavior: HitTestBehavior.translucent,
       onTap: () {
         NavigationHelper.push(context, ChatScreen(thread: t));
       },
