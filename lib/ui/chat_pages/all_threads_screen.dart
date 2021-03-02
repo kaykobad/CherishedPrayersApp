@@ -165,7 +165,16 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
                 badgeContent: Text('$unreadMessageCount', style: TextStyle(color: Colors.white)),
               ),
               SizedBox(width: 4.0),
-              Icon(Icons.more_vert, color: ColorConstants.lightPrimaryColor),
+              PopupMenuButton(
+                itemBuilder: (_) => [
+                  PopupMenuItem(child: Text("Delete Chat"), value: t.id),
+                ],
+                onSelected: (value) {
+                  print("$value Chat deleted!");
+                  _showDeleteDialog();
+                },
+                icon: Icon(Icons.more_vert, color: ColorConstants.lightPrimaryColor),
+              ),
             ],
           ),
           SizedBox(height: 12.0),
@@ -173,6 +182,33 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
           SizedBox(height: 12.0),
         ],
       ),
+    );
+  }
+
+  _showDeleteDialog() {
+    return showDialog(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Chat'),
+          content: Text("Are you sure you want to delete chat?"),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel', style: TextStyle(color: ColorConstants.lightPrimaryColor)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Delete', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }
