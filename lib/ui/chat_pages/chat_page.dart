@@ -4,7 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cherished_prayers/constants/asset_constants.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +57,41 @@ class _ChatScreenState extends State<ChatScreen> {
     imageUrl = '';
     _myId = _appDataStorage.userData.id;
     t = widget.thread;
+  }
+
+  AppBar _getAppbarWithAvatar() {
+    return AppBar(
+      title: RichText(
+        text: TextSpan(
+          text: "With ",
+          style: TextStyle(
+            fontWeight: FontWeight.w400,
+            color: ColorConstants.black,
+            fontSize: 18,
+          ),
+          children: [
+            TextSpan(
+              text: t.getReceiverName(_myId),
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                color: ColorConstants.gray,
+                fontSize: 16,
+              ),
+            ),
+          ],
+        ),
+      ),
+      centerTitle: true,
+      backgroundColor: ColorConstants.white,
+      elevation: 0,
+      iconTheme: IconThemeData(color: ColorConstants.lightPrimaryColor),
+      actions: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: CustomAvatar(url: _appDataStorage.userData.avatar == null ? null : ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar, size: 36),
+        ),
+      ],
+    );
   }
 
   Future getImage() async {
@@ -331,11 +368,10 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  // TODO: ADD APPBAR
-  // TODO: Implement Push Notification
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: _getAppbarWithAvatar(),
       body: SafeArea(
         child: Stack(
           children: <Widget>[
