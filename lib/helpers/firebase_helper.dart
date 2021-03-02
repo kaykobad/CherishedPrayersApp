@@ -2,6 +2,7 @@ import 'package:cherished_prayers/data/models/chat_models/chat_user_data.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 const String USER_COLLECTION = "Users";
 const String THREAD_COLLECTION = "Threads";
@@ -99,4 +100,12 @@ void updateThreadAvatar(ChatUserData userData) async {
       t = null;
     });
   }
+}
+
+int getCurrentTimeStamp() {
+  return DateTime.now().toUtc().millisecondsSinceEpoch;
+}
+
+String getLocalDateTimeFromTimeStamp(int timeStamp) {
+  return DateFormat('dd/MM/yy hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(timeStamp).toLocal()).toString();
 }

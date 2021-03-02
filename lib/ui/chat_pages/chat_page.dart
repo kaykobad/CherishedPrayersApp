@@ -12,8 +12,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 
 class ChatScreen extends StatefulWidget {
   final Thread thread;
@@ -25,7 +25,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  // TODO: Add appbar
   List<QueryDocumentSnapshot> listMessage = new List.from([]);
   AppDataStorage _appDataStorage;
   int _limit = 20;
@@ -110,7 +109,7 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future uploadFile() async {
-    String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    String fileName = getCurrentTimeStamp().toString();
     Reference reference = FirebaseStorage.instance.ref().child(fileName);
     UploadTask uploadTask = reference.putFile(imageFile);
     (await uploadTask).ref.getDownloadURL().then((downloadUrl) {
@@ -130,7 +129,7 @@ class _ChatScreenState extends State<ChatScreen> {
   void onSendMessage(String content, int type) {
     // type: 0 = text, 1 = image
     if (content.trim() != '') {
-      int sentTime = DateTime.now().toUtc().millisecondsSinceEpoch;
+      int sentTime = getCurrentTimeStamp();
       textEditingController.clear();
 
       var documentReference = FirebaseFirestore.instance
@@ -180,7 +179,7 @@ class _ChatScreenState extends State<ChatScreen> {
           Padding(
             padding: const EdgeInsets.only(right: 15.0),
             child: Text(
-              DateFormat('dd/MM/yy hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(m.sentDate)).toString(),
+              getLocalDateTimeFromTimeStamp(m.sentDate),
               style: TextStyle(fontSize: 10.0, color: ColorConstants.gray),
             ),
           ),
@@ -256,7 +255,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Padding(
               padding: const EdgeInsets.only(left: 15.0),
               child: Text(
-                DateFormat('dd/MM/yy hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(m.sentDate)).toString(),
+                getLocalDateTimeFromTimeStamp(m.sentDate),
                 style: TextStyle(fontSize: 10.0, color: ColorConstants.gray),
               ),
             ),
