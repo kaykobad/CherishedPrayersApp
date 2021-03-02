@@ -1,11 +1,13 @@
 import 'package:badges/badges.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/chat_pages/chat_page.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -16,7 +18,6 @@ class AllThreadsPage extends StatefulWidget {
 }
 
 class _AllThreadsPageState extends State<AllThreadsPage> {
-  // TODO: Add menu popup functionality to delete message
   // TODO: Add delete thread functionality
   AppDataStorage _appDataStorage;
   int _myId;
@@ -111,6 +112,13 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
 
   Widget buildItem(DocumentSnapshot document) {
     Thread t = Thread.fromJson(document.data());
+
+    // check if this thread is deleted
+    if (t.firstUserId == _myId && (t.lastUpdateTimeStamp ?? 0) <= (t.firstUserDeleteUntil ?? 0))
+      return Container();
+    else if (t.secondUserId == _myId && (t.lastUpdateTimeStamp ?? 0) <= (t.secondUserDeleteUntil ?? 0))
+      return Container();
+
     int myId = _appDataStorage.userData.id;
     int unreadMessageCount = t.getUnseenMessageCount(myId);
     String avatarPath = t.getReceiverAvatar(myId);
@@ -167,11 +175,11 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
               SizedBox(width: 4.0),
               PopupMenuButton(
                 itemBuilder: (_) => [
-                  PopupMenuItem(child: Text("Delete Chat"), value: t.id),
+                  PopupMenuItem(child: Text("Delete Chat"), value: t),
                 ],
                 onSelected: (value) {
                   print("$value Chat deleted!");
-                  _showDeleteDialog();
+                  _showDeleteDialog(value);
                 },
                 icon: Icon(Icons.more_vert, color: ColorConstants.lightPrimaryColor),
               ),
@@ -185,7 +193,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
     );
   }
 
-  _showDeleteDialog() {
+  _showDeleteDialog(Thread t) {
     return showDialog(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -203,6 +211,10 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
             TextButton(
               child: Text('Delete', style: TextStyle(color: Colors.red)),
               onPressed: () {
+                var data;
+                if (t.firstUserId == _myId) data = {"firstUserDeleteUntil": getCurrentTimeStamp(), "firstUserUnseenMessageCount": 0};
+                else data = {"secondUserDeleteUntil": getCurrentTimeStamp(), "secondUserUnseenMessageCount": 0};
+                FirebaseFirestore.instance.collection('Threads').doc(t.id).update(data);
                 Navigator.of(context).pop();
               },
             ),
