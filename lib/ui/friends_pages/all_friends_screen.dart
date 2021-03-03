@@ -22,6 +22,7 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
   int _myId;
   FriendsBloc _friendsBloc;
   List<SingleFriendResponse> _friends = [];
+  List<SingleFriendResponse> _showAbleFriends = [];
   StreamSubscription<FriendsState> _friendsBlocListener;
 
   @override
@@ -55,6 +56,7 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
         await EasyLoading.dismiss();
         setState(() {
           _friends = state.friends.allFriends;
+          _showAbleFriends = state.friends.allFriends;
         });
       }
     });
@@ -119,18 +121,11 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
           ),
         ),
         suggestionsCallback: (pattern) async {
-          print("Hello");
-          return null;
-          // return threadList.where((element) {
-          //   Thread temp = Thread.fromJson(element.data());
-          //   return temp.getReceiverName(_myId).toLowerCase().contains(pattern.toLowerCase());
-          // }).toList();
+          _showAbleFriends = _friends.where((element) => element.friend.firstName.toLowerCase().contains(pattern.toLowerCase())).toList();
+          return _showAbleFriends;
         },
         itemBuilder: (context, suggestion) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6.0),
-            child: Container(),
-          );
+          return buildItem(suggestion.friend);
         },
         onSuggestionSelected: (suggestion) {
           // NavigationHelper.push(context, ChatScreen(thread: Thread.fromJson(suggestion.doc)));
@@ -206,7 +201,6 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
       ],
     );
   }
-
 
   _showUnFriendDialog(GenericUserResponse user) {
     return showDialog(
