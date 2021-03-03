@@ -3,6 +3,7 @@ import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/chat_pages/all_threads_screen.dart';
+import 'package:cherished_prayers/ui/friends_pages/all_friends_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_page.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cherished_prayers/ui/shared_widgets/drawer.dart';
@@ -25,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Text('Index 0: Feed', style: optionStyle),
     AllThreadsPage(),
     Text('Index 2: Stories', style: optionStyle),
-    Text('Index 3: Friends', style: optionStyle),
+    AllFriendsScreen(),
     ProfileScreen(),
   ];
   static const List<String> _titles = ['Feed', 'Chat', 'Stories', 'Friends', 'Profile'];
@@ -61,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   AppBar _getAppBar() {
-    if (_selectedIndex == 1) return _getAppbarWithAvatar();
+    if (_selectedIndex == 1 || _selectedIndex == 3) return _getAppbarWithAvatar();
     else if (_selectedIndex == 4) return _getAppbarWithImage();
     return _getGeneralAppBar();
   }

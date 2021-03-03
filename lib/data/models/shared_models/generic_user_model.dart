@@ -27,4 +27,15 @@ class GenericUserResponse {
   factory GenericUserResponse.fromJson(Map<String, dynamic> json) => _$GenericUserResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$GenericUserResponseToJson(this);
+
+  GenericUserResponse.fromAuthUser(AuthUserResponse user) {
+    this.id = user.id;
+    this.email = user.email;
+    this.firstName = user.firstName;
+    this.lastName = user.lastName;
+    this.country = user.country;
+    this.language = user.language;
+    this.religion = user.religion;
+    this.avatar = user.avatar;
+  }
 }

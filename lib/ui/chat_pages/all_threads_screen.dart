@@ -7,7 +7,6 @@ import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/chat_pages/chat_page.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -18,7 +17,6 @@ class AllThreadsPage extends StatefulWidget {
 }
 
 class _AllThreadsPageState extends State<AllThreadsPage> {
-  // TODO: Add delete thread functionality
   AppDataStorage _appDataStorage;
   int _myId;
   List<QueryDocumentSnapshot> threadList = new List.from([]);
