@@ -1,0 +1,25 @@
+import 'package:bloc/bloc.dart';
+import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/theme/app_config.dart';
+import 'package:dartz/dartz.dart';
+
+import 'friends_event.dart';
+import 'friends_state.dart';
+
+class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
+  FriendsBloc(FriendsState initialState) : super(initialState);
+
+  @override
+  Stream<FriendsState> mapEventToState(FriendsEvent event) async* {
+    if (event is FetchAllFriendsEvent) {
+      yield LoadingFriendsState();
+      Either<DetailOnlyResponse, GetAllFriendsResponse> _response = await apiProvider.getAllFriends(event.authToken);
+
+      yield _response.fold(
+          (failure) => ErrorState(ErrorModel(failure.detail, [""])),
+          (success) => AllFriendsFetchedState(success),
+      );
+    }
+  }
+
+}

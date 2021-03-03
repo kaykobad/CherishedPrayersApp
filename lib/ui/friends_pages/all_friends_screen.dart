@@ -1,9 +1,15 @@
+import 'dart:async';
+
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
+import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_event.dart';
+import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_state.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class AllFriendsScreen extends StatefulWidget {
@@ -14,13 +20,46 @@ class AllFriendsScreen extends StatefulWidget {
 class _AllFriendsScreenState extends State<AllFriendsScreen> {
   AppDataStorage _appDataStorage;
   int _myId;
+  FriendsBloc _friendsBloc;
+  List<SingleFriendResponse> _friends = [];
+  StreamSubscription<FriendsState> _friendsBlocListener;
 
   @override
   void initState() {
     super.initState();
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
+    _friendsBloc = _appDataStorage.friendsBloc;
     _myId = _appDataStorage.userData.id;
+    _friendsBloc.add(FetchAllFriendsEvent(_appDataStorage.authToken));
+    _listenFriendsBloc();
   }
+
+  @override
+  dispose() {
+    _friendsBlocListener?.cancel();
+    super.dispose();
+  }
+
+  _listenFriendsBloc() {
+    _friendsBlocListener = _friendsBloc.listen((state) async {
+      if (state is LoadingFriendsState) {
+        EasyLoading.show(
+          status: "Loading...",
+        );
+      } else if (state is ErrorState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showError(
+            state.error.error + '\n' + state.error.details.join(' ')
+        );
+      } else if (state is AllFriendsFetchedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          _friends = state.friends.allFriends;
+        });
+      }
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -46,10 +85,11 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
                 SizedBox(height: 12.0),
                 Divider(color: Colors.grey[400], height: 1.0),
                 SizedBox(height: 12.0),
-                buildItem(GenericUserResponse.fromAuthUser(_appDataStorage.userData)),
-                buildItem(GenericUserResponse.fromAuthUser(_appDataStorage.userData)),
-                buildItem(GenericUserResponse.fromAuthUser(_appDataStorage.userData)),
-                buildItem(GenericUserResponse.fromAuthUser(_appDataStorage.userData)),
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) => buildItem(_friends[index].friend),
+                  itemCount: _friends.length,
+                ),
               ],
             ),
           ),

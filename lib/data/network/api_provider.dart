@@ -203,7 +203,7 @@ class ApiProvider {
 
   Future<Either<DetailOnlyResponse, GetAllFriendsResponse>> getAllFriends(String authToken) async {
     try {
-      var response = await _dio.post(ApiEndpoints.GET_ALL_FRIENDS, options: Options (
+      var response = await _dio.get(ApiEndpoints.GET_ALL_FRIENDS, options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }

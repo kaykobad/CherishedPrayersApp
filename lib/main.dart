@@ -5,6 +5,7 @@ import 'package:cherished_prayers/theme/app_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
 import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
 import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_state.dart';
+import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'ui/friends_pages/firends_bloc/friends_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,11 +60,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   AuthBloc authBloc;
+  FriendsBloc friendsBloc;
 
   @override
   void initState() {
     super.initState();
     authBloc = AuthBloc(InitialAuthState());
+    friendsBloc = FriendsBloc(InitialFriendsState());
     themeManager.addListener(() {
       setState(() {});
     });
@@ -70,13 +75,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     authBloc?.close();
+    friendsBloc?.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => AppDataStorage(widget.packageName, authBloc),
+      create: (context) => AppDataStorage(widget.packageName, authBloc, friendsBloc),
       child: MaterialApp(
         title: StringConstants.APP_NAME,
         debugShowCheckedModeBanner: false,
