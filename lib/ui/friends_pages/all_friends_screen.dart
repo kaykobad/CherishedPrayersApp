@@ -1,9 +1,13 @@
 import 'dart:async';
 
 import 'package:cherished_prayers/constants/color_constants.dart';
+import 'package:cherished_prayers/data/models/chat_models/chat_user_data.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
+import 'package:cherished_prayers/helpers/firebase_helper.dart';
+import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/chat_pages/chat_page.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_event.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_state.dart';
@@ -184,8 +188,10 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
                 Icons.email_outlined,
                 color: ColorConstants.lightPrimaryColor,
               ),
-              onTap: () {
+              onTap: () async {
                 print("Message");
+                Thread t = await getThread(ChatUserData.fromGenericUserData(user), ChatUserData.fromAuthUserData(_appDataStorage.userData));
+                NavigationHelper.push(context, ChatScreen(thread: t));
               },
             ),
             PopupMenuButton(
@@ -234,5 +240,4 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
       },
     );
   }
-
 }

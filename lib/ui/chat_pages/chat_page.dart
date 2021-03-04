@@ -157,6 +157,9 @@ class _ChatScreenState extends State<ChatScreen> {
         if (t.firstUserId == _myId) {
           t.firstUserUnseenMessageCount = 0;
           t.secondUserUnseenMessageCount += 1;
+        } else {
+          t.firstUserUnseenMessageCount += 1;
+          t.secondUserUnseenMessageCount = 0;
         }
         transaction.set(documentReference, t.toJson());
       });

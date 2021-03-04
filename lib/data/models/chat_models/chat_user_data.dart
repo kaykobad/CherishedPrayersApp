@@ -10,4 +10,10 @@ class ChatUserData {
     this.name = userData.firstName;
     this.avatar = userData.avatar;
   }
+
+  ChatUserData.fromGenericUserData(GenericUserResponse userData) {
+    this.id = userData.id;
+    this.name = userData.firstName;
+    this.avatar = userData.avatar;
+  }
 }
