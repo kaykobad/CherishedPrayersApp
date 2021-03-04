@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_event.dart';
@@ -58,10 +59,15 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
           _friends = state.friends.allFriends;
           _showAbleFriends = state.friends.allFriends;
         });
+      } else if (state is UnFriendSuccessState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("Unfriend successful");
+        _friends.removeWhere((element) => element.friend.id == state.userId);
+        _showAbleFriends.removeWhere((element) => element.friend.id == state.userId);
+        setState(() {});
       }
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -134,14 +140,13 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
     );
   }
 
-
   Widget buildItem(GenericUserResponse user) {
     return Column(
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomAvatar(url: user.avatar == "" ? null : user.avatar, size: 60.0),
+            CustomAvatar(url: (user.avatar == "" || user.avatar == null) ? null : ApiEndpoints.URL_ROOT + user.avatar, size: 60.0),
             Flexible(
               child: Container(
                 child: Column(
@@ -220,8 +225,8 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
             TextButton(
               child: Text('Unfriend', style: TextStyle(color: Colors.red)),
               onPressed: () {
-                print("Unfriend Done!");
                 Navigator.of(context).pop();
+                _friendsBloc.add(UnFriendEvent(_appDataStorage.authToken, user.id));
               },
             ),
           ],
