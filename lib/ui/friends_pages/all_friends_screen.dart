@@ -191,7 +191,12 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
               onTap: () async {
                 print("Message");
                 Thread t = await getThread(ChatUserData.fromGenericUserData(user), ChatUserData.fromAuthUserData(_appDataStorage.userData));
-                NavigationHelper.push(context, ChatScreen(thread: t));
+                if (t == null) {
+                  EasyLoading.showError("Something went wrong.");
+                }
+                else {
+                  NavigationHelper.push(context, ChatScreen(thread: t));
+                }
               },
             ),
             PopupMenuButton(

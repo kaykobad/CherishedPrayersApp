@@ -15,6 +15,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'full_photo_view.dart';
+
 class ChatScreen extends StatefulWidget {
   final Thread thread;
 
@@ -236,10 +238,11 @@ class _ChatScreenState extends State<ChatScreen> {
                         borderRadius: BorderRadius.all(Radius.circular(8.0)),
                         clipBehavior: Clip.hardEdge,
                       ),
-                      // onPressed: () {
-                      //   Navigator.push(context,
-                      //       MaterialPageRoute(builder: (context) => FullPhoto(url: document.data()['content'])));
-                      // },
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => FullPhoto(url: m.message)),
+                        );
+                      },
                       padding: EdgeInsets.all(0),
                     ),
                     margin: EdgeInsets.only(bottom: isLastMessageRight(index) ? 20.0 : 10.0, right: 10.0),
@@ -311,12 +314,11 @@ class _ChatScreenState extends State<ChatScreen> {
                           borderRadius: BorderRadius.all(Radius.circular(8.0)),
                           clipBehavior: Clip.hardEdge,
                         ),
-                        // onPressed: () {
-                        //   Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //           builder: (context) => FullPhoto(url: document.data()['content'])));
-                        // },
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) => FullPhoto(url: m.message)),
+                          );
+                        },
                         padding: EdgeInsets.all(0),
                       ),
                       margin: EdgeInsets.only(left: 10.0),

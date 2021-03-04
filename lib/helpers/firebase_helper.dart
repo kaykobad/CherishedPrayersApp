@@ -48,7 +48,7 @@ Future<Thread> getThread(ChatUserData user1, ChatUserData user2) async {
 
   if (documents.length == 0) {
     t = Thread(threadId, user1.id, user1.name, user1.avatar, 0, user2.id, user2.name, user2.avatar, 0, "", 0, 0, 0, [user1.id, user2.id]);
-    FirebaseFirestore.instance.collection(THREAD_COLLECTION)
+    await FirebaseFirestore.instance.collection(THREAD_COLLECTION)
       .doc(threadId).set(t.toJson())
       .then((value) {
         print("New thread added to firebase");
@@ -58,7 +58,7 @@ Future<Thread> getThread(ChatUserData user1, ChatUserData user2) async {
         t = null;
       });
   } else {
-    FirebaseFirestore.instance.collection(THREAD_COLLECTION)
+    await FirebaseFirestore.instance.collection(THREAD_COLLECTION)
       .doc(threadId).get()
       .then((value) {
         print("Thread data got from firebase");
