@@ -12,6 +12,7 @@ import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dar
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_event.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_state.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
+import 'package:cherished_prayers/ui/shared_widgets/button_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -106,6 +107,13 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
             ),
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add, color: ColorConstants.white, size: 30),
+        backgroundColor: ColorConstants.lightPrimaryColor,
+        onPressed: () {
+          print("Gello");
+        },
       ),
     );
   }
