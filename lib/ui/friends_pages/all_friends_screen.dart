@@ -11,8 +11,8 @@ import 'package:cherished_prayers/ui/chat_pages/chat_page.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_event.dart';
 import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_state.dart';
+import 'package:cherished_prayers/ui/friends_pages/freiend_suggestion_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
-import 'package:cherished_prayers/ui/shared_widgets/button_with_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -25,7 +25,6 @@ class AllFriendsScreen extends StatefulWidget {
 
 class _AllFriendsScreenState extends State<AllFriendsScreen> {
   AppDataStorage _appDataStorage;
-  int _myId;
   FriendsBloc _friendsBloc;
   List<SingleFriendResponse> _friends = [];
   List<SingleFriendResponse> _showAbleFriends = [];
@@ -36,7 +35,6 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
     super.initState();
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _friendsBloc = _appDataStorage.friendsBloc;
-    _myId = _appDataStorage.userData.id;
     _friendsBloc.add(FetchAllFriendsEvent(_appDataStorage.authToken));
     _listenFriendsBloc();
   }
@@ -112,7 +110,7 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
         child: Icon(Icons.add, color: ColorConstants.white, size: 30),
         backgroundColor: ColorConstants.lightPrimaryColor,
         onPressed: () {
-          print("Gello");
+          NavigationHelper.push(context, FriendsScreen());
         },
       ),
     );
@@ -145,9 +143,7 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
         itemBuilder: (context, suggestion) {
           return buildItem(suggestion.friend);
         },
-        onSuggestionSelected: (suggestion) {
-          // NavigationHelper.push(context, ChatScreen(thread: Thread.fromJson(suggestion.doc)));
-        },
+        onSuggestionSelected: (suggestion) {},
       ),
     );
   }
