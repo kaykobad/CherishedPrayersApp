@@ -79,6 +79,18 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         setState(() {
           _receivedRequests = state.receivedRequests.allReceivedRequests;
         });
+      } else if (state is AcceptRequestSuccessState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("Friend request accepted. Person added to your friend list.");
+        setState(() {
+          _receivedRequests.removeWhere((element) => element.id == state.reqId);
+        });
+      } else if (state is RejectRequestSuccessState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("Friend request rejected.");
+        setState(() {
+          _receivedRequests.removeWhere((element) => element.id == state.reqId);
+        });
       }
     });
   }
@@ -305,7 +317,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         children: [
           _getButton(
             () {
-              print("Accept");
+              int _reqId = _receivedRequests.where((element) => element.sender.id == user.id).first.id;
+              _friendsBloc.add(AcceptFriendRequestEvent(_authToken, _reqId));
             },
             "Accept",
             isFilled: true,
@@ -313,7 +326,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
           SizedBox(width: 6.0),
           _getButton(
             () {
-              print("decline");
+              int _reqId = _receivedRequests.where((element) => element.sender.id == user.id).first.id;
+              _friendsBloc.add(RejectFriendRequestEvent(_authToken, _reqId));
             },
             "Decline",
           ),
