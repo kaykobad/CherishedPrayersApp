@@ -30,6 +30,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   String _authToken;
   StreamSubscription<FriendsState> _friendsBlocListener;
   List<SingleSentFriendRequestResponse> _sentRequests = [];
+  List<SingleReceivedFriendRequestResponse> _receivedRequests = [];
 
   @override
   void initState() {
@@ -44,9 +45,11 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         _selectedIndex = _tabController.index;
         print(_selectedIndex);
       });
+
+      if (_selectedIndex == 1) _friendsBloc.add(FetchSentRequestsEvent(_authToken));
+      else if (_selectedIndex == 2) _friendsBloc.add(FetchReceivedRequestsEvent(_authToken));
     });
     _listenFriendsBloc();
-    _friendsBloc.add(FetchSentRequestsEvent(_authToken));
   }
 
   _listenFriendsBloc() {
@@ -70,6 +73,11 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         EasyLoading.showSuccess("Friend request cancelled.");
         setState(() {
           _sentRequests.removeWhere((element) => element.id == state.reqId);
+        });
+      } else if (state is ReceivedRequestsFetchedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          _receivedRequests = state.receivedRequests.allReceivedRequests;
         });
       }
     });
@@ -175,7 +183,26 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   Widget _getReceivedRequestPage() {
     return Column(
       children: [
-        Text("Hello 3"),
+        _getSearchWidget(),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Invitations List",
+            style: TextStyle(
+              color: ColorConstants.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        SizedBox(height: 12.0),
+        Divider(color: Colors.grey[400], height: 1.0),
+        SizedBox(height: 12.0),
+        ListView.builder(
+          shrinkWrap: true,
+          itemBuilder: (context, index) => buildItem(_receivedRequests[index].sender),
+          itemCount: _receivedRequests.length,
+        ),
       ],
     );
   }
@@ -269,6 +296,27 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
           _friendsBloc.add(CancelFriendRequestEvent(_authToken, _reqId));
         },
         "Cancel",);
+    }
+    else if (_selectedIndex == 2) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _getButton(
+            () {
+              print("Accept");
+            },
+            "Accept",
+            isFilled: true,
+          ),
+          SizedBox(width: 6.0),
+          _getButton(
+            () {
+              print("decline");
+            },
+            "Decline",
+          ),
+        ],
+      );
     }
     return Container();
   }

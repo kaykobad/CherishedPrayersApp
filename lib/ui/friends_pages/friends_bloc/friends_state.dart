@@ -60,3 +60,12 @@ class SentRequestsFetchedState extends FriendsState {
   @override
   List<Object> get props => [senRequests];
 }
+
+class ReceivedRequestsFetchedState extends FriendsState {
+  final GetAllReceivedFriendRequestResponse receivedRequests;
+
+  ReceivedRequestsFetchedState(this.receivedRequests);
+
+  @override
+  List<Object> get props => [receivedRequests];
+}

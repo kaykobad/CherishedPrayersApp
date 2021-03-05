@@ -237,7 +237,7 @@ class ApiProvider {
 
   Future<Either<DetailOnlyResponse, GetAllReceivedFriendRequestResponse>> getAllReceivedFriendRequests(String authToken) async {
     try {
-      var response = await _dio.post(ApiEndpoints.GET_ALL_RECEIVED_REQUEST, options: Options (
+      var response = await _dio.get(ApiEndpoints.GET_ALL_RECEIVED_REQUEST, options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }
