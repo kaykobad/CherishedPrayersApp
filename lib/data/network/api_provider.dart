@@ -310,7 +310,7 @@ class ApiProvider {
 
   Future<Either<DetailOnlyResponse, GetFriendSuggestionsResponse>> getFriendSuggestions(String authToken) async {
     try {
-      var response = await _dio.post(ApiEndpoints.FRIEND_SUGGESTIONS, options: Options (
+      var response = await _dio.get(ApiEndpoints.FRIEND_SUGGESTIONS, options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }

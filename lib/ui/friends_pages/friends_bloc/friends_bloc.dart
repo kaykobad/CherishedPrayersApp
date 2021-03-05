@@ -53,6 +53,18 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
       DetailOnlyResponse _response = await apiProvider.rejectFriendRequest(event.authToken, event.reqId);
       if (_response.detail.startsWith("Success")) yield RejectRequestSuccessState(event.reqId);
       else yield ErrorState(ErrorModel(_response.detail, [""]));
+    } else if (event is FetchFriendSuggestionEvent) {
+      yield LoadingFriendsState();
+      Either<DetailOnlyResponse, GetFriendSuggestionsResponse> _response = await apiProvider.getFriendSuggestions(event.authToken);
+      yield _response.fold(
+          (failure) => ErrorState(ErrorModel(failure.detail, [""])),
+          (success) => FriendSuggestionFetchedState(success),
+      );
+    } else if (event is SendFriendRequestEvent) {
+      yield LoadingFriendsState();
+      DetailOnlyResponse _response = await apiProvider.sendFriendRequest(event.authToken, event.userId);
+      if (_response.detail.startsWith("Success")) yield FriendRequestSentState(event.userId);
+      else yield ErrorState(ErrorModel(_response.detail, [""]));
     }
   }
 

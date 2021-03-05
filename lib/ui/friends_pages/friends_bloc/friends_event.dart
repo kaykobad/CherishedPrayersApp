@@ -71,3 +71,22 @@ class RejectFriendRequestEvent extends FriendsEvent {
   @override
   List<Object> get props => [authToken, reqId];
 }
+
+class FetchFriendSuggestionEvent extends FriendsEvent {
+  final String authToken;
+
+  FetchFriendSuggestionEvent(this.authToken);
+
+  @override
+  List<Object> get props => [authToken];
+}
+
+class SendFriendRequestEvent extends FriendsEvent {
+  final String authToken;
+  final int userId;
+
+  SendFriendRequestEvent(this.authToken, this.userId);
+
+  @override
+  List<Object> get props => [authToken, userId];
+}
