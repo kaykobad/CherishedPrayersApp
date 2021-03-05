@@ -26,11 +26,11 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   TabController _tabController;
   AppDataStorage _appDataStorage;
   FriendsBloc _friendsBloc;
-  int _myId;
   String _authToken;
   StreamSubscription<FriendsState> _friendsBlocListener;
   List<SingleSentFriendRequestResponse> _sentRequests = [];
   List<SingleReceivedFriendRequestResponse> _receivedRequests = [];
+  List<GenericUserResponse> _friendSuggestions = [];
 
   @override
   void initState() {
@@ -38,8 +38,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
     _tabController = TabController(length: 3, vsync: this);
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _friendsBloc = _appDataStorage.friendsBloc;
-    _myId = _appDataStorage.userData.id;
     _authToken = _appDataStorage.userData.authToken;
+    _friendsBloc.add(FetchFriendSuggestionEvent(_authToken));
     _tabController.addListener(() {
       setState(() {
         _selectedIndex = _tabController.index;
@@ -48,6 +48,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
 
       if (_selectedIndex == 1) _friendsBloc.add(FetchSentRequestsEvent(_authToken));
       else if (_selectedIndex == 2) _friendsBloc.add(FetchReceivedRequestsEvent(_authToken));
+      else _friendsBloc.add(FetchFriendSuggestionEvent(_authToken));
     });
     _listenFriendsBloc();
   }
@@ -90,6 +91,17 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         EasyLoading.showSuccess("Friend request rejected.");
         setState(() {
           _receivedRequests.removeWhere((element) => element.id == state.reqId);
+        });
+      } else if (state is FriendSuggestionFetchedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          _friendSuggestions = state.friendSuggestions.suggestions;
+        });
+      } else if (state is FriendRequestSentState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("Friend request sent to this person.");
+        setState(() {
+          _friendSuggestions.removeWhere((element) => element.id == state.userId);
         });
       }
     });
@@ -160,7 +172,26 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   Widget _getSuggestionsPage() {
     return Column(
       children: [
-        Text("Hello 1"),
+        _getSearchWidget(),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Suggested Friends",
+            style: TextStyle(
+              color: ColorConstants.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        SizedBox(height: 12.0),
+        Divider(color: Colors.grey[400], height: 1.0),
+        SizedBox(height: 12.0),
+        ListView.builder(
+          shrinkWrap: true,
+          itemBuilder: (context, index) => buildItem(_friendSuggestions[index]),
+          itemCount: _friendSuggestions.length,
+        ),
       ],
     );
   }
@@ -309,7 +340,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
           int _reqId = _sentRequests.where((element) => element.receiver.id == user.id).first.id;
           _friendsBloc.add(CancelFriendRequestEvent(_authToken, _reqId));
         },
-        "Cancel",);
+        "Cancel",
+      );
     }
     else if (_selectedIndex == 2) {
       return Row(
@@ -334,7 +366,13 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         ],
       );
     }
-    return Container();
+    return _getButton(
+      () {
+        int _userId = user.id;
+        _friendsBloc.add(SendFriendRequestEvent(_authToken, _userId));
+      },
+      "Invite",
+    );
   }
 
   Widget _getButton(VoidCallback onPressed, String text, {isFilled = false}) {
