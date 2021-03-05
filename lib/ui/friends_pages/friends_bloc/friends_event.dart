@@ -23,3 +23,12 @@ class UnFriendEvent extends FriendsEvent {
   @override
   List<Object> get props => [authToken, userId];
 }
+
+class FetchSentRequestsEvent extends FriendsEvent {
+  final String authToken;
+
+  FetchSentRequestsEvent(this.authToken);
+
+  @override
+  List<Object> get props => [authToken];
+}

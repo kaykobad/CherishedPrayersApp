@@ -24,6 +24,13 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
       DetailOnlyResponse _response = await apiProvider.unFriend(event.authToken, event.userId);
       if (_response.detail.startsWith("Success")) yield UnFriendSuccessState(event.userId);
       else yield ErrorState(ErrorModel(_response.detail, [""]));
+    } else if (event is FetchSentRequestsEvent) {
+      yield LoadingFriendsState();
+      Either<DetailOnlyResponse, GetAllSentFriendRequestResponse> _response = await apiProvider.getAllSentFriendRequests(event.authToken);
+      yield _response.fold(
+          (failure) => ErrorState(ErrorModel(failure.detail, [""])),
+          (success) => SentRequestsFetchedState(success),
+      );
     }
   }
 

@@ -17,7 +17,7 @@ class AppThemes {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(22.0),
         side: BorderSide(color: ColorConstants.lightPrimaryColor),
-      )
+      ),
     ),
     textTheme: TextTheme(
       headline4: TextStyle(fontSize: 42.0, fontWeight: FontWeight.w500),

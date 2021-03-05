@@ -42,3 +42,12 @@ class ErrorState extends FriendsState {
   @override
   List<Object> get props => [error];
 }
+
+class SentRequestsFetchedState extends FriendsState {
+  final GetAllSentFriendRequestResponse senRequests;
+
+  SentRequestsFetchedState(this.senRequests);
+
+  @override
+  List<Object> get props => [senRequests];
+}

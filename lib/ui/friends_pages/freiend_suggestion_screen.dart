@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:cherished_prayers/constants/color_constants.dart';
+import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/friends_pages/friends_bloc/friends_event.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 import 'friends_bloc/friends_bloc.dart';
 import 'friends_bloc/friends_state.dart';
@@ -18,12 +21,15 @@ class FriendsScreen extends StatefulWidget {
 
 class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProviderStateMixin {
   List<String> _titles = ["Find Friends", "Sent Requests", "Friend Requests"];
+  List<String> _searchHints = ["Search on cherished prayers", "Search Requests", "Search for invitations"];
   int _selectedIndex = 0;
   TabController _tabController;
   AppDataStorage _appDataStorage;
   FriendsBloc _friendsBloc;
   int _myId;
+  String _authToken;
   StreamSubscription<FriendsState> _friendsBlocListener;
+  List<SingleSentFriendRequestResponse> _sentRequests = [];
 
   @override
   void initState() {
@@ -32,6 +38,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _friendsBloc = _appDataStorage.friendsBloc;
     _myId = _appDataStorage.userData.id;
+    _authToken = _appDataStorage.userData.authToken;
     _tabController.addListener(() {
       setState(() {
         _selectedIndex = _tabController.index;
@@ -39,6 +46,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
       });
     });
     _listenFriendsBloc();
+    _friendsBloc.add(FetchSentRequestsEvent(_authToken));
   }
 
   _listenFriendsBloc() {
@@ -52,14 +60,11 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         EasyLoading.showError(
             state.error.error + '\n' + state.error.details.join(' ')
         );
-      } else if (state is AllFriendsFetchedState) {
+      } else if (state is SentRequestsFetchedState) {
         await EasyLoading.dismiss();
         setState(() {
-
+          _sentRequests = state.senRequests.allSentRequests;
         });
-      } else if (state is UnFriendSuccessState) {
-        await EasyLoading.dismiss();
-        EasyLoading.showSuccess("Unfriend successful");
       }
     });
   }
@@ -137,7 +142,26 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   Widget _getSentRequestPage() {
     return Column(
       children: [
-        Text("Hello 2"),
+        _getSearchWidget(),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            "Sent Friend Requests",
+            style: TextStyle(
+              color: ColorConstants.black,
+              fontSize: 20,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        SizedBox(height: 12.0),
+        Divider(color: Colors.grey[400], height: 1.0),
+        SizedBox(height: 12.0),
+        ListView.builder(
+          shrinkWrap: true,
+          itemBuilder: (context, index) => buildItem(_sentRequests[index].receiver),
+          itemCount: _sentRequests.length,
+        ),
       ],
     );
   }
@@ -147,6 +171,109 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
       children: [
         Text("Hello 3"),
       ],
+    );
+  }
+
+  Widget _getSearchWidget() {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+      child: TypeAheadField(
+        textFieldConfiguration: TextFieldConfiguration(
+          cursorColor: ColorConstants.lightPrimaryColor,
+          autofocus: false,
+          style: DefaultTextStyle.of(context).style.copyWith(
+            fontStyle: FontStyle.normal,
+          ),
+          decoration: InputDecoration(
+            prefixIcon: Icon(Icons.search, size: 28),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            hintText: _searchHints[_selectedIndex],
+            isDense: true,
+            fillColor: ColorConstants.gray,
+          ),
+        ),
+        suggestionsCallback: (pattern) async {
+          if (_selectedIndex == 1) return _sentRequests.where((element) => element.receiver.firstName.toLowerCase().contains(pattern.toLowerCase()));
+          return _sentRequests;
+        },
+        itemBuilder: (context, suggestion) {
+          return buildItem(suggestion.receiver);
+        },
+        onSuggestionSelected: (suggestion) {},
+      ),
+    );
+  }
+
+  Widget buildItem(user) {
+    return Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            CustomAvatar(url: (user.avatar == "" || user.avatar == null) ? null : ApiEndpoints.URL_ROOT + user.avatar, size: 60.0),
+            Flexible(
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        user.firstName,
+                        style: TextStyle(
+                          color: ColorConstants.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                    ),
+                    Container(
+                      child: Text(
+                        user.religion,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(color: ColorConstants.gray),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                    )
+                  ],
+                ),
+                margin: EdgeInsets.only(left: 10.0),
+              ),
+            ),
+            SizedBox(width: 8.0),
+            _getButton(() {print("Hello");}, "Cancel"),
+          ],
+        ),
+        SizedBox(height: 12.0),
+        Divider(color: Colors.grey[400], height: 1.0),
+        SizedBox(height: 12.0),
+      ],
+    );
+  }
+
+  Widget _getButton(VoidCallback onPressed, String text, {isFilled = false}) {
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: onPressed,
+      child: Container(
+        child: Text(
+          text,
+          style: TextStyle(
+            color: isFilled ? ColorConstants.white : ColorConstants.lightPrimaryColor,
+            fontSize: 11,
+          ),
+        ),
+        padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 7.0),
+        decoration: BoxDecoration(
+          color: isFilled ? ColorConstants.lightPrimaryColor : ColorConstants.white,
+          border: Border.all(color:ColorConstants.lightPrimaryColor),
+          borderRadius: BorderRadius.all(Radius.circular(4))
+        ),
+      ),
     );
   }
 }
