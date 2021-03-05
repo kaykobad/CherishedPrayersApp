@@ -5,7 +5,6 @@ import 'package:cherished_prayers/theme/app_config.dart';
 import 'package:cherished_prayers/theme/themes.dart';
 import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
 import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_state.dart';
-import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +13,8 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'ui/friends_pages/firends_bloc/friends_state.dart';
+import 'ui/friends_pages/friends_bloc/friends_bloc.dart';
+import 'ui/friends_pages/friends_bloc/friends_state.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,13 +3,13 @@ import 'dart:async';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
-import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-import 'firends_bloc/friends_state.dart';
+import 'friends_bloc/friends_bloc.dart';
+import 'friends_bloc/friends_state.dart';
 
 class FriendsScreen extends StatefulWidget {
   @override
@@ -78,11 +78,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         child: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-
-              ],
-            ),
+            child: _getBody(),
           ),
         ),
       ),
@@ -120,6 +116,36 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
           padding: const EdgeInsets.all(10.0),
           child: CustomAvatar(url: _appDataStorage.userData.avatar == null ? null : ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar, size: 36),
         ),
+      ],
+    );
+  }
+
+  Widget _getBody() {
+    if (_selectedIndex == 0) return _getSuggestionsPage();
+    else if (_selectedIndex == 1) return _getSentRequestPage();
+    return _getReceivedRequestPage();
+  }
+
+  Widget _getSuggestionsPage() {
+    return Column(
+      children: [
+        Text("Hello 1"),
+      ],
+    );
+  }
+
+  Widget _getSentRequestPage() {
+    return Column(
+      children: [
+        Text("Hello 2"),
+      ],
+    );
+  }
+
+  Widget _getReceivedRequestPage() {
+    return Column(
+      children: [
+        Text("Hello 3"),
       ],
     );
   }

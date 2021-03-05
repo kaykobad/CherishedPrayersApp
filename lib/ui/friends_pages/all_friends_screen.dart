@@ -8,15 +8,16 @@ import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/chat_pages/chat_page.dart';
-import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
-import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_event.dart';
-import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_state.dart';
 import 'package:cherished_prayers/ui/friends_pages/freiend_suggestion_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+
+import 'friends_bloc/friends_bloc.dart';
+import 'friends_bloc/friends_event.dart';
+import 'friends_bloc/friends_state.dart';
 
 class AllFriendsScreen extends StatefulWidget {
   @override

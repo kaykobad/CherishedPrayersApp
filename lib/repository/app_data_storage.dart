@@ -1,6 +1,6 @@
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
-import 'package:cherished_prayers/ui/friends_pages/firends_bloc/friends_bloc.dart';
+import 'package:cherished_prayers/ui/friends_pages/friends_bloc/friends_bloc.dart';
 
 class AppDataStorage {
   final String packageName;
