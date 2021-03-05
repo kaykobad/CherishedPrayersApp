@@ -65,6 +65,12 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         setState(() {
           _sentRequests = state.senRequests.allSentRequests;
         });
+      } else if (state is CancelRequestSuccessState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("Friend request cancelled.");
+        setState(() {
+          _sentRequests.removeWhere((element) => element.id == state.reqId);
+        });
       }
     });
   }
@@ -245,7 +251,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
               ),
             ),
             SizedBox(width: 8.0),
-            _getButton(() {print("Hello");}, "Cancel"),
+            _getActions(user),
           ],
         ),
         SizedBox(height: 12.0),
@@ -253,6 +259,18 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         SizedBox(height: 12.0),
       ],
     );
+  }
+
+  Widget _getActions(user) {
+    if (_selectedIndex == 1) {
+      return _getButton(
+        () {
+          int _reqId = _sentRequests.where((element) => element.receiver.id == user.id).first.id;
+          _friendsBloc.add(CancelFriendRequestEvent(_authToken, _reqId));
+        },
+        "Cancel",);
+    }
+    return Container();
   }
 
   Widget _getButton(VoidCallback onPressed, String text, {isFilled = false}) {

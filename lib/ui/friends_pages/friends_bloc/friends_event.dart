@@ -32,3 +32,13 @@ class FetchSentRequestsEvent extends FriendsEvent {
   @override
   List<Object> get props => [authToken];
 }
+
+class CancelFriendRequestEvent extends FriendsEvent {
+  final String authToken;
+  final int reqId;
+
+  CancelFriendRequestEvent(this.authToken, this.reqId);
+
+  @override
+  List<Object> get props => [authToken, reqId];
+}

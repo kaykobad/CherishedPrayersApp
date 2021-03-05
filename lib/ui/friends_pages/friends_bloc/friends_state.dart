@@ -34,6 +34,15 @@ class UnFriendSuccessState extends FriendsState {
   List<Object> get props => [userId];
 }
 
+class CancelRequestSuccessState extends FriendsState {
+  final int reqId;
+
+  CancelRequestSuccessState(this.reqId);
+
+  @override
+  List<Object> get props => [reqId];
+}
+
 class ErrorState extends FriendsState {
   final ErrorModel error;
 
