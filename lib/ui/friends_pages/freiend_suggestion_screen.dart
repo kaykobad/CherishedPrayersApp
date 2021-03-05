@@ -229,10 +229,12 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         ),
         suggestionsCallback: (pattern) async {
           if (_selectedIndex == 1) return _sentRequests.where((element) => element.receiver.firstName.toLowerCase().contains(pattern.toLowerCase()));
+          else if (_selectedIndex == 2) return _receivedRequests.where((element) => element.sender.firstName.toLowerCase().contains(pattern.toLowerCase()));
           return _sentRequests;
         },
         itemBuilder: (context, suggestion) {
-          return buildItem(suggestion.receiver);
+          if (_selectedIndex == 1) return buildItem(suggestion.receiver);
+          return buildItem(suggestion.sender);
         },
         onSuggestionSelected: (suggestion) {},
       ),
