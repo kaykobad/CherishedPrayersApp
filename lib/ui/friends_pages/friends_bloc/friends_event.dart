@@ -1,3 +1,4 @@
+import 'package:cherished_prayers/data/models/models.dart';
 import 'package:equatable/equatable.dart';
 
 class FriendsEvent extends Equatable {
@@ -89,4 +90,14 @@ class SendFriendRequestEvent extends FriendsEvent {
 
   @override
   List<Object> get props => [authToken, userId];
+}
+
+class SearchPeopleEvent extends FriendsEvent {
+  final SearchPeopleRequest searchPeopleRequest;
+  final String authToken;
+
+  SearchPeopleEvent(this.searchPeopleRequest, this.authToken);
+
+  @override
+  List<Object> get props => [searchPeopleRequest, authToken];
 }

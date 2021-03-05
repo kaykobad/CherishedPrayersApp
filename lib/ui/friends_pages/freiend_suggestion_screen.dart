@@ -27,6 +27,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   AppDataStorage _appDataStorage;
   FriendsBloc _friendsBloc;
   String _authToken;
+  Timer timer;
   StreamSubscription<FriendsState> _friendsBlocListener;
   List<SingleSentFriendRequestResponse> _sentRequests = [];
   List<SingleReceivedFriendRequestResponse> _receivedRequests = [];
@@ -102,6 +103,12 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         EasyLoading.showSuccess("Friend request sent to this person.");
         setState(() {
           _friendSuggestions.removeWhere((element) => element.id == state.userId);
+        });
+      } else if (state is SearchPeopleSuccessState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          state.searchPeopleResponse.searchResult.removeWhere((element) => element.isFriend);
+          _friendSuggestions = state.searchPeopleResponse.searchResult.map((e) => e.user).toList();
         });
       }
     });
@@ -273,11 +280,24 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         suggestionsCallback: (pattern) async {
           if (_selectedIndex == 1) return _sentRequests.where((element) => element.receiver.firstName.toLowerCase().contains(pattern.toLowerCase()));
           else if (_selectedIndex == 2) return _receivedRequests.where((element) => element.sender.firstName.toLowerCase().contains(pattern.toLowerCase()));
-          return _sentRequests;
+          timer?.cancel();
+          if (pattern != "" && pattern != null) {
+            timer = Timer(Duration(milliseconds: 2500), (){
+              SearchPeopleRequest request = SearchPeopleRequest(pattern);
+              _friendsBloc.add(SearchPeopleEvent(request, _authToken));
+            });
+          } else {
+            timer = Timer(Duration(milliseconds: 2500), (){
+              SearchPeopleRequest request = SearchPeopleRequest(pattern);
+              _friendsBloc.add(FetchFriendSuggestionEvent(_authToken));
+            });
+          }
+          return _friendSuggestions;
         },
         itemBuilder: (context, suggestion) {
           if (_selectedIndex == 1) return buildItem(suggestion.receiver);
-          return buildItem(suggestion.sender);
+          else if (_selectedIndex == 2) return buildItem(suggestion.sender);
+          return Container(height: 0.0);
         },
         onSuggestionSelected: (suggestion) {},
       ),

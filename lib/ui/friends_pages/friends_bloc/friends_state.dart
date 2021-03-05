@@ -105,3 +105,12 @@ class FriendRequestSentState extends FriendsState {
   @override
   List<Object> get props => [userId];
 }
+
+class SearchPeopleSuccessState extends FriendsState {
+  final SearchPeopleResponse searchPeopleResponse;
+
+  SearchPeopleSuccessState(this.searchPeopleResponse);
+
+  @override
+  List<Object> get props => [searchPeopleResponse];
+}
