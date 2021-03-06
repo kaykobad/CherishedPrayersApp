@@ -43,6 +43,11 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
         else yield PostLikedState(event.postId);
       }
       else yield ErrorState(ErrorModel(_response.detail, [""]));
+    } else if (event is DeletePostEvent) {
+      yield LoadingFeedState();
+      DetailOnlyResponse _response = await apiProvider.deletePost(event.authToken, event.postId);
+      if (_response.detail.startsWith("Success")) yield PostDeletedState(event.postId);
+      else yield ErrorState(ErrorModel(_response.detail, [""]));
     }
   }
 

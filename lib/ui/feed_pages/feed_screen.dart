@@ -80,6 +80,12 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
         setState(() {
           _allMyPosts.insert(0, state.postResponse);
         });
+      } else if (state is PostDeletedState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("Post successfully deleted.");
+        setState(() {
+          _allMyPosts.removeWhere((element) => element.id == state.postId);
+        });
       } else if (state is PostLikedState) {
         await EasyLoading.dismiss();
         if (_selectedIndex == 0) {
@@ -163,6 +169,10 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
     _feedBloc.add(LikePostEvent(_authToken, postId));
   }
 
+  void onPostDeleteButtonPressed(int postId) {
+    _feedBloc.add(DeletePostEvent(_authToken, postId));
+  }
+
   _getBody() {
     List<PostResponse> _showAblePosts = [];
     if (_selectedIndex == 0) _showAblePosts = _allFeedPosts;
@@ -171,7 +181,12 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemBuilder: (context, index) => PostCard(post: _showAblePosts[index], isMyPost: _selectedIndex==1, likeCallback: onLikeButtonPressed),
+      itemBuilder: (context, index) => PostCard(
+        post: _showAblePosts[index],
+        isMyPost: _selectedIndex==1,
+        likeCallback: onLikeButtonPressed,
+        deleteCallback: onPostDeleteButtonPressed,
+      ),
       itemCount: _showAblePosts.length,
     );
   }

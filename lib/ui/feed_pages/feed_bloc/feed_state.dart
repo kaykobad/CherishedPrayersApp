@@ -69,3 +69,12 @@ class PostUnLikedState extends FeedState {
   @override
   List<Object> get props => [postId];
 }
+
+class PostDeletedState extends FeedState {
+  final int postId;
+
+  PostDeletedState(this.postId);
+
+  @override
+  List<Object> get props => [postId];
+}

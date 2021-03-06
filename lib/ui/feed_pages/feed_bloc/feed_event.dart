@@ -43,3 +43,13 @@ class LikePostEvent extends FeedEvent {
   @override
   List<Object> get props => [authToken, postId];
 }
+
+class DeletePostEvent extends FeedEvent {
+  final String authToken;
+  final int postId;
+
+  DeletePostEvent(this.authToken, this.postId);
+
+  @override
+  List<Object> get props => [authToken, postId];
+}

@@ -9,8 +9,9 @@ class PostCard extends StatelessWidget {
   final PostResponse post;
   final bool isMyPost;
   final Function(int) likeCallback;
+  final Function(int) deleteCallback;
 
-  PostCard({Key key, this.post, this.isMyPost = false, this.likeCallback}) : super(key: key);
+  PostCard({Key key, this.post, this.isMyPost = false, this.likeCallback, this.deleteCallback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +66,7 @@ class PostCard extends StatelessWidget {
             PopupMenuItem(child: Text("Delete Post"), value: 2),
           ],
           onSelected: (value) {
-            print("$value Post!");
+            if (value == 2) deleteCallback(post.id);
           },
           icon: Icon(Icons.more_vert, color: ColorConstants.lightPrimaryColor),
         ),
