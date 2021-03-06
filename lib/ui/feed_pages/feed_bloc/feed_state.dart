@@ -114,3 +114,12 @@ class CommentUnLikedState extends FeedState {
   @override
   List<Object> get props => [commentId];
 }
+
+class CommentAddedState extends FeedState {
+  final GenericPostResponse post;
+
+  CommentAddedState(this.post);
+
+  @override
+  List<Object> get props => [post];
+}

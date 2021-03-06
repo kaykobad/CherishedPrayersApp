@@ -11,6 +11,7 @@ import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cherished_prayers/ui/shared_widgets/banner_widget.dart';
 import 'package:cherished_prayers/ui/shared_widgets/comment_card.dart';
 import 'package:cherished_prayers/ui/shared_widgets/post_card.dart';
+import 'package:cherished_prayers/ui/shared_widgets/post_comment_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -93,6 +94,11 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         setState(() {
           post.totalLikes -= 1;
         });
+      } else if (state is CommentAddedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          post = state.post;
+        });
       } else if (state is CommentLikedState) {
         await EasyLoading.dismiss();
         setState(() {
@@ -147,6 +153,7 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       ),
                       itemCount: post.comments.length,
                     ),
+                    PostCommentInputWidget(url: _appDataStorage.userData.avatar == null ? null : ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar, callback: onCommentButtonPressed, isComment: true),
                   ],
                 ),
               ),
@@ -196,4 +203,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     _feedBloc.add(UpdatePostEvent(post, _authToken, postId));
   }
 
+  void onCommentButtonPressed(String text) {
+    AddCommentRequest commentRequest = AddCommentRequest(post.id, text);
+    _feedBloc.add(AddCommentEvent(_authToken, commentRequest));
+  }
 }

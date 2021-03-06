@@ -36,7 +36,7 @@ class PostCommentInputWidget extends StatelessWidget {
                 maxLines: null,
                 decoration: InputDecoration(
                   hintStyle: TextStyle(fontSize: 14),
-                  hintText: 'Write a post...',
+                  hintText: isComment ? 'Write a comment...' : 'Write a post...',
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(14.0),
                 ),

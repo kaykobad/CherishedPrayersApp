@@ -84,3 +84,13 @@ class LikeCommentEvent extends FeedEvent {
   @override
   List<Object> get props => [authToken, commentId];
 }
+
+class AddCommentEvent extends FeedEvent {
+  final String authToken;
+  final AddCommentRequest addCommentRequest;
+
+  AddCommentEvent(this.authToken, this.addCommentRequest);
+
+  @override
+  List<Object> get props => [authToken, addCommentRequest];
+}
