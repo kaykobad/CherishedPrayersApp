@@ -2,6 +2,8 @@ import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/helpers/firebase_helper.dart';
+import 'package:cherished_prayers/helpers/navigation_helper.dart';
+import 'package:cherished_prayers/ui/feed_pages/post_details_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 
@@ -11,6 +13,7 @@ class PostCard extends StatelessWidget {
   final Function(int) likeCallback;
   final Function(int) deleteCallback;
   final Function(String, int) updateCallback;
+  final bool isFromDetailPage;
 
   PostCard({
     Key key,
@@ -19,6 +22,7 @@ class PostCard extends StatelessWidget {
     this.likeCallback,
     this.deleteCallback,
     this.updateCallback,
+    this.isFromDetailPage = false,
   }) : super(key: key);
 
   @override
@@ -29,12 +33,24 @@ class PostCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _getHeader(context),
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            child: _getHeader(context),
+            onTap: () {
+              if (!isFromDetailPage) NavigationHelper.push(context, PostDetailsScreen(postId: post.id));
+            },
+          ),
           SizedBox(height: 4.0),
-          _getPost(),
-          _getLikeBar(),
+          GestureDetector(
+            behavior: HitTestBehavior.translucent,
+            child: _getPost(),
+            onTap: () {
+              if (!isFromDetailPage) NavigationHelper.push(context, PostDetailsScreen(postId: post.id));
+            },
+          ),
+          _getLikeBar(context),
           SizedBox(height: 4.0),
-          Divider(height: 1.0, color: ColorConstants.gray),
+          if (!isFromDetailPage) Divider(height: 1.0, color: ColorConstants.gray),
         ],
       ),
     );
@@ -96,7 +112,7 @@ class PostCard extends StatelessWidget {
     );
   }
 
-  Widget _getLikeBar(){
+  Widget _getLikeBar(BuildContext context){
     return Row(
       children: [
         MaterialButton(
@@ -118,7 +134,7 @@ class PostCard extends StatelessWidget {
         MaterialButton(
           minWidth: 0,
           onPressed: () {
-            print("Comment");
+            if (!isFromDetailPage) NavigationHelper.push(context, PostDetailsScreen(postId: post.id));
           },
           textColor: ColorConstants.lightPrimaryColor,
           child: Icon(

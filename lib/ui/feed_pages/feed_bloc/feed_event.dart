@@ -64,3 +64,13 @@ class UpdatePostEvent extends FeedEvent {
   @override
   List<Object> get props => [post, authToken, postId];
 }
+
+class FetchPostDetailsEvent extends FeedEvent {
+  final String authToken;
+  final int postId;
+
+  FetchPostDetailsEvent(this.authToken, this.postId);
+
+  @override
+  List<Object> get props => [authToken, postId];
+}

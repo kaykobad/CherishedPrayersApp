@@ -455,7 +455,7 @@ class ApiProvider {
 
   Future<Either<DetailOnlyResponse, GenericPostResponse>> getPostDetails(String authToken, int postId) async {
     try {
-      var response = await _dio.post(ApiEndpoints.POST_DETAILS.replaceAll("pid", postId.toString()), options: Options (
+      var response = await _dio.get(ApiEndpoints.POST_DETAILS.replaceAll("pid", postId.toString()), options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }

@@ -87,3 +87,12 @@ class PostUpdatedState extends FeedState {
   @override
   List<Object> get props => [post];
 }
+
+class PostDetailsFetchedState extends FeedState {
+  final GenericPostResponse post;
+
+  PostDetailsFetchedState(this.post);
+
+  @override
+  List<Object> get props => [post];
+}
