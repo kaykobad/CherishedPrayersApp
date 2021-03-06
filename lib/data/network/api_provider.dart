@@ -537,7 +537,7 @@ class ApiProvider {
 
   Future<Either<DetailOnlyResponse, GenericPostResponse>> deleteComment(String authToken, int commentId) async {
     try {
-      var response = await _dio.post(ApiEndpoints.UPDATE_COMMENT.replaceAll("cid", commentId.toString()), options: Options (
+      var response = await _dio.post(ApiEndpoints.DELETE_COMMENT.replaceAll("cid", commentId.toString()), options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }

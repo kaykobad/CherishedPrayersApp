@@ -99,6 +99,11 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         setState(() {
           post = state.post;
         });
+      } else if (state is CommentDeletedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          post = state.post;
+        });
       } else if (state is CommentLikedState) {
         await EasyLoading.dismiss();
         setState(() {
@@ -194,8 +199,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
     _feedBloc.add(LikeCommentEvent(_authToken, postId));
   }
 
-  void onCommentDeleteButtonPressed(int postId) {
-    _feedBloc.add(DeletePostEvent(_authToken, postId));
+  void onCommentDeleteButtonPressed(int commentId) {
+    _feedBloc.add(DeleteCommentEvent(_authToken, commentId));
   }
 
   void onCommentUpdateButtonPressed(String text, int postId) {

@@ -123,3 +123,12 @@ class CommentAddedState extends FeedState {
   @override
   List<Object> get props => [post];
 }
+
+class CommentDeletedState extends FeedState {
+  final GenericPostResponse post;
+
+  CommentDeletedState(this.post);
+
+  @override
+  List<Object> get props => [post];
+}
