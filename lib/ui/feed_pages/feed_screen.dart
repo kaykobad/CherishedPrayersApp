@@ -5,7 +5,9 @@ import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_bloc.dart';
+import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_event.dart';
 import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_state.dart';
+import 'package:cherished_prayers/ui/shared_widgets/banner_widget.dart';
 import 'package:cherished_prayers/ui/shared_widgets/post_comment_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,6 +26,7 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
   FeedBloc _feedBloc;
   StreamSubscription<FeedState> _feedBlocListener;
   List<PostResponse> _allFeedPosts = [];
+  List<PostResponse> _allMyPosts = [];
 
   @override
   void initState() {
@@ -35,10 +38,12 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
     _tabController.addListener(() {
       setState(() {
         _selectedIndex = _tabController.index;
-        print(_selectedIndex);
       });
+      if(_selectedIndex == 0) _feedBloc.add(FetchMyFeedEvent(_authToken));
+      else _feedBloc.add(FetchMyPostsEvent(_authToken));
     });
     _listenFeedBloc();
+    _feedBloc.add(FetchMyFeedEvent(_authToken));
   }
 
   @override
@@ -63,6 +68,11 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
         setState(() {
           _allFeedPosts = state.allPosts.posts;
         });
+      } else if (state is MyPostsFetchedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          _allMyPosts = state.allPosts.posts;
+        });
       }
     });
   }
@@ -77,6 +87,9 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
               PostCommentInputWidget(url: _appDataStorage.userData.avatar == null ? null : ApiEndpoints.URL_ROOT + _appDataStorage.userData.avatar, callback: onPostButtonPressed),
               SizedBox(height: 10.0),
               _getTabBar(),
+              Divider(height: 1.0, color: ColorConstants.gray),
+              BannerWidget(text: "POSTS"),
+              _getBody(),
             ],
           ),
         ),
@@ -104,5 +117,17 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
 
   void onPostButtonPressed(String text) {
     print(text);
+  }
+
+  _getBody() {
+    List<PostResponse> _showAblePosts = [];
+    if (_selectedIndex == 0) _showAblePosts = _allFeedPosts;
+    else _showAblePosts = _allMyPosts;
+
+    return ListView.builder(
+      shrinkWrap: true,
+      itemBuilder: (context, index) => Text(_showAblePosts[index].post),
+      itemCount: _showAblePosts.length,
+    );
   }
 }

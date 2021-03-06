@@ -33,3 +33,12 @@ class MyFeedFetchedState extends FeedState {
   @override
   List<Object> get props => [allPosts];
 }
+
+class MyPostsFetchedState extends FeedState {
+  final AllPostsResponse allPosts;
+
+  MyPostsFetchedState(this.allPosts);
+
+  @override
+  List<Object> get props => [allPosts];
+}

@@ -424,7 +424,7 @@ class ApiProvider {
 
   Future<Either<DetailOnlyResponse, AllPostsResponse>> getAllMyPosts(String authToken) async {
     try {
-      var response = await _dio.post(ApiEndpoints.UPDATE_POST, options: Options (
+      var response = await _dio.get(ApiEndpoints.MY_ALL_POSTS, options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }
