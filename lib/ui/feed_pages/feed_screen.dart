@@ -67,12 +67,18 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
       } else if (state is MyFeedFetchedState) {
         await EasyLoading.dismiss();
         setState(() {
-          _allFeedPosts = state.allPosts.posts;
+          _allFeedPosts = state.allPosts.posts.reversed.toList();
         });
       } else if (state is MyPostsFetchedState) {
         await EasyLoading.dismiss();
         setState(() {
-          _allMyPosts = state.allPosts.posts;
+          _allMyPosts = state.allPosts.posts.reversed.toList();
+        });
+      } else if (state is PostCreatedState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("Post successfully created.");
+        setState(() {
+          _allMyPosts.insert(0, state.postResponse);
         });
       }
     });
@@ -117,7 +123,8 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
   }
 
   void onPostButtonPressed(String text) {
-    print(text);
+    PostRequest post = PostRequest(text);
+    _feedBloc.add(CreatePostEvent(_authToken, post));
   }
 
   _getBody() {

@@ -1,9 +1,9 @@
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
+import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
   final PostResponse post;
@@ -31,7 +31,7 @@ class PostCard extends StatelessWidget {
   }
 
   Widget _getHeader() {
-    String date = DateFormat.yMMMMd('en_US').format(DateTime.parse(post.dateCreated)).toString();
+    String date = getAbbreviatedDateTimeFromString(post.dateCreated);
 
     return Row(
       children: [

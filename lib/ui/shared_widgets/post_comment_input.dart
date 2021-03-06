@@ -1,6 +1,7 @@
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PostCommentInputWidget extends StatelessWidget {
   final String url;
@@ -46,6 +47,7 @@ class PostCommentInputWidget extends StatelessWidget {
           MaterialButton(
             minWidth: 0,
             onPressed: () {
+              SystemChannels.textInput.invokeMethod('TextInput.hide');
               callback(_controller.text);
             },
             color: ColorConstants.lightPrimaryColor,

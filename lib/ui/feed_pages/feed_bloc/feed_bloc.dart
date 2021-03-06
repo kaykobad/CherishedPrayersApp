@@ -27,6 +27,14 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
           (failure) => ErrorState(ErrorModel(failure.detail, [""])),
           (success) => MyPostsFetchedState(success),
       );
+    } else if (event is CreatePostEvent) {
+      yield LoadingFeedState();
+      Either<DetailOnlyResponse, PostResponse> _response = await apiProvider.createPost(event.post, event.authToken);
+
+      yield _response.fold(
+          (failure) => ErrorState(ErrorModel(failure.detail, [""])),
+          (success) => PostCreatedState(success),
+      );
     }
   }
 

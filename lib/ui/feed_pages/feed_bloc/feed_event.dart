@@ -1,3 +1,4 @@
+import 'package:cherished_prayers/data/models/models.dart';
 import 'package:equatable/equatable.dart';
 
 class FeedEvent extends Equatable {
@@ -21,4 +22,14 @@ class FetchMyPostsEvent extends FeedEvent {
 
   @override
   List<Object> get props => [authToken];
+}
+
+class CreatePostEvent extends FeedEvent {
+  final String authToken;
+  final PostRequest post;
+
+  CreatePostEvent(this.authToken, this.post);
+
+  @override
+  List<Object> get props => [authToken, post];
 }

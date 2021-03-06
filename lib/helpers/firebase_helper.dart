@@ -109,3 +109,7 @@ int getCurrentTimeStamp() {
 String getLocalDateTimeFromTimeStamp(int timeStamp) {
   return DateFormat('dd/MM/yy hh:mm a').format(DateTime.fromMillisecondsSinceEpoch(timeStamp).toLocal()).toString();
 }
+
+String getAbbreviatedDateTimeFromString(String date) {
+  return DateFormat.yMMMMd('en_US').format(DateTime.parse(date)).toString();
+}

@@ -42,3 +42,12 @@ class MyPostsFetchedState extends FeedState {
   @override
   List<Object> get props => [allPosts];
 }
+
+class PostCreatedState extends FeedState {
+  final PostResponse postResponse;
+
+  PostCreatedState(this.postResponse);
+
+  @override
+  List<Object> get props => [postResponse];
+}
