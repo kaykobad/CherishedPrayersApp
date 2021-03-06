@@ -96,3 +96,21 @@ class PostDetailsFetchedState extends FeedState {
   @override
   List<Object> get props => [post];
 }
+
+class CommentLikedState extends FeedState {
+  final int commentId;
+
+  CommentLikedState(this.commentId);
+
+  @override
+  List<Object> get props => [commentId];
+}
+
+class CommentUnLikedState extends FeedState {
+  final int commentId;
+
+  CommentUnLikedState(this.commentId);
+
+  @override
+  List<Object> get props => [commentId];
+}

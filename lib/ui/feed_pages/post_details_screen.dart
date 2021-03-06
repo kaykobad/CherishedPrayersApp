@@ -6,10 +6,10 @@ import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_event.dart';
-import 'package:cherished_prayers/ui/feed_pages/feed_screen.dart';
 import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cherished_prayers/ui/shared_widgets/banner_widget.dart';
+import 'package:cherished_prayers/ui/shared_widgets/comment_card.dart';
 import 'package:cherished_prayers/ui/shared_widgets/post_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -93,6 +93,24 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         setState(() {
           post.totalLikes -= 1;
         });
+      } else if (state is CommentLikedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          post.comments.forEach((element) {
+            if (element.id == state.commentId) {
+              element.totalLikes += 1;
+            }
+          });
+        });
+      } else if (state is CommentUnLikedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          post.comments.forEach((element) {
+            if (element.id == state.commentId) {
+              element.totalLikes -= 1;
+            }
+          });
+        });
       }
     });
   }
@@ -115,9 +133,20 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
                       updateCallback: onPostUpdateButtonPressed,
                       isFromDetailPage: true,
                     ),
-                    SizedBox(height: 10.0),
                     Divider(height: 1.0, color: ColorConstants.gray),
                     BannerWidget(text: "COMMENTS"),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => CommentCard(
+                        comment: post.comments[index],
+                        isMyComment: post.comments[index].author.id == _appDataStorage.userData.id,
+                        likeCallback: onCommentLikeButtonPressed,
+                        updateCallback: onCommentUpdateButtonPressed,
+                        deleteCallback: onCommentDeleteButtonPressed,
+                      ),
+                      itemCount: post.comments.length,
+                    ),
                   ],
                 ),
               ),
@@ -150,6 +179,19 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   }
 
   void onPostUpdateButtonPressed(String text, int postId) {
+    PostRequest post = PostRequest(text);
+    _feedBloc.add(UpdatePostEvent(post, _authToken, postId));
+  }
+
+  void onCommentLikeButtonPressed(int postId) {
+    _feedBloc.add(LikeCommentEvent(_authToken, postId));
+  }
+
+  void onCommentDeleteButtonPressed(int postId) {
+    _feedBloc.add(DeletePostEvent(_authToken, postId));
+  }
+
+  void onCommentUpdateButtonPressed(String text, int postId) {
     PostRequest post = PostRequest(text);
     _feedBloc.add(UpdatePostEvent(post, _authToken, postId));
   }

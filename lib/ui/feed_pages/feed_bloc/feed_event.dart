@@ -74,3 +74,13 @@ class FetchPostDetailsEvent extends FeedEvent {
   @override
   List<Object> get props => [authToken, postId];
 }
+
+class LikeCommentEvent extends FeedEvent {
+  final String authToken;
+  final int commentId;
+
+  LikeCommentEvent(this.authToken, this.commentId);
+
+  @override
+  List<Object> get props => [authToken, commentId];
+}
