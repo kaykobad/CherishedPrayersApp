@@ -104,6 +104,11 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
         setState(() {
           post = state.post;
         });
+      } else if (state is CommentUpdatedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          post = state.post;
+        });
       } else if (state is CommentLikedState) {
         await EasyLoading.dismiss();
         setState(() {
@@ -204,8 +209,8 @@ class _PostDetailsScreenState extends State<PostDetailsScreen> {
   }
 
   void onCommentUpdateButtonPressed(String text, int postId) {
-    PostRequest post = PostRequest(text);
-    _feedBloc.add(UpdatePostEvent(post, _authToken, postId));
+    UpdateCommentRequest updateCommentRequest = UpdateCommentRequest(text);
+    _feedBloc.add(UpdateCommentEvent(updateCommentRequest, _authToken, postId));
   }
 
   void onCommentButtonPressed(String text) {

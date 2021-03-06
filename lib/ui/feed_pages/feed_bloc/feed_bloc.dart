@@ -80,6 +80,14 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
           (failure) => ErrorState(ErrorModel(failure.detail, [""])),
           (success) => CommentDeletedState(success),
       );
+    } else if (event is UpdateCommentEvent) {
+      yield LoadingFeedState();
+      Either<DetailOnlyResponse, GenericPostResponse> _response = await apiProvider.updateComment(event.updateCommentRequest, event.authToken, event.commentId);
+
+      yield _response.fold(
+          (failure) => ErrorState(ErrorModel(failure.detail, [""])),
+          (success) => CommentUpdatedState(success),
+      );
     } else if (event is LikeCommentEvent) {
       yield LoadingFeedState();
       DetailOnlyResponse _response = await apiProvider.likeComment(event.authToken, event.commentId);

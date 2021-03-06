@@ -104,3 +104,14 @@ class DeleteCommentEvent extends FeedEvent {
   @override
   List<Object> get props => [authToken, commentId];
 }
+
+class UpdateCommentEvent extends FeedEvent {
+  final UpdateCommentRequest updateCommentRequest;
+  final String authToken;
+  final int commentId;
+
+  UpdateCommentEvent(this.updateCommentRequest, this.authToken, this.commentId);
+
+  @override
+  List<Object> get props => [updateCommentRequest, authToken, commentId];
+}
