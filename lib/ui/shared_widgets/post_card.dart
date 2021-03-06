@@ -10,8 +10,16 @@ class PostCard extends StatelessWidget {
   final bool isMyPost;
   final Function(int) likeCallback;
   final Function(int) deleteCallback;
+  final Function(String, int) updateCallback;
 
-  PostCard({Key key, this.post, this.isMyPost = false, this.likeCallback, this.deleteCallback}) : super(key: key);
+  PostCard({
+    Key key,
+    this.post,
+    this.isMyPost = false,
+    this.likeCallback,
+    this.deleteCallback,
+    this.updateCallback,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +29,7 @@ class PostCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          _getHeader(),
+          _getHeader(context),
           SizedBox(height: 4.0),
           _getPost(),
           _getLikeBar(),
@@ -32,7 +40,7 @@ class PostCard extends StatelessWidget {
     );
   }
 
-  Widget _getHeader() {
+  Widget _getHeader(BuildContext context) {
     String date = getAbbreviatedDateTimeFromString(post.dateCreated);
 
     return Row(
@@ -67,6 +75,7 @@ class PostCard extends StatelessWidget {
           ],
           onSelected: (value) {
             if (value == 2) deleteCallback(post.id);
+            else _showUpdateDialog(context);
           },
           icon: Icon(Icons.more_vert, color: ColorConstants.lightPrimaryColor),
         ),
@@ -123,6 +132,57 @@ class PostCard extends StatelessWidget {
         ),
         Text("${post.totalComments}"),
       ],
+    );
+  }
+
+  void _showUpdateDialog(BuildContext context) {
+    TextEditingController _controller = TextEditingController(text: post.post);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Update Post'),
+          content: Container(
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                side: BorderSide(
+                  color: ColorConstants.gray,
+                ),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12),
+                ),
+              ),
+            ),
+            child: TextField(
+              controller: _controller,
+              maxLines: null,
+              decoration: InputDecoration(
+                hintStyle: TextStyle(fontSize: 14),
+                hintText: 'Update post...',
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(14.0),
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel', style: TextStyle(color: Colors.red)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Update', style: TextStyle(color: ColorConstants.lightPrimaryColor)),
+              onPressed: () {
+                updateCallback(_controller.text, post.id);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      }
     );
   }
 }

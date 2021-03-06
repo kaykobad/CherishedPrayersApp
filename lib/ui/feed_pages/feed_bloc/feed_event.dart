@@ -53,3 +53,14 @@ class DeletePostEvent extends FeedEvent {
   @override
   List<Object> get props => [authToken, postId];
 }
+
+class UpdatePostEvent extends FeedEvent {
+  final PostRequest post;
+  final String authToken;
+  final int postId;
+
+  UpdatePostEvent(this.post, this.authToken, this.postId);
+
+  @override
+  List<Object> get props => [post, authToken, postId];
+}

@@ -78,3 +78,12 @@ class PostDeletedState extends FeedState {
   @override
   List<Object> get props => [postId];
 }
+
+class PostUpdatedState extends FeedState {
+  final GenericPostResponse post;
+
+  PostUpdatedState(this.post);
+
+  @override
+  List<Object> get props => [post];
+}

@@ -86,6 +86,17 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
         setState(() {
           _allMyPosts.removeWhere((element) => element.id == state.postId);
         });
+      } else if (state is PostUpdatedState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("Post successfully updated.");
+        _allMyPosts.forEach((element) {
+          if (element.id == state.post.id) {
+            element.isEdited = true;
+            element.post = state.post.post;
+            element.dateEdited = state.post.dateEdited;
+          }
+        });
+        setState(() {});
       } else if (state is PostLikedState) {
         await EasyLoading.dismiss();
         if (_selectedIndex == 0) {
@@ -173,6 +184,11 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
     _feedBloc.add(DeletePostEvent(_authToken, postId));
   }
 
+  void onPostUpdateButtonPressed(String text, int postId) {
+    PostRequest post = PostRequest(text);
+    _feedBloc.add(UpdatePostEvent(post, _authToken, postId));
+  }
+
   _getBody() {
     List<PostResponse> _showAblePosts = [];
     if (_selectedIndex == 0) _showAblePosts = _allFeedPosts;
@@ -186,6 +202,7 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
         isMyPost: _selectedIndex==1,
         likeCallback: onLikeButtonPressed,
         deleteCallback: onPostDeleteButtonPressed,
+        updateCallback: onPostUpdateButtonPressed,
       ),
       itemCount: _showAblePosts.length,
     );

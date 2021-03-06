@@ -405,9 +405,9 @@ class ApiProvider {
     }
   }
 
-  Future<Either<DetailOnlyResponse, GenericPostResponse>> updatePost(PostRequest data, String authToken) async {
+  Future<Either<DetailOnlyResponse, GenericPostResponse>> updatePost(PostRequest data, String authToken, int postId) async {
     try {
-      var response = await _dio.post(ApiEndpoints.UPDATE_POST, data: data, options: Options (
+      var response = await _dio.post(ApiEndpoints.UPDATE_POST.replaceAll("pid", postId.toString()), data: data, options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }
