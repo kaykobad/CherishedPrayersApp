@@ -38,4 +38,17 @@ class GenericPostResponse {
   factory GenericPostResponse.fromJson(Map<String, dynamic> json) => _$GenericPostResponseFromJson(json);
 
   Map<String, dynamic> toJson() => _$GenericPostResponseToJson(this);
+
+  GenericPostResponse.fromPostResponse(PostResponse post) {
+    this.id = post.id;
+    this.post = post.post;
+    this.dateCreated = post.dateCreated;
+    this.isEdited = post.isEdited;
+    this.dateEdited = post.dateEdited;
+    this.author = post.author;
+    this.totalLikes = post.totalLikes;
+    this.totalComments = post.totalComments;
+    this.attachment = post.attachment;
+    this.postPrivacy = post.postPrivacy;
+  }
 }

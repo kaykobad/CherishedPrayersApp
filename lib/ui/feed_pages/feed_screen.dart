@@ -198,7 +198,7 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       itemBuilder: (context, index) => PostCard(
-        post: _showAblePosts[index],
+        post: GenericPostResponse.fromPostResponse(_showAblePosts[index]),
         isMyPost: _selectedIndex==1,
         likeCallback: onLikeButtonPressed,
         deleteCallback: onPostDeleteButtonPressed,

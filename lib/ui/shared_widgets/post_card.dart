@@ -6,7 +6,7 @@ import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
 
 class PostCard extends StatelessWidget {
-  final PostResponse post;
+  final GenericPostResponse post;
   final bool isMyPost;
   final Function(int) likeCallback;
   final Function(int) deleteCallback;
