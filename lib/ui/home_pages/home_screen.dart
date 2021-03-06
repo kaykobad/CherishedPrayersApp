@@ -3,6 +3,7 @@ import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/chat_pages/all_threads_screen.dart';
+import 'package:cherished_prayers/ui/feed_pages/feed_screen.dart';
 import 'package:cherished_prayers/ui/friends_pages/all_friends_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_page.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
@@ -23,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex;
   static const TextStyle optionStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
   static List<Widget> _widgetOptions = <Widget>[
-    Text('Index 0: Feed', style: optionStyle),
+    FeedScreen(),
     AllThreadsPage(),
     Text('Index 2: Stories', style: optionStyle),
     AllFriendsScreen(),
@@ -62,7 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   AppBar _getAppBar() {
-    if (_selectedIndex == 1 || _selectedIndex == 3) return _getAppbarWithAvatar();
+    if (_selectedIndex == 0 || _selectedIndex == 1 || _selectedIndex == 3) return _getAppbarWithAvatar();
     else if (_selectedIndex == 4) return _getAppbarWithImage();
     return _getGeneralAppBar();
   }
