@@ -8,8 +8,9 @@ import 'package:flutter/material.dart';
 class PostCard extends StatelessWidget {
   final PostResponse post;
   final bool isMyPost;
+  final Function(int) likeCallback;
 
-  PostCard({Key key, this.post, this.isMyPost = false}) : super(key: key);
+  PostCard({Key key, this.post, this.isMyPost = false, this.likeCallback}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +92,7 @@ class PostCard extends StatelessWidget {
         MaterialButton(
           minWidth: 0,
           onPressed: () {
-            print("Like");
+            likeCallback(post.id);
           },
           textColor: ColorConstants.lightPrimaryColor,
           child: Icon(

@@ -80,6 +80,38 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
         setState(() {
           _allMyPosts.insert(0, state.postResponse);
         });
+      } else if (state is PostLikedState) {
+        await EasyLoading.dismiss();
+        if (_selectedIndex == 0) {
+          _allFeedPosts.forEach((element) {
+            if (element.id == state.postId) {
+              element.totalLikes += 1;
+            }
+          });
+        } else {
+          _allMyPosts.forEach((element) {
+            if (element.id == state.postId) {
+              element.totalLikes += 1;
+            }
+          });
+        }
+        setState(() {});
+      } else if (state is PostUnLikedState) {
+        await EasyLoading.dismiss();
+        if (_selectedIndex == 0) {
+          _allFeedPosts.forEach((element) {
+            if (element.id == state.postId) {
+              element.totalLikes -= 1;
+            }
+          });
+        } else {
+          _allMyPosts.forEach((element) {
+            if (element.id == state.postId) {
+              element.totalLikes -= 1;
+            }
+          });
+        }
+        setState(() {});
       }
     });
   }
@@ -127,6 +159,10 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
     _feedBloc.add(CreatePostEvent(_authToken, post));
   }
 
+  void onLikeButtonPressed(int postId) {
+    _feedBloc.add(LikePostEvent(_authToken, postId));
+  }
+
   _getBody() {
     List<PostResponse> _showAblePosts = [];
     if (_selectedIndex == 0) _showAblePosts = _allFeedPosts;
@@ -135,7 +171,7 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemBuilder: (context, index) => PostCard(post: _showAblePosts[index], isMyPost: _selectedIndex==1,),
+      itemBuilder: (context, index) => PostCard(post: _showAblePosts[index], isMyPost: _selectedIndex==1, likeCallback: onLikeButtonPressed),
       itemCount: _showAblePosts.length,
     );
   }

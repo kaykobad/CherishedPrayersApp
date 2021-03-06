@@ -35,6 +35,14 @@ class FeedBloc extends Bloc<FeedEvent, FeedState> {
           (failure) => ErrorState(ErrorModel(failure.detail, [""])),
           (success) => PostCreatedState(success),
       );
+    } else if (event is LikePostEvent) {
+      yield LoadingFeedState();
+      DetailOnlyResponse _response = await apiProvider.likePost(event.authToken, event.postId);
+      if (_response.detail.startsWith("Success")) {
+        if (_response.detail.contains("unlike")) yield PostUnLikedState(event.postId);
+        else yield PostLikedState(event.postId);
+      }
+      else yield ErrorState(ErrorModel(_response.detail, [""]));
     }
   }
 

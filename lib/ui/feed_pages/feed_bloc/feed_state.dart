@@ -51,3 +51,21 @@ class PostCreatedState extends FeedState {
   @override
   List<Object> get props => [postResponse];
 }
+
+class PostLikedState extends FeedState {
+  final int postId;
+
+  PostLikedState(this.postId);
+
+  @override
+  List<Object> get props => [postId];
+}
+
+class PostUnLikedState extends FeedState {
+  final int postId;
+
+  PostUnLikedState(this.postId);
+
+  @override
+  List<Object> get props => [postId];
+}
