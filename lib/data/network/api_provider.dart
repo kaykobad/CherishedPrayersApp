@@ -486,7 +486,7 @@ class ApiProvider {
 
   Future<Either<DetailOnlyResponse, AllPostsResponse>> getMyFeed(String authToken) async {
     try {
-      var response = await _dio.post(ApiEndpoints.MY_FEED, options: Options (
+      var response = await _dio.get(ApiEndpoints.MY_FEED, options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }

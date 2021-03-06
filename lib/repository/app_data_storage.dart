@@ -1,5 +1,7 @@
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_bloc.dart';
+import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_bloc.dart';
+import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_state.dart';
 import 'package:cherished_prayers/ui/friends_pages/friends_bloc/friends_bloc.dart';
 
 class AppDataStorage {
@@ -9,6 +11,7 @@ class AppDataStorage {
   // ignore: close_sinks
   AuthBloc authBloc;
   FriendsBloc friendsBloc;
+  FeedBloc feedBloc;
 
   // Password reset functionality
   String passwordResetEmail;
@@ -21,5 +24,5 @@ class AppDataStorage {
 
   String get authToken => userData?.authToken;
 
-  AppDataStorage(this.packageName, this.authBloc, this.friendsBloc);
+  AppDataStorage(this.packageName, this.authBloc, this.friendsBloc, this.feedBloc);
 }
