@@ -16,7 +16,7 @@ class PostCommentInputWidget extends StatelessWidget {
       padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
       child: Row(
         children: [
-          CustomAvatar(url: url, size: isComment ? 35 : 60),
+          CustomAvatar(url: url, size: isComment ? 35 : 50),
           SizedBox(width: 5.0),
           Expanded(
             child: Container(

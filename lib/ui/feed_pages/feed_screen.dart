@@ -8,6 +8,7 @@ import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_bloc.dart';
 import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_event.dart';
 import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_state.dart';
 import 'package:cherished_prayers/ui/shared_widgets/banner_widget.dart';
+import 'package:cherished_prayers/ui/shared_widgets/post_card.dart';
 import 'package:cherished_prayers/ui/shared_widgets/post_comment_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -125,8 +126,9 @@ class _FeedScreenState extends State<FeedScreen> with SingleTickerProviderStateM
     else _showAblePosts = _allMyPosts;
 
     return ListView.builder(
+      physics: NeverScrollableScrollPhysics(),
       shrinkWrap: true,
-      itemBuilder: (context, index) => Text(_showAblePosts[index].post),
+      itemBuilder: (context, index) => PostCard(post: _showAblePosts[index], isMyPost: _selectedIndex==1,),
       itemCount: _showAblePosts.length,
     );
   }
