@@ -87,6 +87,27 @@ class ApiProvider {
     }
   }
 
+  Future<Either<ErrorModel, DetailOnlyResponse>> changePassword(ChangePasswordRequest data, String authToken) async {
+    try {
+      var response = await _dio.post(ApiEndpoints.CHANGE_PASSWORD, data: data, options: Options (
+        headers: {
+          "Authorization" : "Token $authToken",
+        }
+      ));
+
+      if (response['error'] != null) {
+        return Left(ErrorModel.fromJson(response));
+      }
+      else if (response['detail'].contains('Success')) {
+        return Right(DetailOnlyResponse.fromJson(response));
+      }
+      return Left(ErrorModel(response['detail'], [""]));
+    } catch (error, stacktrace) {
+      print("Exception occurred: $error stackTrace: $stacktrace");
+      return Left(ErrorModel(error, [stacktrace.toString()]));
+    }
+  }
+
   // Feedback
   Future<DetailOnlyResponse> sendFeedback(FeedbackRequest data, String authToken) async {
     try {

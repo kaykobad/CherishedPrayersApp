@@ -6,6 +6,7 @@ import 'package:cherished_prayers/ui/settings_pages/report_a_bug_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/banner_widget.dart';
 import 'package:cherished_prayers/ui/shared_widgets/settings_row.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
@@ -19,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
               Divider(height: 1.0, color: ColorConstants.gray),
               BannerWidget(text: "BASIC SETTINGS"),
               SettingsRow(iconData: Icons.email, text: "Update Email Address", onPressed: () {
-                print("Email");
+                EasyLoading.showInfo("This feature will be implemented soon!");
               }),
               SettingsRow(iconData: Icons.lock, text: "Change Password", onPressed: () {
                 print("Password");
