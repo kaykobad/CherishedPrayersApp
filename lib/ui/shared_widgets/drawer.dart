@@ -9,6 +9,7 @@ import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/feedback_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/pp_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/tos_screen.dart';
+import 'package:cherished_prayers/ui/settings_pages/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -35,7 +36,10 @@ class NavigationDrawer extends StatelessWidget {
                 Navigator.of(context).pop();
                 NavigationHelper.push(context, HomeScreen(selectedIndex: 4));
               }),
-              _getNavRow(AssetConstants.NAV_SETTINGS, StringConstants.SETTINGS, (){print("Settings");}),
+              _getNavRow(AssetConstants.NAV_SETTINGS, StringConstants.SETTINGS, (){
+                Navigator.of(context).pop();
+                NavigationHelper.push(context, SettingsScreen());
+              }),
               _getNavRow(AssetConstants.NAV_NOTIFICATION, StringConstants.NOTIFICATIONS, (){print("Notifications");}),
               _getNavRow(AssetConstants.NAV_TOS, StringConstants.TOS, (){
                 Navigator.of(context).pop();
