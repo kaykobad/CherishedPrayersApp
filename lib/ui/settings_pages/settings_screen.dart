@@ -8,7 +8,26 @@ import 'package:cherished_prayers/ui/shared_widgets/settings_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
-class SettingsScreen extends StatelessWidget {
+import 'password_change_screen.dart';
+
+class SettingsScreen extends StatefulWidget {
+  final String status;
+
+  const SettingsScreen({Key key, this.status=""}) : super(key: key);
+
+  @override
+  _SettingsScreenState createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    if (widget.status != "") {
+      EasyLoading.showSuccess(widget.status);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +42,7 @@ class SettingsScreen extends StatelessWidget {
                 EasyLoading.showInfo("This feature will be implemented soon!");
               }),
               SettingsRow(iconData: Icons.lock, text: "Change Password", onPressed: () {
-                print("Password");
+                NavigationHelper.push(context, PasswordChangeScreen());
               }),
               SettingsRow(iconData: Icons.notifications, text: "Manage Notifications", onPressed: () {
                 print("Notifications");

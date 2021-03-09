@@ -48,9 +48,12 @@ class StringConstants {
   static const String FORGOT_PASSWORD_TITLE = "Forgot password";
   static const String SEND_OTP = "SEND CODE";
   static const String RESET_PASSWORD = "Reset password";
+  static const String CHANGE_PASSWORD = "Change password";
   static const String RESET_PASSWORD_BUTTON = "RESET PASSWORD";
+  static const String CHANGE_PASSWORD_BUTTON = "CHANGE PASSWORD";
   static const String NEW_PASSWORD_HINT = "New password";
   static const String NEW_PASSWORD_2_HINT = "Reenter new password";
+  static const String CURRENT_PASSWORD_HINT = "Enter current password";
   static const String BOTH_PASSWORD_MUST_MATCH = "Both passwords must be same";
 
   // Navigation Drawer
