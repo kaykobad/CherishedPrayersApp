@@ -8,6 +8,8 @@ import 'package:cherished_prayers/ui/auth_pages/auth_bloc/auth_state.dart';
 import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_bloc.dart';
 import 'package:cherished_prayers/ui/feed_pages/feed_bloc/feed_state.dart';
 import 'package:cherished_prayers/ui/pre_auth_pages/splash_screen.dart';
+import 'package:cherished_prayers/ui/settings_pages/settings_bloc/settings_bloc.dart';
+import 'package:cherished_prayers/ui/settings_pages/settings_bloc/settings_state.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -64,6 +66,7 @@ class _MyAppState extends State<MyApp> {
   AuthBloc authBloc;
   FriendsBloc friendsBloc;
   FeedBloc feedBloc;
+  SettingsBloc settingsBloc;
 
   @override
   void initState() {
@@ -71,6 +74,7 @@ class _MyAppState extends State<MyApp> {
     authBloc = AuthBloc(InitialAuthState());
     friendsBloc = FriendsBloc(InitialFriendsState());
     feedBloc = FeedBloc(InitialFeedState());
+    settingsBloc = SettingsBloc(InitialSettingsState());
     themeManager.addListener(() {
       setState(() {});
     });
@@ -81,13 +85,14 @@ class _MyAppState extends State<MyApp> {
     authBloc?.close();
     friendsBloc?.close();
     feedBloc?.close();
+    settingsBloc?.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => AppDataStorage(widget.packageName, authBloc, friendsBloc, feedBloc),
+      create: (context) => AppDataStorage(widget.packageName, authBloc, friendsBloc, feedBloc, settingsBloc),
       child: MaterialApp(
         title: StringConstants.APP_NAME,
         debugShowCheckedModeBanner: false,
