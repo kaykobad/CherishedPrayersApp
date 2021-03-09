@@ -30,3 +30,8 @@ class PasswordChangedState extends SettingsState {
   List<Object> get props => [];
 }
 
+class BugReportedState extends SettingsState {
+  @override
+  List<Object> get props => [];
+}
+

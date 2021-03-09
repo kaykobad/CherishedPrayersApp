@@ -19,6 +19,15 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (failure) => ErrorState(failure),
           (success) => PasswordChangedState(),
       );
+    } else if (event is ReportABugEvent) {
+      yield LoadingSettingsState();
+      DetailOnlyResponse _response = await apiProvider.reportBug(event.reportBugRequest, event.authToken);
+
+      if (_response.detail.contains('Success')) {
+        yield BugReportedState();
+      } else {
+        yield ErrorState(ErrorModel(_response.detail, [""]));
+      }
     }
   }
 

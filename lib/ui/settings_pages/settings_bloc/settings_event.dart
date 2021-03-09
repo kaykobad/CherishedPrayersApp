@@ -15,3 +15,13 @@ class ChangePasswordEvent extends SettingsEvent {
   @override
   List<Object> get props => [changePasswordRequest, authToken];
 }
+
+class ReportABugEvent extends SettingsEvent {
+  final ReportBugRequest reportBugRequest;
+  final String authToken;
+
+  ReportABugEvent(this.reportBugRequest, this.authToken);
+
+  @override
+  List<Object> get props => [reportBugRequest, authToken];
+}
