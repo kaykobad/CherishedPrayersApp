@@ -47,7 +47,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 NavigationHelper.push(context, PasswordChangeScreen());
               }),
               SettingsRow(iconData: Icons.notifications, text: "Manage Notifications", onPressed: () {
-                NavigationHelper.pushReplacement(context, NotificationSettingsScreen());
+                NavigationHelper.push(context, NotificationSettingsScreen());
               }),
               SizedBox(height: 10.0),
               Divider(height: 1.0, color: ColorConstants.gray),

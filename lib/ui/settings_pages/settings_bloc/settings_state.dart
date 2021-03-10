@@ -35,3 +35,12 @@ class BugReportedState extends SettingsState {
   List<Object> get props => [];
 }
 
+class BlockedUsersFetchedState extends SettingsState {
+  final GetAllBlockedUsersResponse blockedUsersResponse;
+
+  BlockedUsersFetchedState(this.blockedUsersResponse);
+
+  @override
+  List<Object> get props => [blockedUsersResponse];
+}
+

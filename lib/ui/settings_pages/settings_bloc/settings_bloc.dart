@@ -28,6 +28,14 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
       } else {
         yield ErrorState(ErrorModel(_response.detail, [""]));
       }
+    } else if (event is FetchBlockedUsersEvent) {
+      yield LoadingSettingsState();
+      Either<DetailOnlyResponse, GetAllBlockedUsersResponse> _response = await apiProvider.getBlockedUsers(event.authToken);
+
+      yield _response.fold(
+          (failure) => ErrorState(ErrorModel(failure.detail, [""])),
+          (success) => BlockedUsersFetchedState(success),
+      );
     }
   }
 

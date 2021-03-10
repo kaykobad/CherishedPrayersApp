@@ -25,3 +25,12 @@ class ReportABugEvent extends SettingsEvent {
   @override
   List<Object> get props => [reportBugRequest, authToken];
 }
+
+class FetchBlockedUsersEvent extends SettingsEvent {
+  final String authToken;
+
+  FetchBlockedUsersEvent(this.authToken);
+
+  @override
+  List<Object> get props => [authToken];
+}
