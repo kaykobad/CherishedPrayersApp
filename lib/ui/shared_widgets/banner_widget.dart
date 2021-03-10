@@ -15,7 +15,9 @@ class BannerWidget extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 17,
+          color: ColorConstants.hintGray,
+          fontWeight: FontWeight.w300,
         ),
       ),
     );

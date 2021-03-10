@@ -20,7 +20,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Divider(height: 1.0, color: ColorConstants.gray),
+              Divider(height: 1.0, color: Colors.grey[400]),
               BannerWidget(text: "NOTIFICATIONS SETTINGS"),
               Padding(
                 padding: EdgeInsets.all(24.0),
@@ -39,6 +39,15 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
                   ),
                 ),
               ),
+              _getDividerWithPadding(),
+              _getSettingsRow(0),
+              _getDividerWithPadding(),
+            _getSettingsRow(1),
+            _getDividerWithPadding(),
+            _getSettingsRow(2),
+            _getDividerWithPadding(),
+            _getSettingsRow(3),
+            _getDividerWithPadding(),
             ],
           ),
         ),
@@ -59,7 +68,7 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
   Widget _getDividerWithPadding() {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 12.0),
-      child: Divider(height: 1.0, color: ColorConstants.gray),
+      child: Divider(height: 1.0, color: Colors.grey[400]),
     );
   }
 
@@ -71,15 +80,19 @@ class _NotificationSettingsScreenState extends State<NotificationSettingsScreen>
         children: [
           Text(
             _settingsText[index],
+            style: TextStyle(
+              fontSize: 16.0,
+              color: ColorConstants.black,
+            ),
           ),
           FlutterSwitch(
-            width: 125.0,
-            height: 55.0,
+            width: 55.0,
+            height: 25.0,
             activeColor: ColorConstants.lightPrimaryColor,
-            toggleSize: 45.0,
+            toggleSize: 25.0,
             value: _toggleStatus[index],
             borderRadius: 30.0,
-            padding: 8.0,
+            padding: 3.0,
             onToggle: (val) {
               setState(() {
                 _toggleStatus[index] = val;

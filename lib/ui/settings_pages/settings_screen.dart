@@ -2,6 +2,8 @@ import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/pp_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/tos_screen.dart';
+import 'package:cherished_prayers/ui/settings_pages/blocked_user_screen.dart';
+import 'package:cherished_prayers/ui/settings_pages/notification_settings_screen.dart';
 import 'package:cherished_prayers/ui/settings_pages/report_a_bug_screen.dart';
 import 'package:cherished_prayers/ui/shared_widgets/banner_widget.dart';
 import 'package:cherished_prayers/ui/shared_widgets/settings_row.dart';
@@ -45,13 +47,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 NavigationHelper.push(context, PasswordChangeScreen());
               }),
               SettingsRow(iconData: Icons.notifications, text: "Manage Notifications", onPressed: () {
-                print("Notifications");
+                NavigationHelper.pushReplacement(context, NotificationSettingsScreen());
               }),
               SizedBox(height: 10.0),
               Divider(height: 1.0, color: ColorConstants.gray),
               BannerWidget(text: "APP SETTINGS"),
               SettingsRow(iconData: Icons.block, text: "Manage Blocked Accounts", onPressed: () {
-                print("Block");
+                NavigationHelper.push(context, BlockedUsersScreen());
               }),
               SizedBox(height: 10.0),
               Divider(height: 1.0, color: ColorConstants.gray),

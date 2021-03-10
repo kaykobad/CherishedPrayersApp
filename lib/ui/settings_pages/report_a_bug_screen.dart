@@ -70,7 +70,7 @@ class _ReportABugScreenState extends State<ReportABugScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Divider(height: 1.0, color: ColorConstants.gray),
+              Divider(height: 1.0, color: Colors.grey[400]),
               BannerWidget(text: "REPORT A BUG"),
               Padding(
                 padding: EdgeInsets.all(24.0),
@@ -91,7 +91,7 @@ class _ReportABugScreenState extends State<ReportABugScreen> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 12.0),
-                child: Divider(height: 1.0, color: ColorConstants.gray),
+                child: Divider(height: 1.0, color: Colors.grey[400]),
               ),
               SizedBox(height: 24.0),
               Padding(
