@@ -110,6 +110,17 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
           state.searchPeopleResponse.searchResult.removeWhere((element) => element.isFriend);
           _friendSuggestions = state.searchPeopleResponse.searchResult.map((e) => e.user).toList();
         });
+      } else if (state is UserBlockedState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("User blocked.");
+        if (_selectedIndex == 0) {
+          _friendSuggestions.removeWhere((element) => element.id == state.userId);
+        } else if (_selectedIndex == 1) {
+          _sentRequests.removeWhere((element) => element.id == state.userId);
+        } else {
+          _receivedRequests.removeWhere((element) => element.id == state.userId);
+        }
+        setState(() {});
       }
     });
   }
@@ -344,6 +355,16 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
             ),
             SizedBox(width: 8.0),
             _getActions(user),
+            if (_selectedIndex == 0) PopupMenuButton(
+              padding: EdgeInsets.all(0.0),
+              itemBuilder: (_) => [
+                PopupMenuItem(child: Text("Block User"), value: user),
+              ],
+              onSelected: (value) {
+                _friendsBloc.add(BlockUserEvent(_appDataStorage.authToken, user.id));
+              },
+              icon: Icon(Icons.more_vert, color: ColorConstants.lightPrimaryColor),
+            ),
           ],
         ),
         SizedBox(height: 12.0),

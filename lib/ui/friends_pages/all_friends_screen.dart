@@ -213,7 +213,7 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
             PopupMenuButton(
               itemBuilder: (_) => [
                 PopupMenuItem(child: Text("Unfriend"), value: 1),
-                PopupMenuItem(child: Text("Block"), value: 2),
+                PopupMenuItem(child: Text("Block User"), value: 2),
               ],
               onSelected: (value) {
                 if (value == 2) {
