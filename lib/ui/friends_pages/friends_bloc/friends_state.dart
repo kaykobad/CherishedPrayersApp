@@ -114,3 +114,12 @@ class SearchPeopleSuccessState extends FriendsState {
   @override
   List<Object> get props => [searchPeopleResponse];
 }
+
+class UserBlockedState extends FriendsState {
+  final int userId;
+
+  UserBlockedState(this.userId);
+
+  @override
+  List<Object> get props => [userId];
+}

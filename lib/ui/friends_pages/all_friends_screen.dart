@@ -69,6 +69,12 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
         _friends.removeWhere((element) => element.friend.id == state.userId);
         _showAbleFriends.removeWhere((element) => element.friend.id == state.userId);
         setState(() {});
+      } else if (state is UserBlockedState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("User blocked.");
+        _friends.removeWhere((element) => element.friend.id == state.userId);
+        _showAbleFriends.removeWhere((element) => element.friend.id == state.userId);
+        setState(() {});
       }
     });
   }
@@ -206,11 +212,16 @@ class _AllFriendsScreenState extends State<AllFriendsScreen> {
             ),
             PopupMenuButton(
               itemBuilder: (_) => [
-                PopupMenuItem(child: Text("Unfriend"), value: user),
+                PopupMenuItem(child: Text("Unfriend"), value: 1),
+                PopupMenuItem(child: Text("Block"), value: 2),
               ],
               onSelected: (value) {
-                print("$value user unfriend initiated!");
-                _showUnFriendDialog(value);
+                if (value == 2) {
+                  _friendsBloc.add(BlockUserEvent(_appDataStorage.authToken, user.id));
+                }
+                else {
+                  _showUnFriendDialog(user);
+                }
               },
               icon: Icon(Icons.more_vert, color: ColorConstants.lightPrimaryColor),
             ),

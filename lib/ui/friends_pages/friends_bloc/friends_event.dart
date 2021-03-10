@@ -101,3 +101,13 @@ class SearchPeopleEvent extends FriendsEvent {
   @override
   List<Object> get props => [searchPeopleRequest, authToken];
 }
+
+class BlockUserEvent extends FriendsEvent {
+  final String authToken;
+  final int userId;
+
+  BlockUserEvent(this.authToken, this.userId);
+
+  @override
+  List<Object> get props => [authToken, userId];
+}

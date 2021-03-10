@@ -72,6 +72,11 @@ class FriendsBloc extends Bloc<FriendsEvent, FriendsState> {
           (failure) => ErrorState(ErrorModel(failure.detail, [""])),
           (success) => SearchPeopleSuccessState(success),
       );
+    } else if (event is BlockUserEvent) {
+      yield LoadingFriendsState();
+      DetailOnlyResponse _response = await apiProvider.blockUser(event.authToken, event.userId);
+      if (_response.detail.startsWith("Success")) yield UserBlockedState(event.userId);
+      else yield ErrorState(ErrorModel(_response.detail, [""]));
     }
   }
 
