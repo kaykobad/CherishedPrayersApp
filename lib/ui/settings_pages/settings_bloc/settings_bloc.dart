@@ -36,6 +36,15 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
           (failure) => ErrorState(ErrorModel(failure.detail, [""])),
           (success) => BlockedUsersFetchedState(success),
       );
+    } else if (event is UnblockUserEvent) {
+      yield LoadingSettingsState();
+      DetailOnlyResponse _response = await apiProvider.unBlockUser(event.authToken, event.userId);
+
+      if (_response.detail.contains('Success')) {
+        yield UserUnblockedState(event.userId);
+      } else {
+        yield ErrorState(ErrorModel(_response.detail, [""]));
+      }
     }
   }
 

@@ -34,3 +34,13 @@ class FetchBlockedUsersEvent extends SettingsEvent {
   @override
   List<Object> get props => [authToken];
 }
+
+class UnblockUserEvent extends SettingsEvent {
+  final String authToken;
+  final int userId;
+
+  UnblockUserEvent(this.authToken, this.userId);
+
+  @override
+  List<Object> get props => [authToken, userId];
+}

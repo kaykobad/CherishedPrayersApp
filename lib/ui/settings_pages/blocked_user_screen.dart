@@ -49,6 +49,12 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> {
         setState(() {
           _blockedUsers = state.blockedUsersResponse.blockedUsers;
         });
+      } else if (state is UserUnblockedState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showSuccess("User unblocked.");
+        setState(() {
+          _blockedUsers.removeWhere((element) => element.id == state.userId);
+        });
       }
     });
   }
@@ -117,7 +123,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> {
     );
   }
 
-  Widget buildItem(user) {
+  Widget buildItem(GenericUserResponse user) {
     return Column(
       children: [
         Padding(
@@ -161,7 +167,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> {
               GestureDetector(
                 behavior: HitTestBehavior.translucent,
                 onTap: () {
-                  print('Unblock user');
+                  _settingsBloc.add(UnblockUserEvent(_appDataStorage.authToken, user.id));
                 },
                 child: Container(
                   child: Text(
