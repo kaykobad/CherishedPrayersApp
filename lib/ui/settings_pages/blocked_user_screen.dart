@@ -5,6 +5,7 @@ import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
 import 'package:cherished_prayers/ui/settings_pages/settings_bloc/settings_bloc.dart';
+import 'package:cherished_prayers/ui/settings_pages/settings_bloc/settings_event.dart';
 import 'package:cherished_prayers/ui/settings_pages/settings_bloc/settings_state.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:cherished_prayers/ui/shared_widgets/banner_widget.dart';
@@ -28,6 +29,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> {
     super.initState();
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _settingsBloc = _appDataStorage.settingsBloc;
+    _settingsBloc.add(FetchBlockedUsersEvent(_appDataStorage.authToken));
     _listenSettingsBloc();
   }
 
@@ -44,7 +46,9 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> {
         );
       } else if (state is BlockedUsersFetchedState) {
         await EasyLoading.dismiss();
-        _blockedUsers = state.blockedUsersResponse.blockedUsers;
+        setState(() {
+          _blockedUsers = state.blockedUsersResponse.blockedUsers;
+        });
       }
     });
   }
@@ -83,6 +87,7 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> {
                 ),
               ),
               _getDividerWithPadding(),
+              SizedBox(height: 12.0),
               ListView.builder(
                 shrinkWrap: true,
                 itemBuilder: (context, index) => buildItem(_blockedUsers[index]),
@@ -115,46 +120,70 @@ class _BlockedUsersScreenState extends State<BlockedUsersScreen> {
   Widget buildItem(user) {
     return Column(
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            CustomAvatar(url: (user.avatar == "" || user.avatar == null) ? null : ApiEndpoints.URL_ROOT + user.avatar, size: 60.0),
-            Flexible(
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Container(
-                      child: Text(
-                        user.firstName,
-                        style: TextStyle(
-                          color: ColorConstants.black,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomAvatar(url: (user.avatar == "" || user.avatar == null) ? null : ApiEndpoints.URL_ROOT + user.avatar, size: 60.0),
+              Flexible(
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          user.firstName,
+                          style: TextStyle(
+                            color: ColorConstants.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
                         ),
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
                       ),
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
-                    ),
-                    Container(
-                      child: Text(
-                        user.religion,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: ColorConstants.gray),
-                      ),
-                      alignment: Alignment.centerLeft,
-                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                    )
-                  ],
+                      Container(
+                        child: Text(
+                          user.religion,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(color: ColorConstants.gray),
+                        ),
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                      )
+                    ],
+                  ),
+                  margin: EdgeInsets.only(left: 10.0),
                 ),
-                margin: EdgeInsets.only(left: 10.0),
               ),
-            ),
-            SizedBox(width: 8.0),
-          ],
+              SizedBox(width: 8.0),
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  print('Unblock user');
+                },
+                child: Container(
+                  child: Text(
+                    "Unblock",
+                    style: TextStyle(
+                      color: ColorConstants.lightPrimaryColor,
+                      fontSize: 11,
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 7.0),
+                  decoration: BoxDecoration(
+                    color: ColorConstants.white,
+                    border: Border.all(color:ColorConstants.lightPrimaryColor),
+                    borderRadius: BorderRadius.all(Radius.circular(4))
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
         SizedBox(height: 12.0),
-        Divider(color: Colors.grey[400], height: 1.0),
+        _getDividerWithPadding(),
         SizedBox(height: 12.0),
       ],
     );

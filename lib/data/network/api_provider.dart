@@ -393,7 +393,7 @@ class ApiProvider {
 
   Future<Either<DetailOnlyResponse, GetAllBlockedUsersResponse>> getBlockedUsers(String authToken) async {
     try {
-      var response = await _dio.post(ApiEndpoints.GET_BLOCKED_USERS, options: Options (
+      var response = await _dio.get(ApiEndpoints.GET_BLOCKED_USERS, options: Options (
           headers: {
             "Authorization" : "Token $authToken",
           }
