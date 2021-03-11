@@ -7,7 +7,12 @@ import 'package:cherished_prayers/data/models/chat_models/chat_user_data.dart';
 import 'package:cherished_prayers/data/models/models.dart';
 import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/helpers/firebase_helper.dart';
+import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
+import 'package:cherished_prayers/ui/friends_pages/friends_bloc/friends_bloc.dart';
+import 'package:cherished_prayers/ui/friends_pages/friends_bloc/friends_event.dart';
+import 'package:cherished_prayers/ui/friends_pages/friends_bloc/friends_state.dart';
+import 'package:cherished_prayers/ui/home_pages/home_screen.dart';
 import 'package:cherished_prayers/ui/profile_tos_pp_feedback/profile_and_feedback_bloc/profile_and_feedback_event.dart';
 import 'package:cherished_prayers/ui/shared_widgets/avatar.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +30,12 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   double _height;
-  double _width;
   AppDataStorage _appDataStorage;
   ProfileAndFeedbackBloc _profileBloc;
   StreamSubscription<ProfileAndFeedbackState> _listenProfileState;
+  FriendsBloc _friendsBloc;
+  List<SingleFriendResponse> _friends = [];
+  StreamSubscription<FriendsState> _friendsBlocListener;
   String _authToken;
   String _selectedValue;
   final picker = ImagePicker();
@@ -39,6 +46,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _appDataStorage = RepositoryProvider.of<AppDataStorage>(context);
     _profileBloc = ProfileAndFeedbackBloc(ProfileAndFeedbackInitialState());
     _authToken = RepositoryProvider.of<AppDataStorage>(context).authToken;
+    _friendsBloc = _appDataStorage.friendsBloc;
+    _friendsBloc.add(FetchAllFriendsEvent(_appDataStorage.authToken));
+    _listenFriendsBloc();
     _listenProfileBloc();
   }
 
@@ -86,17 +96,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
+  _listenFriendsBloc() {
+    _friendsBlocListener = _friendsBloc.listen((state) async {
+      if (state is LoadingFriendsState) {
+        EasyLoading.show(
+          status: "Loading...",
+        );
+      } else if (state is ErrorState) {
+        await EasyLoading.dismiss();
+        EasyLoading.showError(
+            state.error.error + '\n' + state.error.details.join(' ')
+        );
+      } else if (state is AllFriendsFetchedState) {
+        await EasyLoading.dismiss();
+        setState(() {
+          if (state.friends.allFriends.length > 5) {
+            _friends = state.friends.allFriends.sublist(0, 4);
+          } else {
+            _friends = state.friends.allFriends;
+          }
+        });
+      }
+    });
+  }
+
   @override
   void dispose() {
     _listenProfileState?.cancel();
     _profileBloc?.close();
+    _friendsBlocListener?.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     _height = MediaQuery.of(context).size.height;
-    _width = MediaQuery.of(context).size.width;
 
     return Stack(
       alignment: Alignment.center,
@@ -282,49 +316,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: ColorConstants.white,
-                    backgroundImage: NetworkImage(
-                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: ColorConstants.white,
-                    backgroundImage: NetworkImage(
-                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: ColorConstants.white,
-                    backgroundImage: NetworkImage(
-                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: ColorConstants.white,
-                    backgroundImage: NetworkImage(
-                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
-                    ),
-                  ),
-                  CircleAvatar(
-                    radius: 20,
-                    backgroundColor: ColorConstants.white,
-                    backgroundImage: NetworkImage(
-                      'https://www.clearmountainbank.com/wp-content/uploads/2020/04/male-placeholder-image.jpeg',
-                    ),
-                  ),
-                ],
-              ),
+              _getFriendsAvatarView(),
               SizedBox(height: 12.0),
               GestureDetector(
-                onTap: () => print("All friends"),
+                onTap: () => NavigationHelper.push(context, HomeScreen(selectedIndex: 3)),
                 child: Text(
                   StringConstants.PP_SEE_ALL_FRIENDS,
                   style: TextStyle(
@@ -337,6 +332,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _getFriendsAvatarView() {
+    if (_friends.length == 0) {
+      return Text(
+        "No friends found!",
+        style: TextStyle(
+          color: ColorConstants.hintGray,
+          fontSize: 16.0
+        ),
+      );
+    }
+
+    List<Widget> _avatars = _friends.map((f) => CustomAvatar(
+      url: f.friend.avatar == null ? null : ApiEndpoints.URL_ROOT + f.friend.avatar,
+      size: 55.0,
+    )).toList();
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: _avatars
     );
   }
 
