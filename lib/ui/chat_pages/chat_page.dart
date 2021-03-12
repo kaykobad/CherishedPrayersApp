@@ -336,7 +336,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             height: 35.0,
                             padding: EdgeInsets.all(10.0),
                           ),
-                          imageUrl: t.getReceiverAvatar(_myId),
+                          imageUrl: (t.getReceiverAvatar(_myId) == null || t.getReceiverAvatar(_myId) == "") ? "" : ApiEndpoints.URL_ROOT + t.getReceiverAvatar(_myId),
                           width: 35.0,
                           height: 35.0,
                           fit: BoxFit.cover,
