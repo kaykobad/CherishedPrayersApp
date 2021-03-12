@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:cherished_prayers/constants/color_constants.dart';
 import 'package:cherished_prayers/data/models/models.dart';
+import 'package:cherished_prayers/data/network/api_endpoints.dart';
 import 'package:cherished_prayers/helpers/firebase_helper.dart';
 import 'package:cherished_prayers/helpers/navigation_helper.dart';
 import 'package:cherished_prayers/repository/app_data_storage.dart';
@@ -119,7 +120,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
 
     int myId = _appDataStorage.userData.id;
     int unreadMessageCount = t.getUnseenMessageCount(myId);
-    String avatarPath = t.getReceiverAvatar(myId);
+    String avatarPath = (t.getReceiverAvatar(_myId) == null || t.getReceiverAvatar(_myId) == "") ? "" : ApiEndpoints.URL_ROOT + t.getReceiverAvatar(_myId);
 
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
@@ -131,7 +132,7 @@ class _AllThreadsPageState extends State<AllThreadsPage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomAvatar(url: avatarPath == "" ? null : avatarPath, size: 60.0),
+              CustomAvatar(url: avatarPath, size: 60.0),
               Flexible(
                 child: Container(
                   child: Column(
